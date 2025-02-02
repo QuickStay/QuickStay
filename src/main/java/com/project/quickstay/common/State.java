@@ -1,4 +1,4 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.common;
 
 public enum State {
     RESERVED, // 예약중

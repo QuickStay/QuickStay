@@ -20,5 +20,6 @@ public class Room {
     private Integer capacity;
 
     public Room() {
+
     }
 }

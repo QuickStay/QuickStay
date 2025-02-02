@@ -1,5 +1,6 @@
 package com.project.quickstay.domain;
 
+import com.project.quickstay.common.Social;
 import jakarta.persistence.*;
 import lombok.Getter;
 
