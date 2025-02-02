@@ -11,4 +11,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String email;
+
+    @Enumerated(value = EnumType.STRING)
+    private Social social;
+
+    private String nickname;
+
+    private String phoneNumber;
+
+    public User() {
+    }
 }
