@@ -1,4 +1,4 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.domain.user.entity;
 
 import com.project.quickstay.common.Social;
 import jakarta.persistence.*;

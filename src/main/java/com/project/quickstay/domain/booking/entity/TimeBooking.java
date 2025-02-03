@@ -1,5 +1,6 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.domain.booking.entity;
 
+import com.project.quickstay.domain.room.entity.Room;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;

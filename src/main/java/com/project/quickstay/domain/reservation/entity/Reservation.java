@@ -1,6 +1,7 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.domain.reservation.entity;
 
 import com.project.quickstay.common.State;
+import com.project.quickstay.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

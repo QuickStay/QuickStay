@@ -1,6 +1,7 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.domain.booking.entity;
 
 import com.project.quickstay.common.BookType;
+import com.project.quickstay.domain.room.entity.Room;
 import jakarta.persistence.*;
 import lombok.Getter;
 

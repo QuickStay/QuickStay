@@ -1,5 +1,6 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.domain.room.entity;
 
+import com.project.quickstay.domain.place.entity.Place;
 import jakarta.persistence.*;
 import lombok.Getter;
 
