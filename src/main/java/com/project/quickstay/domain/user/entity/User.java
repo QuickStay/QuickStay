@@ -1,6 +1,7 @@
 package com.project.quickstay.domain.user.entity;
 
 import com.project.quickstay.common.Social;
+import com.project.quickstay.domain.user.dto.UserRegister;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -20,8 +21,14 @@ public class User {
 
     private String nickname;
 
-    private String phoneNumber;
-
     public User() {
+    }
+
+    public static User register(UserRegister userRegister) {
+        User user = new User();
+        user.email = userRegister.getEmail();
+        user.social = userRegister.getSocial();
+        user.nickname = userRegister.getNickname();
+        return user;
     }
 }
