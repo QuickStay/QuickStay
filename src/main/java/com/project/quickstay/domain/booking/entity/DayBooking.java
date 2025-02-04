@@ -6,19 +6,20 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
 @DiscriminatorValue("DAY")
 public class DayBooking extends Booking {
 
-    private LocalDate checkIn;
-    private LocalDate checkOut;
+    private LocalTime checkIn;
+    private LocalTime checkOut;
 
     public DayBooking() {
     }
 
-    public DayBooking(Room room, LocalDate checkIn, LocalDate checkOut) {
+    public DayBooking(Room room, LocalTime checkIn, LocalTime checkOut) {
         super(room);
         this.checkIn = checkIn;
         this.checkOut = checkOut;
