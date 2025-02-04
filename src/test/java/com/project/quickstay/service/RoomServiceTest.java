@@ -11,6 +11,7 @@ import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.repository.RoomRepository;
 import com.project.quickstay.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -37,6 +39,9 @@ class RoomServiceTest {
 
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     User user1;
     Place place1;
@@ -171,5 +176,24 @@ class RoomServiceTest {
         assertThat(room.getName()).isEqualTo("방2");
         assertThat(room.getDescription()).isEqualTo("작은 방");
         assertThat(room.getCapacity()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("등록한 방을 삭제할 수 있다")
+    void test7() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.TIME);
+        roomRegister.setStartTime(LocalTime.of(12, 0));
+        roomRegister.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(place1, roomRegister);
+
+        roomService.delete(room.getId());
+
+        Optional<Room> getRoom = roomRepository.findById(room.getId());
+        assertThat(getRoom).isEmpty();
     }
 }

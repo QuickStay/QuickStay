@@ -33,6 +33,11 @@ public class RoomService {
         room.update(roomUpdate);
     }
 
+    public void delete(Long id) {
+        Room room = getById(id);
+        roomRepository.delete(room);
+    }
+
     private Booking registerBook(Room room, RoomRegister roomRegister) {
         BookingService service = selectBookingService(roomRegister.getBookType());
         return service.register(room, roomRegister);
