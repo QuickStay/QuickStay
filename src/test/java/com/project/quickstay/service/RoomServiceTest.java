@@ -1,0 +1,107 @@
+package com.project.quickstay.service;
+
+import com.project.quickstay.common.BookType;
+import com.project.quickstay.common.Social;
+import com.project.quickstay.domain.booking.entity.DayBooking;
+import com.project.quickstay.domain.booking.entity.TimeBooking;
+import com.project.quickstay.domain.place.dto.PlaceRegister;
+import com.project.quickstay.domain.place.entity.Place;
+import com.project.quickstay.domain.room.dto.RoomRegister;
+import com.project.quickstay.domain.room.entity.Room;
+import com.project.quickstay.domain.user.dto.UserRegister;
+import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+@SpringBootTest
+@Transactional
+class RoomServiceTest {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PlaceService placeService;
+
+    @Autowired
+    RoomService roomService;
+
+    User user1;
+    Place place1;
+
+    @BeforeEach
+    void setPlace() {
+        UserRegister userRegister = new UserRegister();
+        userRegister.setEmail("tkddnr@naver.com");
+        userRegister.setNickname("상욱");
+        userRegister.setSocial(Social.KAKAO);
+        User user = User.register(userRegister);
+        user1 = userRepository.save(user);
+
+        PlaceRegister placeRegister = new PlaceRegister();
+        placeRegister.setName("한옥");
+        placeRegister.setDescription("우아한 한옥입니다");
+        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setContact("01012345678");
+
+        place1 = placeService.register(user1, placeRegister);
+    }
+
+    @Test
+    @DisplayName("사용자는 장소에 방을 등록할 수 있다 (DAY)")
+    void test1() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.DAY);
+        roomRegister.setCheckIn(LocalTime.of(15, 0));
+        roomRegister.setCheckOut(LocalTime.of(11, 0));
+        Room room = roomService.register(place1, roomRegister);
+
+        assertThat(room.getId()).isNotNull();
+        assertThat(room.getPlace()).isEqualTo(place1);
+        assertThat(room.getName()).isEqualTo("방1");
+        assertThat(room.getDescription()).isEqualTo("넓은 방");
+        assertThat(room.getCapacity()).isEqualTo(4);
+        assertThat(room.getBooking()).isInstanceOf(DayBooking.class);
+    }
+
+    @Test
+    @DisplayName("사용자는 장소에 방을 등록할 수 있다 (TIME)")
+    void test2() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.TIME);
+        roomRegister.setStartTime(LocalTime.of(12, 0));
+        roomRegister.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(place1, roomRegister);
+
+        assertThat(room.getId()).isNotNull();
+        assertThat(room.getPlace()).isEqualTo(place1);
+        assertThat(room.getName()).isEqualTo("방1");
+        assertThat(room.getDescription()).isEqualTo("넓은 방");
+        assertThat(room.getCapacity()).isEqualTo(4);
+        assertThat(room.getBooking()).isInstanceOf(TimeBooking.class);
+    }
+
+    @Test
+    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME)")
+    void test3() {
+
+    }
+}
