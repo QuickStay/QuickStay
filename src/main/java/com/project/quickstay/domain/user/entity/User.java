@@ -31,4 +31,14 @@ public class User {
         user.nickname = userRegister.getNickname();
         return user;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", social=" + social +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
 }
