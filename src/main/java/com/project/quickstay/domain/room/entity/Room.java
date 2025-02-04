@@ -3,6 +3,7 @@ package com.project.quickstay.domain.room.entity;
 import com.project.quickstay.domain.booking.entity.Booking;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomRegister;
+import com.project.quickstay.domain.room.dto.RoomUpdate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +39,12 @@ public class Room {
         room.description = roomRegister.getDescription();
         room.capacity = roomRegister.getCapacity();
         return room;
+    }
+
+    public void update(RoomUpdate roomUpdate) {
+        this.name = roomUpdate.getName();
+        this.description = roomUpdate.getDescription();
+        this.capacity = roomUpdate.getCapacity();
     }
 
 }

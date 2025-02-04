@@ -7,6 +7,7 @@ import com.project.quickstay.domain.booking.entity.TimeBooking;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomRegister;
+import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
@@ -101,7 +102,7 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 1")
+    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 1. 시작시간보다 종료시간이 많을 경우")
     void test3() {
         RoomRegister roomRegister = new RoomRegister();
         roomRegister.setName("방1");
@@ -117,7 +118,7 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 2")
+    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 2. 시작시간과 종료시간이 같은 경우")
     void test4() {
         RoomRegister roomRegister = new RoomRegister();
         roomRegister.setName("방1");
@@ -133,7 +134,7 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 3")
+    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 3. 시작시간 + 1시간 > 종료시간인 경우")
     void test5() {
         RoomRegister roomRegister = new RoomRegister();
         roomRegister.setName("방1");
@@ -146,5 +147,29 @@ class RoomServiceTest {
 
         assertThatThrownBy(() -> roomService.register(place1, roomRegister)).isInstanceOf(IllegalStateException.class);
 
+    }
+
+    @Test
+    @DisplayName("등록한 방을 수정할 수 있다")
+    void test6() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.TIME);
+        roomRegister.setStartTime(LocalTime.of(12, 0));
+        roomRegister.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(place1, roomRegister);
+
+        RoomUpdate roomUpdate = new RoomUpdate();
+        roomUpdate.setName("방2");
+        roomUpdate.setDescription("작은 방");
+        roomUpdate.setCapacity(2);
+        roomService.update(room.getId(), roomUpdate);
+
+        assertThat(room.getName()).isEqualTo("방2");
+        assertThat(room.getDescription()).isEqualTo("작은 방");
+        assertThat(room.getCapacity()).isEqualTo(2);
     }
 }
