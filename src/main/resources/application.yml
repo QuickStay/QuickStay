@@ -9,3 +9,5 @@ spring:
       ddl-auto: create
   profiles:
     include: security
+  messages:
+    basename: errors
