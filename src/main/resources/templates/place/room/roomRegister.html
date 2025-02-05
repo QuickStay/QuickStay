@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Room Register</title>
     <script>
         function toggleBookingFields() {
             var bookType = document.getElementById("bookType").value;
@@ -22,7 +20,8 @@
         }
     </script>
 </head>
-<body>
+<body onload="toggleBookingFields()">  <!-- 페이지 로드 시 bookType에 맞게 필드 표시 -->
+
 <h2>Room Registration</h2>
 
 <form th:action="@{'/place/' + ${placeId} + '/register'}" method="post" th:object="${roomRegister}">
@@ -44,8 +43,8 @@
     <label for="bookType">Book Type:</label>
     <select id="bookType" name="bookType" th:field="*{bookType}" required onchange="toggleBookingFields()">
         <option value="">Select Booking Type</option>
-        <option value="DAY">Date Booking</option>
-        <option value="TIME">Time Booking</option>
+        <option value="DAY" th:selected="${roomRegister.bookType == 'DAY'}">Date Booking</option>
+        <option value="TIME" th:selected="${roomRegister.bookType == 'TIME'}">Time Booking</option>
     </select>
     <br>
     <span th:if="${#fields.hasErrors('bookType')}" th:each="err : ${#fields.errors('bookType')}" style="color: red; display: block;">[[${err}]]</span>
@@ -69,8 +68,13 @@
         <input type="time" id="endTime" name="endTime" th:field="*{endTime}" step="1800">
         <br>
     </div>
+    <div th:if="${#fields.hasErrors('endTime')}" style="color: red;">
+        <p th:errors="*{endTime}"></p>
+    </div>
 
     <button type="submit">Register</button>
 </form>
+
 </body>
+
 </html>

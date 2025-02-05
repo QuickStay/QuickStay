@@ -106,53 +106,56 @@ class RoomServiceTest {
         assertThat(room.getBooking()).isInstanceOf(TimeBooking.class);
     }
 
-    @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 1. 시작시간보다 종료시간이 많을 경우")
-    void test3() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
-
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(10, 0)); //시작시간 10시
-        roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
-
-        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
-
-    }
-
-    @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 2. 시작시간과 종료시간이 같은 경우")
-    void test4() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
-
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
-        roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
-
-        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
-
-    }
-
-    @Test
-    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 3. 시작시간 + 1시간 > 종료시간인 경우")
-    void test5() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
-
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
-        roomRegister.setEndTime(LocalTime.of(9, 30)); //종료시간 9시 30분
-
-        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
-
-    }
+    /**
+     * Controller에서 예외 처리
+     */
+//    @Test
+//    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 1. 시작시간보다 종료시간이 많을 경우")
+//    void test3() {
+//        RoomRegister roomRegister = new RoomRegister();
+//        roomRegister.setName("방1");
+//        roomRegister.setDescription("넓은 방");
+//        roomRegister.setCapacity(4);
+//
+//        roomRegister.setBookType(BookType.TIME);
+//        roomRegister.setStartTime(LocalTime.of(10, 0)); //시작시간 10시
+//        roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
+//
+//        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
+//
+//    }
+//
+//    @Test
+//    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 2. 시작시간과 종료시간이 같은 경우")
+//    void test4() {
+//        RoomRegister roomRegister = new RoomRegister();
+//        roomRegister.setName("방1");
+//        roomRegister.setDescription("넓은 방");
+//        roomRegister.setCapacity(4);
+//
+//        roomRegister.setBookType(BookType.TIME);
+//        roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
+//        roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
+//
+//        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
+//
+//    }
+//
+//    @Test
+//    @DisplayName("방을 등록할 때 시간이 잘못되면 예외를 터트린다 (TIME) - 3. 시작시간 + 1시간 > 종료시간인 경우")
+//    void test5() {
+//        RoomRegister roomRegister = new RoomRegister();
+//        roomRegister.setName("방1");
+//        roomRegister.setDescription("넓은 방");
+//        roomRegister.setCapacity(4);
+//
+//        roomRegister.setBookType(BookType.TIME);
+//        roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
+//        roomRegister.setEndTime(LocalTime.of(9, 30)); //종료시간 9시 30분
+//
+//        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
+//
+//    }
 
     @Test
     @DisplayName("등록한 방을 수정할 수 있다")
