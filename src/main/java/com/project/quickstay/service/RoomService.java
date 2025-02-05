@@ -6,6 +6,7 @@ import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
+import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoomService {
 
+    private final PlaceRepository placeRepository;
     private final RoomRepository roomRepository;
     private final BookingServiceSelector selector;
 
-    public Room register(Place place, RoomRegister roomRegister) {
+    public Room register(Long placeId, RoomRegister roomRegister) {
+        Place place = getPlaceById(placeId);
         Room room = Room.register(place, roomRegister);
         Booking booking = registerBook(room, roomRegister);
         room.setBooking(booking);
@@ -53,5 +56,13 @@ public class RoomService {
             throw new IllegalStateException(); //FIXME
         }
         return room.get();
+    }
+
+    private Place getPlaceById(Long id) {
+        Optional<Place> place = placeRepository.findById(id);
+        if (place.isEmpty()) {
+            throw new IllegalStateException(); //FIXME
+        }
+        return place.get();
     }
 }

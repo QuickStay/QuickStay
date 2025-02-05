@@ -1,8 +1,11 @@
 package com.project.quickstay.domain.room.dto;
 
 import com.project.quickstay.common.BookType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalTime;
 
@@ -10,11 +13,16 @@ import java.time.LocalTime;
 @Setter
 public class RoomRegister {
 
+    @NotEmpty
     private String name;
+
+    @NotEmpty
     private String description;
+
+    @Range(min = 1, max = 10)
     private int capacity;
 
-
+    @NotNull
     private BookType bookType;
 
     //DAY

@@ -75,7 +75,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.DAY);
         roomRegister.setCheckIn(LocalTime.of(15, 0));
         roomRegister.setCheckOut(LocalTime.of(11, 0));
-        Room room = roomService.register(place1, roomRegister);
+        Room room = roomService.register(place1.getId(), roomRegister);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -96,7 +96,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1, roomRegister);
+        Room room = roomService.register(place1.getId(), roomRegister);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -118,7 +118,7 @@ class RoomServiceTest {
         roomRegister.setStartTime(LocalTime.of(10, 0)); //시작시간 10시
         roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
 
-        assertThatThrownBy(() -> roomService.register(place1, roomRegister)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
 
     }
 
@@ -134,7 +134,7 @@ class RoomServiceTest {
         roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
         roomRegister.setEndTime(LocalTime.of(9, 0)); //종료시간 9시
 
-        assertThatThrownBy(() -> roomService.register(place1, roomRegister)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
 
     }
 
@@ -150,7 +150,7 @@ class RoomServiceTest {
         roomRegister.setStartTime(LocalTime.of(9, 0)); //시작시간 9시
         roomRegister.setEndTime(LocalTime.of(9, 30)); //종료시간 9시 30분
 
-        assertThatThrownBy(() -> roomService.register(place1, roomRegister)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> roomService.register(place1.getId(), roomRegister)).isInstanceOf(IllegalStateException.class);
 
     }
 
@@ -165,7 +165,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1, roomRegister);
+        Room room = roomService.register(place1.getId(), roomRegister);
 
         RoomUpdate roomUpdate = new RoomUpdate();
         roomUpdate.setName("방2");
@@ -189,7 +189,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1, roomRegister);
+        Room room = roomService.register(place1.getId(), roomRegister);
 
         roomService.delete(room.getId());
 
