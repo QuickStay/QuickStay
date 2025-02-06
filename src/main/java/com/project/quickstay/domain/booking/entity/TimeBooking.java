@@ -23,4 +23,9 @@ public class TimeBooking extends Booking {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public void setTime(LocalTime startTime, LocalTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }

@@ -4,6 +4,7 @@ import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.room.dto.RoomRegister;
+import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.repository.UserRepository;
 import com.project.quickstay.service.PlaceService;
 import com.project.quickstay.service.RoomService;
@@ -19,7 +20,6 @@ import java.time.LocalTime;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/place")
 @Slf4j
 public class PlaceController {
 
@@ -27,14 +27,14 @@ public class PlaceController {
     private final RoomService roomService;
     private final UserRepository userRepository;
 
-    @GetMapping("/register")
-    public String registerForm(Model model) {
+    @GetMapping("/place/register")
+    public String placeRegisterForm(Model model) {
         model.addAttribute("placeRegister", new PlaceRegister());
         return "place/placeRegister";
     }
 
-    @PostMapping("/register")
-    public String register(@Valid PlaceRegister placeRegister, BindingResult bindingResult) {
+    @PostMapping("/place/register")
+    public String placeRegister(@Valid PlaceRegister placeRegister, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult = {}", bindingResult);
             return "place/placeRegister";
@@ -43,15 +43,15 @@ public class PlaceController {
         return "main";
     }
 
-    @GetMapping("/{placeId}/register")
+    @GetMapping("/place/{placeId}/register")
     public String roomRegisterForm(@PathVariable Long placeId, Model model) {
         model.addAttribute("roomRegister", new RoomRegister());
         model.addAttribute("placeId", placeId);
         return "place/room/roomRegister";
     }
 
-    @PostMapping("/{placeId}/register")
-    public String register(@PathVariable Long placeId, @Valid RoomRegister roomRegister, BindingResult bindingResult) {
+    @PostMapping("/place/{placeId}/register")
+    public String roomRegister(@PathVariable Long placeId, @Valid RoomRegister roomRegister, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult = {}", bindingResult);
             return "place/room/roomRegister";
@@ -73,5 +73,20 @@ public class PlaceController {
         roomService.register(placeId, roomRegister);
         return "main";
 
+    }
+
+    @GetMapping("/room/{roomId}/update")
+    public String roomUpdateForm(@PathVariable Long roomId, Model model) {
+        model.addAttribute("roomId", roomId);
+        RoomUpdate updateData = roomService.getUpdateData(roomId);
+        model.addAttribute("updateData", updateData);
+        return "place/room/roomUpdate";
+    }
+
+    @PostMapping("/room/{roomId}/update")
+    public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomUpdate update, BindingResult bindingResult) {
+        log.info("in = {}, out = {}, st = {}, end = {}, type = {}", update.getCheckIn(), update.getCheckOut(), update.getStartTime(), update.getEndTime(), update.getBookType());
+        roomService.update(roomId, update);
+        return "main";
     }
 }

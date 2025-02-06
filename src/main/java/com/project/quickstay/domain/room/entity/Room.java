@@ -25,7 +25,7 @@ public class Room {
     private Integer capacity;
 
     @Setter
-    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY)
     private Booking booking;
 
     public Room() {

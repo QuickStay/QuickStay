@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function toggleFields() {
+            let bookType = document.getElementById("bookType").value;
+            // 'DAY'이면 dayFields 보여주고, 'TIME'이면 timeFields 보여주기
+            document.getElementById("dayFields").style.display = bookType === "DAY" ? "block" : "none";
+            document.getElementById("timeFields").style.display = bookType === "TIME" ? "block" : "none";
+        }
+
+        function showTimeSelection(type) {
+            // 해당 시간 텍스트 숨기고, 셀렉트 박스 보여주기
+            document.getElementById(type + "Text").style.display = "none";
+            document.getElementById(type + "Select").style.display = "inline";
+            document.getElementById(type + "Button").style.display = "none";
+        }
+
+        function applySelectedTime(type) {
+            // 선택된 시간을 텍스트로 바꿔서 다시 보여주기
+            let selectElement = document.getElementById(type + "Select");
+            document.getElementById(type + "Text").innerText = selectElement.value;
+            document.getElementById(type + "Text").style.display = "inline";
+            selectElement.style.display = "none";
+            document.getElementById(type + "Button").style.display = "inline";
+        }
+
+        window.onload = toggleFields; // 페이지 로딩 시에 초기 상태 설정
+    </script>
+</head>
+<body>
+<form th:action="@{'/room/' + ${roomId} + '/update'}" method="post" th:object="${updateData}">
+    <label>이름:</label>
+    <input type="text" th:field="*{name}" />
+
+    <label>설명:</label>
+    <textarea th:field="*{description}"></textarea>
+
+    <label>수용 인원:</label>
+    <input type="number" th:field="*{capacity}" />
+
+    <label>예약 유형:</label>
+    <select id="bookType" name="bookType" th:field="*{bookType}" onchange="toggleFields()">
+        <option value="DAY">Day</option>
+        <option value="TIME">Time</option>
+    </select>
+
+    <!-- DAY 예약 유형에 맞는 시간 입력 필드 -->
+    <div id="dayFields" style="display: none;">
+        <label for="checkIn">Check-In Time:</label>
+        <input type="time" id="checkIn" name="checkIn" th:field="*{checkIn}" step="1800">
+        <br>
+
+        <label for="checkOut">Check-Out Time:</label>
+        <input type="time" id="checkOut" name="checkOut" th:field="*{checkOut}" step="1800">
+        <br>
+    </div>
+
+    <!-- TIME 예약 유형에 맞는 시간 입력 필드 -->
+    <div id="timeFields" style="display: none;">
+        <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" name="startTime" th:field="*{startTime}" step="1800">
+        <br>
+
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" name="endTime" th:field="*{endTime}" step="1800">
+        <br>
+    </div>
+
+    <div th:if="${#fields.hasErrors('endTime')}" style="color: red;">
+        <p th:errors="*{endTime}"></p>
+    </div>
+
+    <button type="submit">수정</button>
+</form>
+</body>
+</html>
