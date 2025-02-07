@@ -9,6 +9,8 @@ import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.repository.BookingRepository;
 import com.project.quickstay.repository.RoomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,11 @@ public class TimeBookingService implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
-    private final DayBookingService dayBookingService;
 
     @Override
     public Booking register(Room room, RoomRegister roomRegister) {
-        return new TimeBooking(room, roomRegister.getStartTime(), roomRegister.getEndTime());
+        TimeBooking timeBooking = new TimeBooking(room, roomRegister.getStartTime(), roomRegister.getEndTime());
+        return bookingRepository.save(timeBooking);
     }
 
     @Override
@@ -39,17 +41,18 @@ public class TimeBookingService implements BookingService {
         }
         Booking book = getBook.get();
         if (book instanceof DayBooking) {
-            bookingRepository.delete(book);
-
             Optional<Room> getRoom = roomRepository.findById(roomId);
             if (getRoom.isEmpty()) {
                 throw new IllegalStateException(); //FIXME
             }
+
+            bookingRepository.delete(book);
             Room room = getRoom.get();
 
             TimeBooking timeBooking = new TimeBooking(room, update.getStartTime(), update.getEndTime());
             room.setBooking(timeBooking);
             bookingRepository.save(timeBooking);
+
             return;
         }
 

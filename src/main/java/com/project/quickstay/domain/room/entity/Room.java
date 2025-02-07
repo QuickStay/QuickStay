@@ -26,7 +26,7 @@ public class Room {
 
     //Room 삭제 시 Booking 같이 삭제
     @Setter
-    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Booking booking;
 
     public Room() {

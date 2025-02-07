@@ -5,9 +5,12 @@ import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
+import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.repository.UserRepository;
 import com.project.quickstay.service.PlaceService;
 import com.project.quickstay.service.RoomService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,12 +63,7 @@ public class PlaceController {
         if (roomRegister.getBookType() == BookType.TIME) {
             LocalTime startTime = roomRegister.getStartTime();
             LocalTime endTime = roomRegister.getEndTime();
-            if (endTime.isBefore(startTime) || endTime.equals(startTime) || startTime.plusHours(1).isAfter(endTime)) {
-                /**
-                 * 1. endTime > startTime
-                 * 2. endTime = startTime
-                 * 3. startTime + 1hour > endTime //ex) startTime 7:00, endTime 7:30
-                 */
+            if (validTime(startTime, endTime)) {
                 bindingResult.rejectValue("endTime", "Error.time");
                 return "place/room/roomRegister";
             }
@@ -85,7 +83,12 @@ public class PlaceController {
 
     @PostMapping("/room/{roomId}/update")
     public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomUpdate update, BindingResult bindingResult) {
-        log.info("in = {}, out = {}, st = {}, end = {}, type = {}", update.getCheckIn(), update.getCheckOut(), update.getStartTime(), update.getEndTime(), update.getBookType());
+        if (update.getBookType() == BookType.TIME) {
+            if (validTime(update.getStartTime(), update.getEndTime())) {
+                bindingResult.rejectValue("endTime", "Error.time");
+                return "place/room/roomUpdate";
+            }
+        }
         roomService.update(roomId, update);
         return "main";
     }
@@ -94,5 +97,18 @@ public class PlaceController {
     public String roomDelete(@PathVariable Long roomId) {
         roomService.delete(roomId);
         return "main";
+    }
+
+    //return true when time is wrong
+    private boolean validTime(LocalTime startTime, LocalTime endTime) {
+        if (endTime.isBefore(startTime) || endTime.equals(startTime) || startTime.plusHours(1).isAfter(endTime)) {
+            /**
+             * 1. endTime > startTime
+             * 2. endTime = startTime
+             * 3. startTime + 1hour > endTime //ex) startTime 7:00, endTime 7:30
+             */
+            return true;
+        }
+        return false;
     }
 }

@@ -28,7 +28,8 @@ public class DayBookingService implements BookingService {
 
     @Override
     public Booking register(Room room, RoomRegister roomRegister) {
-        return new DayBooking(room, roomRegister.getCheckIn(), roomRegister.getCheckOut());
+        DayBooking dayBooking = new DayBooking(room, roomRegister.getCheckIn(), roomRegister.getCheckOut());
+        return bookingRepository.save(dayBooking);
     }
 
     @Override
@@ -39,17 +40,18 @@ public class DayBookingService implements BookingService {
         }
         Booking book = getBook.get();
         if (book instanceof TimeBooking) {
-            bookingRepository.delete(book);
-
             Optional<Room> getRoom = roomRepository.findById(roomId);
             if (getRoom.isEmpty()) {
                 throw new IllegalStateException(); //FIXME
             }
+
+            bookingRepository.delete(book);
             Room room = getRoom.get();
 
             DayBooking dayBooking = new DayBooking(room, update.getCheckIn(), update.getCheckOut());
             room.setBooking(dayBooking);
             bookingRepository.save(dayBooking);
+
             return;
         }
 

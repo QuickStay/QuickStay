@@ -187,6 +187,71 @@ class RoomServiceTest {
         assertThat(room.getName()).isEqualTo("방2");
         assertThat(room.getDescription()).isEqualTo("작은 방");
         assertThat(room.getCapacity()).isEqualTo(2);
+        TimeBooking booking = (TimeBooking) room.getBooking();
+        assertThat(booking.getStartTime()).isEqualTo(LocalTime.of(12, 0));
+        assertThat(booking.getEndTime()).isEqualTo(LocalTime.of(23, 30));
+    }
+
+    @Test
+    @DisplayName("등록한 방을 수정할 때 예약방식을 변경 가능하다 TIME -> DAY")
+    void test6_1() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.TIME);
+        roomRegister.setStartTime(LocalTime.of(12, 0));
+        roomRegister.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(place1.getId(), roomRegister);
+
+        RoomUpdate roomUpdate = new RoomUpdate();
+        roomUpdate.setName("방2");
+        roomUpdate.setDescription("작은 방");
+        roomUpdate.setCapacity(2);
+        roomUpdate.setBookType(BookType.DAY);
+        roomUpdate.setCheckIn(LocalTime.of(12, 0));
+        roomUpdate.setCheckOut(LocalTime.of(23, 30));
+        roomService.update(room.getId(), roomUpdate);
+
+        assertThat(room.getName()).isEqualTo("방2");
+        assertThat(room.getDescription()).isEqualTo("작은 방");
+        assertThat(room.getCapacity()).isEqualTo(2);
+
+        DayBooking booking = (DayBooking) room.getBooking();
+        assertThat(booking.getCheckIn()).isEqualTo(LocalTime.of(12, 0));
+        assertThat(booking.getCheckOut()).isEqualTo(LocalTime.of(23, 30));
+    }
+
+    @Test
+    @DisplayName("등록한 방을 수정할 때 예약방식을 변경 가능하다 DAY -> TIME")
+    void test6_2() {
+        RoomRegister roomRegister = new RoomRegister();
+        roomRegister.setName("방1");
+        roomRegister.setDescription("넓은 방");
+        roomRegister.setCapacity(4);
+
+        roomRegister.setBookType(BookType.DAY);
+        roomRegister.setCheckIn(LocalTime.of(12, 0));
+        roomRegister.setCheckOut(LocalTime.of(23, 0));
+        Room room = roomService.register(place1.getId(), roomRegister);
+
+        RoomUpdate roomUpdate = new RoomUpdate();
+        roomUpdate.setName("방2");
+        roomUpdate.setDescription("작은 방");
+        roomUpdate.setCapacity(2);
+        roomUpdate.setBookType(BookType.TIME);
+        roomUpdate.setStartTime(LocalTime.of(12, 0));
+        roomUpdate.setEndTime(LocalTime.of(23, 30));
+        roomService.update(room.getId(), roomUpdate);
+
+        assertThat(room.getName()).isEqualTo("방2");
+        assertThat(room.getDescription()).isEqualTo("작은 방");
+        assertThat(room.getCapacity()).isEqualTo(2);
+
+        TimeBooking booking = (TimeBooking) room.getBooking();
+        assertThat(booking.getStartTime()).isEqualTo(LocalTime.of(12, 0));
+        assertThat(booking.getEndTime()).isEqualTo(LocalTime.of(23, 30));
     }
 
     @Test
