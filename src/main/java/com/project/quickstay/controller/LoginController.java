@@ -32,7 +32,7 @@ public class LoginController {
 
     @GetMapping("/oauth/kakao")
     public void kakaoLogin(HttpServletResponse response) throws IOException {
-        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=http://localhost:8080/api/oauth/kakao";
+        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=http://localhost:8080/callback/kakao";
         response.sendRedirect(url);
     }
 
