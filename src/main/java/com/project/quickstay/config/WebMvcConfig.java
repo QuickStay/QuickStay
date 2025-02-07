@@ -14,7 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login/kakao", "/oauth/kakao", "/api/oauth/kakao");
+                .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login", "/oauth/kakao", "/api/oauth/kakao");
     }
 
     @Override

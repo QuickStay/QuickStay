@@ -13,7 +13,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String redirectURI = "/login/kakao";
+        String redirectURI = "/login";
         HttpSession session = request.getSession();
         Object obj = session.getAttribute(loginUser);
 

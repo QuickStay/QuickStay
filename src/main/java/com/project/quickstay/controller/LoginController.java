@@ -25,7 +25,7 @@ public class LoginController {
     @Value("${spring.kakao.client_id}")
     String clientId;
 
-    @GetMapping("/login/kakao")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }
@@ -58,6 +58,6 @@ public class LoginController {
             session.invalidate(); // session 속 모든 속성값 삭제
         }
 
-        return "redirect:/login/kakao";
+        return "redirect:/login";
     }
 }
