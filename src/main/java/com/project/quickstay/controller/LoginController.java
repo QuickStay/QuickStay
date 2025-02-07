@@ -36,7 +36,7 @@ public class LoginController {
         response.sendRedirect(url);
     }
 
-    @GetMapping("/api/oauth/kakao")
+    @GetMapping("/callback/kakao")
     public String kakaoLogin(@RequestParam String code, final HttpServletRequest request) throws IOException {
         User loginUser = loginService.kakaoService(code);
         HttpSession session = request.getSession();
