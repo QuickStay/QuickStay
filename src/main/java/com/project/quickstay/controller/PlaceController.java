@@ -89,4 +89,10 @@ public class PlaceController {
         roomService.update(roomId, update);
         return "main";
     }
+
+    @PostMapping("/room/{roomId}/delete")
+    public String roomDelete(@PathVariable Long roomId) {
+        roomService.delete(roomId);
+        return "main";
+    }
 }

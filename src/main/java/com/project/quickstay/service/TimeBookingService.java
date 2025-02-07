@@ -28,8 +28,7 @@ public class TimeBookingService implements BookingService {
 
     @Override
     public Booking register(Room room, RoomRegister roomRegister) {
-        TimeBooking timeBooking = new TimeBooking(room, roomRegister.getStartTime(), roomRegister.getEndTime());
-        return bookingRepository.save(timeBooking);
+        return new TimeBooking(room, roomRegister.getStartTime(), roomRegister.getEndTime());
     }
 
     @Override

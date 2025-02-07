@@ -28,8 +28,7 @@ public class DayBookingService implements BookingService {
 
     @Override
     public Booking register(Room room, RoomRegister roomRegister) {
-        DayBooking dayBooking = new DayBooking(room, roomRegister.getCheckIn(), roomRegister.getCheckOut());
-        return bookingRepository.save(dayBooking);
+        return new DayBooking(room, roomRegister.getCheckIn(), roomRegister.getCheckOut());
     }
 
     @Override

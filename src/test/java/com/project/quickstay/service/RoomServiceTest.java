@@ -2,6 +2,7 @@ package com.project.quickstay.service;
 
 import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Social;
+import com.project.quickstay.domain.booking.entity.Booking;
 import com.project.quickstay.domain.booking.entity.DayBooking;
 import com.project.quickstay.domain.booking.entity.TimeBooking;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
@@ -11,6 +12,7 @@ import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.repository.BookingRepository;
 import com.project.quickstay.repository.RoomRepository;
 import com.project.quickstay.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +44,9 @@ class RoomServiceTest {
 
     @Autowired
     RoomRepository roomRepository;
+
+    @Autowired
+    BookingRepository bookingRepository;
 
     User user1;
     Place place1;
@@ -185,7 +190,7 @@ class RoomServiceTest {
     }
 
     @Test
-    @DisplayName("등록한 방을 삭제할 수 있다")
+    @DisplayName("등록한 방을 삭제할 수 있다, 삭제 시 Booking 정보도 함께 삭제된다")
     void test7() {
         RoomRegister roomRegister = new RoomRegister();
         roomRegister.setName("방1");
@@ -200,6 +205,8 @@ class RoomServiceTest {
         roomService.delete(room.getId());
 
         Optional<Room> getRoom = roomRepository.findById(room.getId());
+        Optional<Booking> booking = bookingRepository.findById(room.getId());
         assertThat(getRoom).isEmpty();
+        assertThat(booking).isEmpty();
     }
 }
