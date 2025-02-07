@@ -1,5 +1,6 @@
-package com.project.quickstay.domain;
+package com.project.quickstay.common;
 
+import com.project.quickstay.domain.user.dto.SocialTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;

@@ -1,19 +1,15 @@
 package com.project.quickstay.service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.project.quickstay.common.Social;
-import com.project.quickstay.domain.KakaoProvider;
+import com.project.quickstay.common.KakaoProvider;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.repository.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
