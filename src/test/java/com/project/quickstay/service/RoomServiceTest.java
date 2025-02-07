@@ -174,6 +174,9 @@ class RoomServiceTest {
         roomUpdate.setName("방2");
         roomUpdate.setDescription("작은 방");
         roomUpdate.setCapacity(2);
+        roomUpdate.setBookType(BookType.TIME);
+        roomUpdate.setStartTime(LocalTime.of(12, 0));
+        roomUpdate.setEndTime(LocalTime.of(23, 30));
         roomService.update(room.getId(), roomUpdate);
 
         assertThat(room.getName()).isEqualTo("방2");
