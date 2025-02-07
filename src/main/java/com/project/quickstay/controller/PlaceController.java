@@ -1,6 +1,7 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.common.BookType;
+import com.project.quickstay.common.Login;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.room.dto.RoomRegister;
@@ -28,7 +29,6 @@ public class PlaceController {
 
     private final PlaceService placeService;
     private final RoomService roomService;
-    private final UserRepository userRepository;
 
     @GetMapping("/place/register")
     public String placeRegisterForm(Model model) {
@@ -37,12 +37,12 @@ public class PlaceController {
     }
 
     @PostMapping("/place/register")
-    public String placeRegister(@Valid PlaceRegister placeRegister, BindingResult bindingResult) {
+    public String placeRegister(@Valid PlaceRegister placeRegister, BindingResult bindingResult, @Login User user) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult = {}", bindingResult);
             return "place/placeRegister";
         }
-        placeService.register(userRepository.findBySocialAndEmail(Social.KAKAO, "thstkddnr20@naver.com").get(), placeRegister);
+        placeService.register(user, placeRegister);
         return "main";
     }
 
@@ -54,7 +54,7 @@ public class PlaceController {
     }
 
     @PostMapping("/place/{placeId}/register")
-    public String roomRegister(@PathVariable Long placeId, @Valid RoomRegister roomRegister, BindingResult bindingResult) {
+    public String roomRegister(@PathVariable Long placeId, @Valid RoomRegister roomRegister, BindingResult bindingResult, @Login User user) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult = {}", bindingResult);
             return "place/room/roomRegister";
@@ -68,7 +68,7 @@ public class PlaceController {
                 return "place/room/roomRegister";
             }
         }
-        roomService.register(placeId, roomRegister);
+        roomService.register(user, placeId, roomRegister);
         return "main";
 
     }
@@ -82,20 +82,20 @@ public class PlaceController {
     }
 
     @PostMapping("/room/{roomId}/update")
-    public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomUpdate update, BindingResult bindingResult) {
+    public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomUpdate update, BindingResult bindingResult, @Login User user) {
         if (update.getBookType() == BookType.TIME) {
             if (validTime(update.getStartTime(), update.getEndTime())) {
                 bindingResult.rejectValue("endTime", "Error.time");
                 return "place/room/roomUpdate";
             }
         }
-        roomService.update(roomId, update);
+        roomService.update(user, roomId, update);
         return "main";
     }
 
     @PostMapping("/room/{roomId}/delete")
-    public String roomDelete(@PathVariable Long roomId) {
-        roomService.delete(roomId);
+    public String roomDelete(@PathVariable Long roomId, @Login User user) {
+        roomService.delete(user, roomId);
         return "main";
     }
 

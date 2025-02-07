@@ -80,7 +80,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.DAY);
         roomRegister.setCheckIn(LocalTime.of(15, 0));
         roomRegister.setCheckOut(LocalTime.of(11, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -101,7 +101,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -173,7 +173,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
         RoomUpdate roomUpdate = new RoomUpdate();
         roomUpdate.setName("방2");
@@ -182,7 +182,7 @@ class RoomServiceTest {
         roomUpdate.setBookType(BookType.TIME);
         roomUpdate.setStartTime(LocalTime.of(12, 0));
         roomUpdate.setEndTime(LocalTime.of(23, 30));
-        roomService.update(room.getId(), roomUpdate);
+        roomService.update(user1, room.getId(), roomUpdate);
 
         assertThat(room.getName()).isEqualTo("방2");
         assertThat(room.getDescription()).isEqualTo("작은 방");
@@ -203,7 +203,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
         RoomUpdate roomUpdate = new RoomUpdate();
         roomUpdate.setName("방2");
@@ -212,7 +212,7 @@ class RoomServiceTest {
         roomUpdate.setBookType(BookType.DAY);
         roomUpdate.setCheckIn(LocalTime.of(12, 0));
         roomUpdate.setCheckOut(LocalTime.of(23, 30));
-        roomService.update(room.getId(), roomUpdate);
+        roomService.update(user1, room.getId(), roomUpdate);
 
         assertThat(room.getName()).isEqualTo("방2");
         assertThat(room.getDescription()).isEqualTo("작은 방");
@@ -234,7 +234,7 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.DAY);
         roomRegister.setCheckIn(LocalTime.of(12, 0));
         roomRegister.setCheckOut(LocalTime.of(23, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
         RoomUpdate roomUpdate = new RoomUpdate();
         roomUpdate.setName("방2");
@@ -243,7 +243,7 @@ class RoomServiceTest {
         roomUpdate.setBookType(BookType.TIME);
         roomUpdate.setStartTime(LocalTime.of(12, 0));
         roomUpdate.setEndTime(LocalTime.of(23, 30));
-        roomService.update(room.getId(), roomUpdate);
+        roomService.update(user1, room.getId(), roomUpdate);
 
         assertThat(room.getName()).isEqualTo("방2");
         assertThat(room.getDescription()).isEqualTo("작은 방");
@@ -265,9 +265,9 @@ class RoomServiceTest {
         roomRegister.setBookType(BookType.TIME);
         roomRegister.setStartTime(LocalTime.of(12, 0));
         roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(place1.getId(), roomRegister);
+        Room room = roomService.register(user1, place1.getId(), roomRegister);
 
-        roomService.delete(room.getId());
+        roomService.delete(user1, room.getId());
 
         Optional<Room> getRoom = roomRepository.findById(room.getId());
         Optional<Booking> booking = bookingRepository.findById(room.getId());

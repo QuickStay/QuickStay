@@ -8,6 +8,7 @@ import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
+import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,11 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final BookingServiceSelector selector;
 
-    public Room register(Long placeId, RoomRegister roomRegister) {
+    public Room register(User user, Long placeId, RoomRegister roomRegister) {
         Place place = getPlaceById(placeId);
+        if (!place.getUser().getId().equals(user.getId())) {
+            throw new IllegalStateException(); //FIXME
+        }
         Room room = Room.register(place, roomRegister);
         Booking booking = registerBook(room, roomRegister);
         room.setBooking(booking);
@@ -59,15 +63,17 @@ public class RoomService {
         return roomUpdate;
     }
 
-    public void update(Long id, RoomUpdate roomUpdate) { //룸 정보 변경
+    public void update(User user, Long id, RoomUpdate roomUpdate) { //룸 정보 변경
         Room room = getRoomById(id);
+        validUser(user, room);
         room.update(roomUpdate);
         BookingService service = selectBookingService(roomUpdate.getBookType());
         service.update(id, roomUpdate);
     }
 
-    public void delete(Long id) {
+    public void delete(User user, Long id) {
         Room room = getRoomById(id);
+        validUser(user, room);
         roomRepository.delete(room);
     }
 
@@ -94,5 +100,11 @@ public class RoomService {
             throw new IllegalStateException(); //FIXME
         }
         return place.get();
+    }
+
+    private void validUser(User user, Room room) {
+        if (!room.getPlace().getUser().getId().equals(user.getId())) {
+            throw new IllegalStateException(); //FIXME
+        }
     }
 }
