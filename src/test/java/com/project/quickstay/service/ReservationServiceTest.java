@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -92,28 +93,46 @@ class ReservationServiceTest {
         assertThat(reservation.getEndTime()).isNull();
     }
 
+//    @Test
+//    @DisplayName("roomId로 방에 대한 예약 목록을 가져올 수 있다")
+//    void test2() {
+//
+//        DayReservationRegister dayReservationRegister = new DayReservationRegister();
+//        dayReservationRegister.setStartDate(LocalDate.of(2025, 2, 10));
+//        dayReservationRegister.setEndDate(LocalDate.of(2025, 2, 13));
+//
+//        reservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
+//
+//        List<Reservation> allReservations = reservationService.getAllReservations(room.getId());
+//        assertThat(allReservations.size()).isEqualTo(1);
+//        Reservation reservation = allReservations.get(0);
+//        assertThat(reservation.getId()).isNotNull();
+//        assertThat(reservation.getRoom()).isEqualTo(room);
+//        assertThat(reservation.getUser()).isEqualTo(user1);
+//        assertThat(reservation.getStartDate()).isEqualTo(LocalDate.of(2025, 2, 10));
+//        assertThat(reservation.getEndDate()).isEqualTo(LocalDate.of(2025, 2, 13));
+//        assertThat(reservation.getState()).isEqualTo(State.RESERVED);
+//        assertThat(reservation.getStartTime()).isNull();
+//        assertThat(reservation.getEndTime()).isNull();
+//    }
 
     @Test
-    @DisplayName("roomId로 방에 대한 예약 목록을 가져올 수 있다")
-    void test2() {
-
+    @DisplayName("예약 불가능한 날짜를 가져올 수 있다")
+    void test3() {
         DayReservationRegister dayReservationRegister = new DayReservationRegister();
-        dayReservationRegister.setStartDate(LocalDate.of(2025, 2, 10));
-        dayReservationRegister.setEndDate(LocalDate.of(2025, 2, 13));
+        dayReservationRegister.setStartDate(LocalDate.of(2026, 2, 10));
+        dayReservationRegister.setEndDate(LocalDate.of(2026, 2, 13));
 
         reservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
 
-        List<Reservation> allReservations = reservationService.getAllReservations(room.getId());
-        assertThat(allReservations.size()).isEqualTo(1);
-        Reservation reservation = allReservations.get(0);
-        assertThat(reservation.getId()).isNotNull();
-        assertThat(reservation.getRoom()).isEqualTo(room);
-        assertThat(reservation.getUser()).isEqualTo(user1);
-        assertThat(reservation.getStartDate()).isEqualTo(LocalDate.of(2025, 2, 10));
-        assertThat(reservation.getEndDate()).isEqualTo(LocalDate.of(2025, 2, 13));
-        assertThat(reservation.getState()).isEqualTo(State.RESERVED);
-        assertThat(reservation.getStartTime()).isNull();
-        assertThat(reservation.getEndTime()).isNull();
+        List<LocalDate> reservedDate = reservationService.getReservedDate(room.getId());
+        assertThat(reservedDate.size()).isEqualTo(3);
+        Collections.sort(reservedDate);
+        int startDay = 10;
+        for (LocalDate localDate : reservedDate) {
+            assertThat(localDate).isEqualTo(LocalDate.of(2026, 2, startDay));
+            startDay++;
+        }
     }
 
 }

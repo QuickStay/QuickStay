@@ -7,11 +7,12 @@ import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.repository.ReservationRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @Transactional
@@ -23,10 +24,6 @@ public class ReservationService {
     // 2. 전처리
     private final ReservationRepository reservationRepository;
 
-    public List<Reservation> getAllReservations(Long roomId) {
-        return reservationRepository.findReservations(roomId);
-    }
-
     public Reservation registerDayReservation(User user, Long roomId, DayReservationRegister dayReservationRegister) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
@@ -34,5 +31,22 @@ public class ReservationService {
         }
         Reservation newReservation = Reservation.dayRegister(user, room.get(), dayReservationRegister);
         return reservationRepository.save(newReservation);
+    }
+
+    private List<Reservation> getReserved(Long roomId) {
+        return reservationRepository.findReserved(roomId, LocalDate.now());
+    }
+
+    public List<LocalDate> getReservedDate(Long roomId) {
+        List<Reservation> reservations = getReserved(roomId);
+        List<LocalDate> dates = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            LocalDate date = reservation.getStartDate();
+            while (!date.isEqual(reservation.getEndDate())) {
+                dates.add(date);
+                date = date.plusDays(1);
+            }
+        }
+        return dates;
     }
 }
