@@ -1,4 +1,4 @@
-package com.project.quickstay.domain.reservation.entity;
+    package com.project.quickstay.domain.reservation.entity;
 
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.user.entity.User;
@@ -18,7 +18,9 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    private LocalDate date;
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @Enumerated(value = EnumType.STRING)
     private State state;

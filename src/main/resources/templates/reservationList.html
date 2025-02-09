@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>장소 예약</title>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
+
+<h2>장소 예약</h2>
+
+<form action="/reserve" method="post">
+    <label for="dateRange">예약 날짜 선택:</label>
+    <input type="text" id="dateRange" placeholder="날짜 범위 선택">
+
+    <!-- 숨겨진 input 값 (서버 전송용) -->
+    <input type="hidden" id="startDate" name="startDate">
+    <input type="hidden" id="endDate" name="endDate">
+
+    <button type="submit">예약하기</button>
+</form>
+
+<script>
+    // 오늘 날짜 계산
+    let today = new Date();
+    let maxDate = new Date();
+    maxDate.setDate(today.getDate() + 60); // 오늘로부터 +60일
+
+    // 비활성화할 날짜 리스트 (YYYY-MM-DD 형식)
+    let disabledDates = ["2025-02-12", "2025-02-13"]; // 원하는 날짜 추가 가능
+    // disable: ["2025-02-12", ... ]
+
+    flatpickr("#dateRange", {
+        mode: "range", // 날짜 범위 선택 모드
+        enableTime: false,
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        maxDate: maxDate, // 최대 선택 날짜 설정
+        disable: disabledDates, // 비활성화 날짜 적용
+        onClose: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length === 2) {
+                let startDate = selectedDates[0];
+                let endDate = selectedDates[1];
+
+                // 선택된 범위에 비활성화 날짜가 포함되는지 확인
+                let invalid = disabledDates.some(disabled => {
+                    let disabledDate = new Date(disabled);
+                    return startDate <= disabledDate && disabledDate <= endDate;
+                });
+
+                if (invalid) {
+                    alert("선택한 범위에 예약할 수 없는 날짜(2월 12일)가 포함되어 있습니다.");
+                    instance.clear(); // 캘린더 선택 초기화
+                    document.getElementById("startDate").value = "";
+                    document.getElementById("endDate").value = "";
+                    return;
+                }
+
+                // 정상 선택 시 input 값 설정
+                document.getElementById("startDate").value = startDate.toISOString().split("T")[0];
+                document.getElementById("endDate").value = endDate.toISOString().split("T")[0];
+            }
+        }
+    });
+</script>
+
+
 
 </body>
 </html>
