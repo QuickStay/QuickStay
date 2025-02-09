@@ -1,16 +1,17 @@
 <!-- fragments/header.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:fragment="header">
     <meta charset="UTF-8">
     <title>Header</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
 </head>
 <body>
-<header th:fragment="copy">
+<header>
     <div class="header-container">
         <!-- 로고 -->
         <div class="logo">
-            <a th:href="@{/}">
+            <a th:href="@{/home}">
                 <img th:src="@{/images/logo.png}" alt="로고">
             </a>
         </div>
