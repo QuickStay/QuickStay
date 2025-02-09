@@ -117,7 +117,7 @@ class ReservationServiceTest {
 //    }
 
     @Test
-    @DisplayName("예약 불가능한 날짜를 가져올 수 있다")
+    @DisplayName("예약 불가능한 날짜 가져오기 - 1. 현재 날짜보다 넘는 예약 불가능한 날짜를 가져올 수 있다")
     void test3() {
         DayReservationRegister dayReservationRegister = new DayReservationRegister();
         dayReservationRegister.setStartDate(LocalDate.of(2026, 2, 10));
@@ -133,6 +133,26 @@ class ReservationServiceTest {
             assertThat(localDate).isEqualTo(LocalDate.of(2026, 2, startDay));
             startDay++;
         }
+    }
+
+    @Test
+    @DisplayName("예약 불가능한 날짜 가져오기 - 2. 현재 날짜보다 지난 예약 불가능한 날짜는 가져오지 않는다")
+    void test4() {
+        DayReservationRegister dayReservationRegister = new DayReservationRegister();
+        dayReservationRegister.setStartDate(LocalDate.of(2024, 2, 10));
+        dayReservationRegister.setEndDate(LocalDate.of(2024, 2, 13));
+
+        reservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
+
+        List<LocalDate> reservedDate = reservationService.getReservedDate(room.getId());
+
+        assertThat(reservedDate.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("예약 불가능한 날짜 가져오기 - 3. 현재 날짜보다 넘는 예약일지라도 예약 취소된 날짜는 가져오지 않는다")
+    void test5() {
+
     }
 
 }
