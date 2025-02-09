@@ -1,4 +1,4 @@
 package com.project.quickstay.service;
 
-public interface ReservationService {
+public class TimeReservationService {
 }
