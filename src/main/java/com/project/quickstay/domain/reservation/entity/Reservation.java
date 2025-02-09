@@ -43,6 +43,7 @@ public class Reservation {
         reservation.room = room;
         reservation.startDate = dayReservationRegister.getStartDate();
         reservation.endDate = dayReservationRegister.getEndDate();
+        reservation.state = State.RESERVED;
         return reservation;
     }
 }
