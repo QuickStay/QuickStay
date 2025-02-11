@@ -33,8 +33,11 @@ public class LoginController {
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
                 + "&redirect_uri=" + redirectUri;
 
+        log.info("url = {}", url);
+
         response.sendRedirect(url);
     }
+
 
     @GetMapping("/login")
     public String login() {
@@ -43,8 +46,10 @@ public class LoginController {
 
     @GetMapping("/callback/kakao")
     public String kakaoLogin(@RequestParam String code, final HttpServletRequest request) throws IOException {
+
         User loginUser = loginService.kakaoService(code);
         HttpSession session = request.getSession();
+
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
             session.setMaxInactiveInterval(60 * 60); // 3600초 : 1시간
