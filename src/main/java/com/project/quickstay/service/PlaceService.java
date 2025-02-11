@@ -24,6 +24,16 @@ public class PlaceService {
         return placeRepository.save(place);
     }
 
+    public PlaceRegister getUpdateData(Long placeId) {
+        Place place = getById(placeId);
+        PlaceRegister placeRegister = new PlaceRegister();
+        placeRegister.setName(place.getName());
+        placeRegister.setDescription(place.getDescription());
+        placeRegister.setAddress(place.getAddress());
+        placeRegister.setContact(place.getContact());
+        return placeRegister;
+    }
+
     public void update(User user, Long placeId, PlaceRegister placeRegister) { //장소정보 수정
         Place place = getById(placeId);
         validUser(place.getUser(), user);

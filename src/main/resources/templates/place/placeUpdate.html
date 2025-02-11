@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{'/place/' + ${placeId} + '/update'}" method="post" th:object="${updateData}">
+    <label>이름:</label>
+    <input type="text" th:field="*{name}" />
+    <br>
+    <span th:if="${#fields.hasErrors('name')}" th:each="err : ${#fields.errors('name')}" style="color: red; display: block;">[[${err}]]</span>
+
+    <label>설명:</label>
+    <textarea th:field="*{description}"></textarea>
+    <br>
+    <span th:if="${#fields.hasErrors('description')}" th:each="err : ${#fields.errors('description')}" style="color: red; display: block;">[[${err}]]</span>
+
+    <label>주소:</label>
+    <input type="text" th:field="*{address}" />
+    <br>
+    <span th:if="${#fields.hasErrors('address')}" th:each="err : ${#fields.errors('address')}" style="color: red; display: block;">[[${err}]]</span>
+
+    <label>연락처:</label>
+    <input type="text" th:field="*{contact}" />
+    <br>
+    <span th:if="${#fields.hasErrors('contact')}" th:each="err : ${#fields.errors('contact')}" style="color: red; display: block;">[[${err}]]</span>
+
+
+    <button type="submit">수정</button>
+</form>
+</body>
+</html>

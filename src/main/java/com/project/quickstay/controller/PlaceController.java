@@ -46,6 +46,23 @@ public class PlaceController {
         return "main";
     }
 
+    @GetMapping("/place/{placeId}/update")
+    public String placeUpdateForm(@PathVariable Long placeId, Model model) {
+        PlaceRegister updateData = placeService.getUpdateData(placeId);
+        model.addAttribute("updateData", updateData);
+        return "place/placeUpdate";
+    }
+
+    @PostMapping("/place/{placeId}/update")
+    public String placeUpdate(@PathVariable Long placeId, @Login User user, @ModelAttribute("updateData") PlaceRegister placeRegister, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "place/placeUpdate";
+        }
+
+        placeService.update(user, placeId, placeRegister);
+        return "main";
+    }
+
     @GetMapping("/place/{placeId}/register")
     public String roomRegisterForm(@PathVariable Long placeId, Model model) {
         model.addAttribute("roomRegister", new RoomRegister());
