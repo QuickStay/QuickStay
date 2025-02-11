@@ -1,7 +1,6 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.common.KakaoProvider;
-import com.project.quickstay.common.RefererType;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,28 +25,25 @@ public class LoginController {
     @Value("${spring.kakao.client_id}")
     String clientId;
 
+    @Value("${spring.kakao.redirect_uri}")
+    String redirectUri;
+
+    @GetMapping("/oauth/kakao")
+    public void kakaoLogin(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
+                + "&redirect_uri=" + redirectUri;
+
+        response.sendRedirect(url);
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @GetMapping("/oauth/kakao")
-    public void kakaoLogin(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
-                        + "&redirect_uri=http://localhost:8080/callback/kakao";
-
-        response.sendRedirect(url);
-    }
-
     @GetMapping("/callback/kakao")
     public String kakaoLogin(@RequestParam String code, final HttpServletRequest request) throws IOException {
-        String uri  = request.getHeader("Referer");
-        log.info("referer: {}", uri);
-        RefererType type = RefererType.PUBLISH;
-        if(uri.contains("localhost")) {
-            type = RefererType.LOCAL;
-        }
-        User loginUser = loginService.kakaoService(code, type);
+        User loginUser = loginService.kakaoService(code);
         HttpSession session = request.getSession();
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
