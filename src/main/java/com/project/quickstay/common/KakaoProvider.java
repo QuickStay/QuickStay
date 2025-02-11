@@ -18,7 +18,7 @@ public class KakaoProvider {
 
     private final String GET_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 
-    public String getAccessToken(String code) {
+    public String getAccessToken(String code, RefererType refererType) {
 
         //엑세스 토큰 폼타입으로 요청
         HttpHeaders headers = new HttpHeaders();
@@ -29,6 +29,12 @@ public class KakaoProvider {
         params.add("client_id", clientId);
         params.add("client_secret", clientSecret);
         params.add("code", code);
+        if (refererType == RefererType.PUBLISH) {
+            params.add("redirect_uri", "http://192.168.0.21:8080/callback/kakao");
+        }
+        else if (refererType == RefererType.LOCAL) {
+            params.add("redirect_uri", "http://localhost:8080/callback/kakao");
+        }
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
 

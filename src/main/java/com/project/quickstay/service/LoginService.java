@@ -2,6 +2,7 @@ package com.project.quickstay.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.project.quickstay.common.RefererType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.common.KakaoProvider;
 import com.project.quickstay.domain.user.dto.UserRegister;
@@ -24,9 +25,9 @@ public class LoginService {
     private final KakaoProvider kakaoProvider;
     private final UserRepository userRepository;
 
-    public User kakaoService(String code) {
+    public User kakaoService(String code, RefererType refererType) {
         // 토큰 받기
-        String accessToken = kakaoProvider.getAccessToken(code);
+        String accessToken = kakaoProvider.getAccessToken(code, refererType);
         // 사용자 정보 받기
         String userInfo = kakaoProvider.getKakaoInfo(accessToken);
         log.info("accessToken: {}, userInfo: {}", accessToken, userInfo);

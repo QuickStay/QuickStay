@@ -1,6 +1,7 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.common.KakaoProvider;
+import com.project.quickstay.common.RefererType;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,13 +33,6 @@ public class LoginController {
 
     @GetMapping("/oauth/kakao")
     public void kakaoLogin(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String uri  = request.getHeader("Referer"); // http://localhost:8080/login
-        log.info("referer: {}", uri);
-        if (!uri.contains("localhost")) {
-            response.sendRedirect("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
-                    + "&redirect_uri=http://192.168.0.21:8080/callback/kakao");
-        }
-
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
                         + "&redirect_uri=http://localhost:8080/callback/kakao";
 
@@ -47,12 +41,20 @@ public class LoginController {
 
     @GetMapping("/callback/kakao")
     public String kakaoLogin(@RequestParam String code, final HttpServletRequest request) throws IOException {
-        User loginUser = loginService.kakaoService(code);
+        String uri  = request.getHeader("Referer");
+        log.info("referer: {}", uri);
+        RefererType type = RefererType.PUBLISH;
+        if(uri.contains("localhost")) {
+            type = RefererType.LOCAL;
+        }
+        User loginUser = loginService.kakaoService(code, type);
         HttpSession session = request.getSession();
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
             session.setMaxInactiveInterval(60 * 60); // 3600초 : 1시간
         }
+
+
 
         // redirect 주소
         String redirectURL = "/home";
