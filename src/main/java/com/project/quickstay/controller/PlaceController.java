@@ -63,6 +63,15 @@ public class PlaceController {
         return "main";
     }
 
+    @PostMapping("/place/{placeId}/delete")
+    public String placeDelete(@PathVariable Long placeId, @Login User user) {
+        placeService.delete(user, placeId);
+        return "main";
+    }
+
+    /**
+     * Room
+     */
     @GetMapping("/place/{placeId}/register")
     public String roomRegisterForm(@PathVariable Long placeId, Model model) {
         model.addAttribute("roomRegister", new RoomRegister());
