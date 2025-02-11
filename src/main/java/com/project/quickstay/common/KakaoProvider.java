@@ -17,7 +17,6 @@ public class KakaoProvider {
     String clientSecret;
 
     private final String GET_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
-    private final String LOCAL_REDIRECT = "http://localhost:8080/api/oauth/kakao";
 
     public String getAccessToken(String code) {
 

@@ -31,8 +31,16 @@ public class LoginController {
     }
 
     @GetMapping("/oauth/kakao")
-    public void kakaoLogin(HttpServletResponse response) throws IOException {
-        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=http://localhost:8080/callback/kakao";
+    public void kakaoLogin(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String uri  = request.getHeader("Referer"); // http://localhost:8080/login
+        if (!uri.contains("localhost")) {
+            response.sendRedirect("https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
+                    + "&redirect_uri=http://192.168.0.21:8080/callback/kakao");
+        }
+
+        String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId
+                        + "&redirect_uri=http://localhost:8080/callback/kakao";
+
         response.sendRedirect(url);
     }
 
