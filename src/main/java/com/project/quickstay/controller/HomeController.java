@@ -15,4 +15,9 @@ public class HomeController {
                 , user.getId(), user.getNickname(), user.getEmail());
         return "main";
     }
+
+    @GetMapping("/myPage")
+    public String myPage(@Login User user) {
+        return "myPage/myPage";
+    }
 }

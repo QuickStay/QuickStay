@@ -63,7 +63,7 @@ public class LoginController {
         return "redirect:"+redirectURL;
     }
 
-    @GetMapping("/logout/kakao")
+    @GetMapping("/logout")
     public String logout(final HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {

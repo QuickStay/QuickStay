@@ -26,7 +26,17 @@
 
         <!-- 로그인/로그아웃 -->
         <div class="auth-links">
-            <a th:href="@{/login}">로그인</a>
+            <!-- 로그인 상태일 때 -->
+            <span th:if="${session.loginUser != null}">
+                <span th:text="${session.loginUser.nickname} + '님 안녕하세요'"></span>
+                <a th:href="@{/myPage}">마이페이지</a>
+                <a th:href="@{/logout}">로그아웃</a>
+            </span>
+
+            <!-- 로그인 상태가 아닐 때 -->
+            <span th:if="${session.loginUser == null}">
+                <a th:href="@{/login}">로그인</a>
+            </span>
         </div>
     </div>
 </header>
