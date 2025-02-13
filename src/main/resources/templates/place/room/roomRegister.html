@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link th:href="@{/css/roomRegister.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function toggleBookingFields() {
             var bookType = document.getElementById("bookType").value;
@@ -10,21 +13,61 @@
             if (bookType === "DAY") {
                 dayFields.style.display = "block";
                 timeFields.style.display = "none";
+                document.getElementById("startTime").removeAttribute("required");
+                document.getElementById("endTime").removeAttribute("required");
+                initializeFlatpickr('checkIn');
+                initializeFlatpickr('checkOut');
             } else if (bookType === "TIME") {
                 dayFields.style.display = "none";
                 timeFields.style.display = "block";
+                document.getElementById("startTime").setAttribute("required", "required");
+                document.getElementById("endTime").setAttribute("required", "required");
+                initializeFlatpickr('startTime');
+                initializeFlatpickr('endTime');
             } else {
                 dayFields.style.display = "none";
                 timeFields.style.display = "none";
+                document.getElementById("startTime").removeAttribute("required");
+                document.getElementById("endTime").removeAttribute("required");
+            }
+        }
+
+        function initializeFlatpickr(elementId) {
+            flatpickr("#" + elementId, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 30,  // 30분 단위로 설정
+            });
+        }
+
+        function validateForm(event) {
+            var bookType = document.getElementById("bookType").value;
+
+            if (bookType === "DAY") {
+                var checkIn = document.getElementById("checkIn").value;
+                var checkOut = document.getElementById("checkOut").value;
+                if (!checkIn || !checkOut) {
+                    alert("Check-In과 Check-Out 시간을 입력해야 합니다.");
+                    event.preventDefault();  // 제출 방지
+                }
+            } else if (bookType === "TIME") {
+                var startTime = document.getElementById("startTime").value;
+                var endTime = document.getElementById("endTime").value;
+                if (!startTime || !endTime) {
+                    alert("Start Time과 End Time을 입력해야 합니다.");
+                    event.preventDefault();  // 제출 방지
+                }
             }
         }
     </script>
 </head>
-<body onload="toggleBookingFields()">  <!-- 페이지 로드 시 bookType에 맞게 필드 표시 -->
+<body onload="toggleBookingFields()">
 
-<h2>Room Registration</h2>
+<h2>방 등록</h2>
 
-<form th:action="@{'/place/' + ${placeId} + '/register'}" method="post" th:object="${roomRegister}">
+<form th:action="@{'/place/' + ${placeId} + '/register'}" method="post" th:object="${roomRegister}" onsubmit="validateForm(event)">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" th:field="*{name}" required>
     <br>
@@ -51,23 +94,24 @@
 
     <div id="dayFields" style="display: none;">
         <label for="checkIn">Check-In Time:</label>
-        <input type="time" id="checkIn" name="checkIn" th:field="*{checkIn}" step="1800">
+        <input type="text" id="checkIn" name="checkIn" th:field="*{checkIn}" required>
         <br>
 
         <label for="checkOut">Check-Out Time:</label>
-        <input type="time" id="checkOut" name="checkOut" th:field="*{checkOut}" step="1800">
+        <input type="text" id="checkOut" name="checkOut" th:field="*{checkOut}" required>
         <br>
     </div>
 
     <div id="timeFields" style="display: none;">
         <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime" th:field="*{startTime}" step="1800">
+        <input type="text" id="startTime" name="startTime" th:field="*{startTime}">
         <br>
 
         <label for="endTime">End Time:</label>
-        <input type="time" id="endTime" name="endTime" th:field="*{endTime}" step="1800">
+        <input type="text" id="endTime" name="endTime" th:field="*{endTime}">
         <br>
     </div>
+
     <div th:if="${#fields.hasErrors('endTime')}" style="color: red;">
         <p th:errors="*{endTime}"></p>
     </div>
@@ -76,5 +120,4 @@
 </form>
 
 </body>
-
 </html>
