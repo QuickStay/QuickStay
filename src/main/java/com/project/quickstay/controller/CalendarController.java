@@ -41,6 +41,6 @@ public class CalendarController {
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
         List<LocalTime> reservedTimes = timeReservationService.getReservedTime(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
-        return "dayReservationList";
+        return "timeReservationList";
     }
 }
