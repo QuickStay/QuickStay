@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>장소 검색 결과</title>
+    <link th:href="@{/css/placeSearch.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:replace="~{fragment/header :: header}"></header>
+
+<div class="container">
+    <h1>장소 검색 결과</h1>
+
+    <!-- 📌 검색 결과 -->
+    <div class="place-list">
+        <div class="place-item" th:each="place : ${search.content}">
+            <h3><a th:href="@{/place/{id}/info(id=${place.id})}" th:text="${place.name}">장소 이름</a></h3>
+            <p><strong>소유자:</strong> <span th:text="${place.owner}"></span></p>
+            <p><strong>설명:</strong> <span th:text="${place.description}"></span></p>
+            <p><strong>주소:</strong> <span th:text="${place.address}"></span></p>
+        </div>
+    </div>
+
+    <!-- 📍 페이지네이션 -->
+    <div class="pagination">
+        <a th:if="${search.hasPrevious()}"
+           th:href="@{/place/search(page=${search.number}, keyword=${param.keyword})}">이전</a>
+
+        <span th:text="${search.number + 1} + ' / ' + ${search.totalPages}">페이지</span>
+
+        <a th:if="${search.hasNext()}"
+           th:href="@{/place/search(page=${search.number + 2}, keyword=${param.keyword})}">다음</a>
+    </div>
+</div>
+
+</body>
+</html>
+

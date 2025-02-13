@@ -4,6 +4,7 @@ import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
+import com.project.quickstay.domain.place.dto.PlaceSearch;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.user.entity.User;
@@ -12,6 +13,7 @@ import com.project.quickstay.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,6 +73,13 @@ public class PlaceController {
         PlaceInfo info = placeService.info(placeId);
         model.addAttribute("info", info);
         return "place/placeInfo";
+    }
+
+    @GetMapping("/place/search")
+    public String placeSearch(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam String keyword, Model model) {
+        Page<PlaceSearch> search = placeService.search(keyword, page);
+        model.addAttribute("search", search);
+        return "place/placeSearch";
     }
 
     /**

@@ -3,6 +3,7 @@ package com.project.quickstay.service;
 import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
+import com.project.quickstay.domain.place.dto.PlaceSearch;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.entity.Room;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
@@ -140,5 +142,53 @@ public class PlaceServiceTest {
         assertThatThrownBy(() -> placeService.delete(user1, place.getId())).isInstanceOf(IllegalStateException.class);
 
 
+    }
+
+    @Test
+    @DisplayName("장소 검색 - 1. 장소 이름 검색")
+    void test5() {
+        PlaceRegister placeRegister = new PlaceRegister();
+        placeRegister.setName("한옥");
+        placeRegister.setDescription("우아한 한옥입니다");
+        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setContact("01012345678");
+
+        Place place = placeService.register(user1, placeRegister);
+
+        Page<PlaceSearch> search = placeService.search("한", 1);
+        assertThat(search.getNumberOfElements()).isEqualTo(1);
+        assertThat(search.getContent().get(0).getName()).isEqualTo("한옥");
+    }
+
+    @Test
+    @DisplayName("장소 검색 - 2. 장소 설명 검색")
+    void test6() {
+        PlaceRegister placeRegister = new PlaceRegister();
+        placeRegister.setName("한옥");
+        placeRegister.setDescription("우아한 한옥입니다");
+        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setContact("01012345678");
+
+        Place place = placeService.register(user1, placeRegister);
+
+        Page<PlaceSearch> search = placeService.search("우아한", 1);
+        assertThat(search.getNumberOfElements()).isEqualTo(1);
+        assertThat(search.getContent().get(0).getName()).isEqualTo("한옥");
+    }
+
+    @Test
+    @DisplayName("장소 검색 - 2. 장소 주소 검색")
+    void test7() {
+        PlaceRegister placeRegister = new PlaceRegister();
+        placeRegister.setName("한옥");
+        placeRegister.setDescription("우아한 한옥입니다");
+        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setContact("01012345678");
+
+        Place place = placeService.register(user1, placeRegister);
+
+        Page<PlaceSearch> search = placeService.search("춘천", 1);
+        assertThat(search.getNumberOfElements()).isEqualTo(1);
+        assertThat(search.getContent().get(0).getName()).isEqualTo("한옥");
     }
 }
