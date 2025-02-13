@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Place Register</title>
+    <link th:href="@{/css/placeRegister.css}" rel="stylesheet">
 </head>
 <body>
-  <h2>장소 등록</h2>
   <form action="/place/register" method="post" th:object="${placeRegister}">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" th:field="*{name}">

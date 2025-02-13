@@ -1,0 +1,96 @@
+/* 전체 페이지 배경 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 100vh; /* 화면 높이를 100%로 설정 */
+}
+
+/* 폼 컨테이너 */
+form {
+    width: 100%;
+    max-width: 800px;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-sizing: border-box; /* 여백 포함 크기 설정 */
+    margin: 40px auto;
+}
+
+/* 라벨 스타일 */
+label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* 입력 필드 및 텍스트영역 스타일 */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fafafa;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* 포커스 시 테두리 색상 변경 */
+input[type="text"]:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 에러 메시지 스타일 */
+span {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: -12px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* 버튼 스타일 */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* 버튼 중앙 정렬 */
+    margin-top: 20px;
+}
+
+/* 버튼 호버 효과 */
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* 텍스트 영역 스타일 */
+textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* 폼 내 입력 필드와 버튼들 사이 여백 */
+br {
+    margin-bottom: 10px;
+}
