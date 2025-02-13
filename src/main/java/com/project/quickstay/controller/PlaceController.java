@@ -2,16 +2,13 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Login;
-import com.project.quickstay.common.Social;
+import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.user.entity.User;
-import com.project.quickstay.repository.UserRepository;
 import com.project.quickstay.service.PlaceService;
 import com.project.quickstay.service.RoomService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +64,13 @@ public class PlaceController {
     public String placeDelete(@PathVariable Long placeId, @Login User user) {
         placeService.delete(user, placeId);
         return "main";
+    }
+
+    @GetMapping("/place/{placeId}/info")
+    public String placeInfo(@PathVariable Long placeId, Model model) {
+        PlaceInfo info = placeService.info(placeId);
+        model.addAttribute("info", info);
+        return "place/placeInfo";
     }
 
     /**

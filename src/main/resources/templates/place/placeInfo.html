@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>장소 상세 정보</title>
+    <link th:href="@{/css/placeInfo.css}" rel="stylesheet">
+</head>
+<body>
+
+<header th:replace="~{fragment/header :: header}"></header>
+
+<div class="container">
+    <h1 th:text="${info.name}">장소 이름</h1>
+    <p><strong>소유자:</strong> <span th:text="${info.owner}"></span></p>
+    <p><strong>설명:</strong> <span th:text="${info.description}"></span></p>
+    <p><strong>주소:</strong> <span th:text="${info.address}"></span></p>
+    <p><strong>연락처:</strong> <span th:text="${info.contact}"></span></p>
+
+    <h2>방 목록 (총 <span th:text="${info.roomCount}"></span>개)</h2>
+
+    <div class="room-list">
+        <div class="room" th:each="room : ${info.rooms}">
+            <h3 th:text="${room.name}">방 이름</h3>
+            <p><strong>설명:</strong> <span th:text="${room.description}"></span></p>
+            <p><strong>수용 인원:</strong> <span th:text="${room.capacity}"></span>명</p>
+            <p><strong>예약 타입:</strong> <span th:text="${room.bookType}"></span></p>
+
+            <!-- 예약 타입에 따른 체크인/체크아웃 시간 표시 -->
+            <div th:if="${room.bookType == T(com.project.quickstay.common.BookType).DAY}">
+                <p><strong>체크인:</strong> <span th:text="${room.checkIn}"></span></p>
+                <p><strong>체크아웃:</strong> <span th:text="${room.checkOut}"></span></p>
+            </div>
+            <div th:if="${room.bookType == T(com.project.quickstay.common.BookType).TIME}">
+                <p><strong>이용 시간:</strong> <span th:text="${room.startTime}"></span> ~ <span th:text="${room.endTime}"></span></p>
+            </div>
+
+            <!-- 예약 버튼 -->
+            <form th:action="@{/calendar/day/{roomId}(roomId=${room.id})}" method="get" th:if="${room.bookType == T(com.project.quickstay.common.BookType).DAY}">
+                <button type="submit">예약하기</button>
+            </form>
+            <form th:action="@{/calendar/time/{roomId}(roomId=${room.id})}" method="get" th:if="${room.bookType == T(com.project.quickstay.common.BookType).TIME}">
+                <button type="submit">예약하기</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+/* placeDetail.css */
+
+/* 전체 페이지 레이아웃 */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* 제목 스타일 */
+h1 {
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+/* 기본 텍스트 스타일 */
+p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+/* 방 목록 스타일 */
+.room-list {
+    margin-top: 20px;
+}
+
+/* 개별 방 스타일 */
+.room {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 15px;
+}
+
+/* 방 제목 */
+.room h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 예약 버튼 */
+.room form {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.room button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.room button:hover {
+    background-color: #0056b3;
+}
+
+/* 체크인 & 체크아웃 정보 */
+.room p strong {
+    color: #222;
+    font-weight: bold;
+}

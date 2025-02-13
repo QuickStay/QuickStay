@@ -1,7 +1,10 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
+import com.project.quickstay.domain.room.dto.RoomInfo;
+import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +52,13 @@ public class PlaceService {
             throw new IllegalStateException(); //FIXME
         }
         placeRepository.delete(place);
+    }
+
+    public PlaceInfo info(Long placeId) { //장소 상세
+        Place place = getById(placeId);
+        List<Room> rooms = roomRepository.findRoomsByPlaceId(placeId);
+        List<RoomInfo> roomInfos = RoomInfo.roomList(rooms);
+        return new PlaceInfo(place, roomInfos);
     }
 
     private void validUser(User user1, User user2) {
