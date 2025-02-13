@@ -25,6 +25,7 @@
       background: #ddd;
       color: #777;
       cursor: not-allowed;
+      opacity: 0.5; /* 비활성화된 버튼을 옅게 표시 */
     }
   </style>
 </head>
@@ -32,12 +33,16 @@
 
 <h2>예약 시스템</h2>
 
-<form id="reservationForm">
+<form id="reservationForm" action="/reserve" method="post" onsubmit="return handleSubmit();">
   <label>날짜 선택:</label>
   <div id="datePickerContainer"></div>
 
   <label>시간 선택:</label>
   <div id="timeButtons" class="time-buttons"></div>
+
+  <input type="hidden" name="date" id="dateInput">
+  <input type="hidden" name="startTime" id="startTimeInput">
+  <input type="hidden" name="endTime" id="endTimeInput">
 
   <p><strong>선택한 시간:</strong> <span id="selectedTimeText">없음</span></p>
 
@@ -78,52 +83,63 @@
 
       if (disabledTimes.includes(time)) {
         btn.classList.add("disabled");
-        btn.disabled = true;
-      } else {
-        btn.onclick = function() {
-          selectTime(time);
-        };
+        btn.disabled = true; // 버튼을 비활성화
       }
+
+      btn.onclick = function() {
+        if (!btn.classList.contains("disabled")) {
+          selectTime(time);
+        }
+      };
 
       timeContainer.appendChild(btn);
     });
   }
 
   function selectTime(time) {
-    let buttons = Array.from(document.querySelectorAll("#timeButtons button:not(.disabled)"));
+    let buttons = Array.from(document.querySelectorAll("#timeButtons button"));
     let timeList = buttons.map(b => b.textContent);
     let timeIndex = timeList.indexOf(time);
 
     if (!selectedStartTime) {
-      // 첫 번째 선택 → startTime 설정
       selectedStartTime = time;
       selectedEndTime = null;
     } else if (!selectedEndTime) {
-      if (isTimeBlocked(selectedStartTime, time)) {
-        alert("불가능한 시간이 범위에 포함됩니다!");
-        return;
+      if (timeIndex < timeList.indexOf(selectedStartTime)) {
+        selectedEndTime = selectedStartTime; // 종료 시간을 시작 시간으로 설정
+        selectedStartTime = time; // 새로운 시작 시간 설정
+      } else {
+        selectedEndTime = time;
       }
-      selectedEndTime = time;
     } else {
       let startIndex = timeList.indexOf(selectedStartTime);
       let endIndex = timeList.indexOf(selectedEndTime);
 
       if (timeIndex < startIndex) {
-        // 선택한 시간이 startTime보다 이전이면 → 기존 startTime이 endTime이 되고 새 startTime 설정
-        selectedEndTime = selectedStartTime;
-        selectedStartTime = time;
+        if (!isTimeBlocked(time, selectedEndTime)) {
+          selectedEndTime = selectedStartTime;
+          selectedStartTime = time;
+        }
       } else if (timeIndex > endIndex) {
-        // 선택한 시간이 endTime 이후면 → 새로운 endTime 설정
-        selectedEndTime = time;
+        if (!isTimeBlocked(selectedStartTime, time)) {
+          selectedEndTime = time;
+        }
       } else {
-        // 중간을 클릭하면 다시 시작
         selectedStartTime = time;
         selectedEndTime = null;
       }
     }
 
+    // 비활성화된 시간을 포함하고 있는지 확인
+    if (isTimeBlocked(selectedStartTime, selectedEndTime)) {
+      alert("불가능한 시간이 포함되어 있습니다. 다른 시간을 선택하세요.");
+      selectedStartTime = null;
+      selectedEndTime = null;
+    }
+
     updateSelectedTimeRange();
     updateReserveButtonState();
+    updateHiddenInputs();
   }
 
   function isTimeBlocked(start, end) {
@@ -131,14 +147,14 @@
     let startIndex = buttons.findIndex(b => b.textContent === start);
     let endIndex = buttons.findIndex(b => b.textContent === end);
 
-    for (let i = startIndex + 1; i < endIndex; i++) {
+    for (let i = startIndex; i <= endIndex; i++) {
       if (buttons[i].classList.contains("disabled")) return true;
     }
     return false;
   }
 
   function updateSelectedTimeRange() {
-    let buttons = document.querySelectorAll("#timeButtons button:not(.disabled)");
+    let buttons = document.querySelectorAll("#timeButtons button");
     buttons.forEach(b => b.classList.remove("selected"));
 
     if (selectedStartTime && selectedEndTime) {
@@ -148,7 +164,6 @@
         if (selecting) b.classList.add("selected");
         if (b.textContent === selectedEndTime) selecting = false;
       });
-
       document.getElementById("selectedTimeText").textContent = `${selectedStartTime} ~ ${selectedEndTime}`;
     } else if (selectedStartTime) {
       document.getElementById("selectedTimeText").textContent = `${selectedStartTime} ~ ?`;
@@ -157,12 +172,18 @@
     }
   }
 
+  function updateHiddenInputs() {
+    document.getElementById("dateInput").value = selectedDate;
+    document.getElementById("startTimeInput").value = selectedStartTime;
+    document.getElementById("endTimeInput").value = selectedEndTime;
+  }
+
   flatpickr("#datePickerContainer", {
     inline: true,
     dateFormat: "Y-m-d",
     minDate: "today",
     maxDate: maxDate,
-    disable: disabledDates,
+    disable: disabledDates.map(date => new Date(date)),
     onChange: function(selectedDates) {
       if (selectedDates.length === 1) {
         selectedDate = selectedDates[0].toISOString().split("T")[0];
@@ -171,45 +192,22 @@
         renderTimeButtons();
         updateSelectedTimeRange();
         updateReserveButtonState();
+        document.getElementById("responseMessage").textContent = ""; // 응답 메시지 초기화
       }
     }
   });
 
-  document.getElementById("reservationForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // 기본 제출 동작 막기 (페이지 이동 X)
-
-    if (!selectedDate || !selectedStartTime || !selectedEndTime) {
-      alert("날짜와 시간을 모두 선택하세요!");
-      return;
+  function handleSubmit() {
+    // 예약하기 버튼 클릭 시에만 폼이 제출되도록 설정
+    if (!selectedStartTime || !selectedEndTime) {
+      alert("시작 시간과 종료 시간을 선택하세요.");
+      return false;
     }
-
-    let reservationData = {
-      date: selectedDate,
-      startTime: selectedStartTime,
-      endTime: selectedEndTime
-    };
-
-    fetch("/reserve", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(reservationData)
-    })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success) {
-                document.getElementById("responseMessage").textContent = "✅ 예약 완료!";
-              } else {
-                document.getElementById("responseMessage").textContent = "❌ 예약 실패: " + data.message;
-              }
-            })
-            .catch(error => {
-              console.error("Error:", error);
-              document.getElementById("responseMessage").textContent = "❌ 서버 오류 발생!";
-            });
-  });
-
+    else {
+      updateHiddenInputs(); // 숨겨진 입력 필드 업데이트
+      return true;
+    }
+  }
 </script>
 
 </body>
