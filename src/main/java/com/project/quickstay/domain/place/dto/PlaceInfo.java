@@ -11,6 +11,8 @@ import java.util.List;
 @Setter
 public class PlaceInfo {
 
+    private Long placeId;
+    private Long ownerId;
     private String owner;
     private String name;
     private String description;
@@ -21,6 +23,8 @@ public class PlaceInfo {
     private List<RoomInfo> rooms;
 
     public PlaceInfo(Place place, List<RoomInfo> rooms) {
+        placeId = place.getId();
+        ownerId = place.getUser().getId();
         owner = place.getUser().getNickname();
         name = place.getName();
         description = place.getDescription();
