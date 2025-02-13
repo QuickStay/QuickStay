@@ -2,6 +2,7 @@
 
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
+import com.project.quickstay.domain.reservation.dto.TimeReservationRegister;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -43,6 +44,18 @@ public class Reservation {
         reservation.room = room;
         reservation.startDate = dayReservationRegister.getStartDate();
         reservation.endDate = dayReservationRegister.getEndDate();
+        reservation.state = State.RESERVED;
+        return reservation;
+    }
+
+    public static Reservation timeRegister(User user, Room room, TimeReservationRegister timeReservationRegister) {
+        Reservation reservation = new Reservation();
+        reservation.user = user;
+        reservation.room = room;
+        reservation.startDate = timeReservationRegister.getDate();
+        reservation.endDate = timeReservationRegister.getDate();
+        reservation.startTime = timeReservationRegister.getStartTime();
+        reservation.endTime = timeReservationRegister.getEndTime();
         reservation.state = State.RESERVED;
         return reservation;
     }
