@@ -53,13 +53,13 @@ public class PlaceController {
     }
 
     @PostMapping("/place/{placeId}/update")
-    public String placeUpdate(@PathVariable Long placeId, @Login User user, @ModelAttribute("updateData") PlaceRegister placeRegister, BindingResult bindingResult) {
+    public String placeUpdate(@PathVariable Long placeId, @Login User user, @ModelAttribute("updateData") @Valid PlaceRegister placeRegister, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "place/placeUpdate";
         }
 
         placeService.update(user, placeId, placeRegister);
-        return "main";
+        return "redirect:/place/" + placeId + "/info";
     }
 
     @PostMapping("/place/{placeId}/delete")
