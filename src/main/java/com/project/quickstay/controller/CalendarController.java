@@ -24,14 +24,14 @@ public class CalendarController {
     public String getDisabledDates(@PathVariable Long roomId, Model model) {
         List<LocalDate> reservedDates = dayReservationService.getReservedDate(roomId);
         model.addAttribute("disabledDates", reservedDates);
-        return "/reservation/dayReservationList";
+        return "reservation/dayReservationList";
     }
 
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
         List<LocalTime> reservedTimes = timeReservationService.getReservedTime(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
-        return "/reservation/timeReservationList";
+        return "reservation/timeReservationList";
     }
 
 
