@@ -23,7 +23,7 @@ public class ReservationController {
         log.info("startDate={}, endDate={}", dayReservationRegister.getStartDate(), dayReservationRegister.getEndDate());
         model.addAttribute("dayReservationRegister", dayReservationRegister);
 
-        return "/reservation/reservationForm";
+        return "reservation/reservationForm";
     }
 
     @PostMapping("/reserve/day/{roomId}/confirm")
