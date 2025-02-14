@@ -8,6 +8,7 @@ import com.project.quickstay.service.DayReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,14 +20,18 @@ public class ReservationController {
     private final DayReservationService dayReservationService;
 
     @PostMapping("/reserve/day/{roomId}")
-    public String reserveDay(@PathVariable Long roomId, @Login User user, DayArticleForm dayArticleForm) {
-        log.info("startDate={}, endDate={}", dayArticleForm.getStartDate(), dayArticleForm.getEndDate());
-        // 예약 처리 시키고 뷰 보내기
-        DayReservationRegister dayReservationRegister = new DayReservationRegister();
-        dayReservationRegister.setStartDate(dayArticleForm.getStartDate());
-        dayReservationRegister.setEndDate(dayArticleForm.getEndDate());
-        dayReservationService.registerDayReservation(user, roomId, dayReservationRegister);
+    public String reserveDay(@PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
+        log.info("startDate={}, endDate={}", dayReservationRegister.getStartDate(), dayReservationRegister.getEndDate());
+        model.addAttribute("dayReservationRegister", dayReservationRegister);
+
         return "/reservation/reservationForm";
+    }
+
+    @PostMapping("/reserve/day/{roomId}/confirm")
+    public String reserveDay(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
+        dayReservationService.registerDayReservation(user, roomId, dayReservationRegister);
+
+        return "redirect:/home";
     }
 
 

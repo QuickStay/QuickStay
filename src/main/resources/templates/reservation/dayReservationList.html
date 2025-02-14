@@ -38,6 +38,8 @@
         maxDate: maxDate, // 최대 선택 날짜 설정
         disable: disabledDates, // 비활성화 날짜 적용
         onClose: function(selectedDates, dateStr, instance) {
+            console.log("선택된 날짜들:", selectedDates);  // 선택된 날짜들을 콘솔에 출력
+
             if (selectedDates.length === 2) {
                 let startDate = selectedDates[0];
                 let endDate = selectedDates[1];
@@ -57,8 +59,10 @@
                 }
 
                 // 정상 선택 시 input 값 설정
-                document.getElementById("startDate").value = startDate.toISOString().split("T")[0];
-                document.getElementById("endDate").value = endDate.toISOString().split("T")[0];
+                document.getElementById("startDate").value = startDate.toLocaleString('en-CA').split(",")[0];
+                console.log("startDate:", startDate.toLocaleString('en-CA').split("T")[0]);  // 선택된 날짜들을 콘솔에 출력
+                document.getElementById("endDate").value = endDate.toLocaleString('en-CA').split(",")[0];
+                console.log("endDate:", endDate.toLocaleString('en-CA').split("T")[0]);  // 선택된 날짜들을 콘솔에 출력
             }
         }
     });
