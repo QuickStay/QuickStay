@@ -20,16 +20,6 @@ public class CalendarController {
     private final DayReservationService dayReservationService;
     private final TimeReservationService timeReservationService;
 
-    @GetMapping("/calendar/day")
-    public String calendarDay() {
-        return "/reservation/dayReservationList";
-    }
-
-    @GetMapping("/calendar/time")
-    public String calendarTime() {
-        return "/reservation/timeReservationList";
-    }
-
     @GetMapping("/calendar/day/{roomId}")
     public String getDisabledDates(@PathVariable Long roomId, Model model) {
         List<LocalDate> reservedDates = dayReservationService.getReservedDate(roomId);
