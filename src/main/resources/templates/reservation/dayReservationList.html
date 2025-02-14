@@ -9,7 +9,7 @@
 
 <h2>장소 예약</h2>
 
-<form action="/reserve" method="post">
+<form th:action="@{/reserve/day/{roomId}(roomId=${roomId})}" method="post">
     <label for="dateRange">예약 날짜 선택:</label>
     <input type="text" id="dateRange" placeholder="날짜 범위 선택">
 
@@ -27,7 +27,7 @@
     maxDate.setDate(today.getDate() + 60); // 오늘로부터 +60일
 
     // 비활성화할 날짜 리스트 (YYYY-MM-DD 형식)
-    let disabledDates = ["2025-02-12", "2025-02-13"]; // 원하는 날짜 추가 가능
+    let disabledDates = /*[[${disabledDates}]]*/ [];
     // disable: ["2025-02-12", ... ]
 
     flatpickr("#dateRange", {

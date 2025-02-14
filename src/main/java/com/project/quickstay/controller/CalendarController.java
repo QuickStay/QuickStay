@@ -22,25 +22,27 @@ public class CalendarController {
 
     @GetMapping("/calendar/day")
     public String calendarDay() {
-        return "dayReservationList";
+        return "/reservation/dayReservationList";
     }
 
     @GetMapping("/calendar/time")
     public String calendarTime() {
-        return "timeReservationList";
+        return "/reservation/timeReservationList";
     }
 
     @GetMapping("/calendar/day/{roomId}")
     public String getDisabledDates(@PathVariable Long roomId, Model model) {
         List<LocalDate> reservedDates = dayReservationService.getReservedDate(roomId);
         model.addAttribute("disabledDates", reservedDates);
-        return "dayReservationList";
+        return "/reservation/dayReservationList";
     }
 
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
         List<LocalTime> reservedTimes = timeReservationService.getReservedTime(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
-        return "timeReservationList";
+        return "/reservation/timeReservationList";
     }
+
+
 }
