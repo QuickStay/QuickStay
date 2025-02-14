@@ -1,0 +1,106 @@
+/* 기본 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* 제목 스타일 */
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* 헤더 셀 스타일 */
+th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 데이터 셀 스타일 */
+td {
+    background-color: #fff;
+}
+
+/* 링크 스타일 */
+td a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+td a:hover {
+    color: #0056b3;
+}
+
+/* 삭제 버튼 스타일 */
+button {
+    background-color: #ff6347; /* 빨간색으로 강조 */
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e53d34;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 버튼 간 간격 */
+button + a {
+    margin-left: 10px;
+}
+
+/* 폼 스타일 */
+form {
+    display: inline-block;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

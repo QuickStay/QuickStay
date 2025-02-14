@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.domain.place.dto.MyPlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.dto.PlaceSearch;
@@ -63,6 +64,10 @@ public class PlaceService {
         List<Room> rooms = roomRepository.findRoomsByPlaceId(placeId);
         List<RoomInfo> roomInfos = RoomInfo.roomList(rooms);
         return new PlaceInfo(place, roomInfos);
+    }
+
+    public List<MyPlaceInfo> getMyPlace(User user) {
+        return placeRepository.getMyPlace(user.getId());
     }
 
     public Page<PlaceSearch> search(String keyword, int page) {

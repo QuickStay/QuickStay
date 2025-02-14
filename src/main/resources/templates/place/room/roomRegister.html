@@ -9,26 +9,36 @@
             var bookType = document.getElementById("bookType").value;
             var dayFields = document.getElementById("dayFields");
             var timeFields = document.getElementById("timeFields");
+            var checkIn = document.getElementById("checkIn");
+            var checkOut = document.getElementById("checkOut");
+            var startTime = document.getElementById("startTime");
+            var endTime = document.getElementById("endTime");
 
             if (bookType === "DAY") {
                 dayFields.style.display = "block";
                 timeFields.style.display = "none";
-                document.getElementById("startTime").removeAttribute("required");
-                document.getElementById("endTime").removeAttribute("required");
+                checkIn.setAttribute("required", "required");
+                checkOut.setAttribute("required", "required");
+                startTime.removeAttribute("required");
+                endTime.removeAttribute("required");
                 initializeFlatpickr('checkIn');
                 initializeFlatpickr('checkOut');
             } else if (bookType === "TIME") {
                 dayFields.style.display = "none";
                 timeFields.style.display = "block";
-                document.getElementById("startTime").setAttribute("required", "required");
-                document.getElementById("endTime").setAttribute("required", "required");
+                checkIn.removeAttribute("required");
+                checkOut.removeAttribute("required");
+                startTime.setAttribute("required", "required");
+                endTime.setAttribute("required", "required");
                 initializeFlatpickr('startTime');
                 initializeFlatpickr('endTime');
             } else {
                 dayFields.style.display = "none";
                 timeFields.style.display = "none";
-                document.getElementById("startTime").removeAttribute("required");
-                document.getElementById("endTime").removeAttribute("required");
+                checkIn.removeAttribute("required");
+                checkOut.removeAttribute("required");
+                startTime.removeAttribute("required");
+                endTime.removeAttribute("required");
             }
         }
 

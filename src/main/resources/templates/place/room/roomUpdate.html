@@ -3,46 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" th:href="@{/css/roomUpdate.css}">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function toggleFields() {
             let bookType = document.getElementById("bookType").value;
             // 'DAY'이면 dayFields 보여주고, 'TIME'이면 timeFields 보여주기
             document.getElementById("dayFields").style.display = bookType === "DAY" ? "block" : "none";
             document.getElementById("timeFields").style.display = bookType === "TIME" ? "block" : "none";
+
+            if (bookType === "DAY") {
+                initializeFlatpickr('checkIn');
+                initializeFlatpickr('checkOut');
+                document.getElementById("checkIn").setAttribute("required", "required");
+                document.getElementById("checkOut").setAttribute("required", "required");
+                document.getElementById("startTime").removeAttribute("required");
+                document.getElementById("endTime").removeAttribute("required");
+            } else if (bookType === "TIME") {
+                initializeFlatpickr('startTime');
+                initializeFlatpickr('endTime');
+                document.getElementById("startTime").setAttribute("required", "required");
+                document.getElementById("endTime").setAttribute("required", "required");
+                document.getElementById("checkIn").removeAttribute("required");
+                document.getElementById("checkOut").removeAttribute("required");
+            }
         }
 
-        function showTimeSelection(type) {
-            // 해당 시간 텍스트 숨기고, 셀렉트 박스 보여주기
-            document.getElementById(type + "Text").style.display = "none";
-            document.getElementById(type + "Select").style.display = "inline";
-            document.getElementById(type + "Button").style.display = "none";
+        function initializeFlatpickr(elementId) {
+            flatpickr("#" + elementId, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",  // 24시간 형식으로 시간만 선택
+                time_24hr: true,
+                minuteIncrement: 30,  // 30분 단위로 설정
+            });
         }
 
-        function applySelectedTime(type) {
-            // 선택된 시간을 텍스트로 바꿔서 다시 보여주기
-            let selectElement = document.getElementById(type + "Select");
-            document.getElementById(type + "Text").innerText = selectElement.value;
-            document.getElementById(type + "Text").style.display = "inline";
-            selectElement.style.display = "none";
-            document.getElementById(type + "Button").style.display = "inline";
+        function validateForm(event) {
+            var bookType = document.getElementById("bookType").value;
+
+            if (bookType === "DAY") {
+                var checkIn = document.getElementById("checkIn").value;
+                var checkOut = document.getElementById("checkOut").value;
+                if (!checkIn || !checkOut) {
+                    alert("Check-In과 Check-Out 시간을 입력해야 합니다.");
+                    event.preventDefault();  // 제출 방지
+                }
+            } else if (bookType === "TIME") {
+                var startTime = document.getElementById("startTime").value;
+                var endTime = document.getElementById("endTime").value;
+                if (!startTime || !endTime) {
+                    alert("Start Time과 End Time을 입력해야 합니다.");
+                    event.preventDefault();  // 제출 방지
+                }
+            }
         }
 
         window.onload = toggleFields; // 페이지 로딩 시에 초기 상태 설정
     </script>
 </head>
 <body>
-<form th:action="@{'/room/' + ${roomId} + '/update'}" method="post" th:object="${updateData}">
+<form th:action="@{'/room/' + ${roomId} + '/update'}" method="post" th:object="${updateData}" onsubmit="validateForm(event)">
     <label>이름:</label>
-    <input type="text" th:field="*{name}" />
+    <input type="text" th:field="*{name}" required />
 
     <label>설명:</label>
-    <textarea th:field="*{description}"></textarea>
+    <textarea th:field="*{description}" required></textarea>
 
     <label>수용 인원:</label>
-    <input type="number" th:field="*{capacity}" />
+    <input type="number" th:field="*{capacity}" required />
 
     <label>예약 유형:</label>
-    <select id="bookType" name="bookType" th:field="*{bookType}" onchange="toggleFields()">
+    <select id="bookType" name="bookType" th:field="*{bookType}" onchange="toggleFields()" required>
         <option value="DAY">Day</option>
         <option value="TIME">Time</option>
     </select>
@@ -50,22 +83,22 @@
     <!-- DAY 예약 유형에 맞는 시간 입력 필드 -->
     <div id="dayFields" style="display: none;">
         <label for="checkIn">Check-In Time:</label>
-        <input type="time" id="checkIn" name="checkIn" th:field="*{checkIn}" step="1800">
+        <input type="text" id="checkIn" name="checkIn" th:field="*{checkIn}" step="1800" />
         <br>
 
         <label for="checkOut">Check-Out Time:</label>
-        <input type="time" id="checkOut" name="checkOut" th:field="*{checkOut}" step="1800">
+        <input type="text" id="checkOut" name="checkOut" th:field="*{checkOut}" step="1800" />
         <br>
     </div>
 
     <!-- TIME 예약 유형에 맞는 시간 입력 필드 -->
     <div id="timeFields" style="display: none;">
         <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime" th:field="*{startTime}" step="1800">
+        <input type="text" id="startTime" name="startTime" th:field="*{startTime}" />
         <br>
 
         <label for="endTime">End Time:</label>
-        <input type="time" id="endTime" name="endTime" th:field="*{endTime}" step="1800">
+        <input type="text" id="endTime" name="endTime" th:field="*{endTime}" />
         <br>
     </div>
 

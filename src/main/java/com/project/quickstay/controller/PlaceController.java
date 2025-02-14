@@ -42,7 +42,7 @@ public class PlaceController {
             return "place/placeRegister";
         }
         placeService.register(user, placeRegister);
-        return "main";
+        return "redirect:/myPage";
     }
 
     @GetMapping("/place/{placeId}/update")
@@ -129,13 +129,13 @@ public class PlaceController {
             }
         }
         roomService.update(user, roomId, update);
-        return "main";
+        return "redirect:/myPage/place";
     }
 
     @PostMapping("/room/{roomId}/delete")
     public String roomDelete(@PathVariable Long roomId, @Login User user) {
         roomService.delete(user, roomId);
-        return "main";
+        return "redirect:/myPage/place";
     }
 
     //return true when time is wrong

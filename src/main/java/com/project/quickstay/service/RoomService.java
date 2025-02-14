@@ -5,6 +5,7 @@ import com.project.quickstay.domain.booking.entity.Booking;
 import com.project.quickstay.domain.booking.entity.DayBooking;
 import com.project.quickstay.domain.booking.entity.TimeBooking;
 import com.project.quickstay.domain.place.entity.Place;
+import com.project.quickstay.domain.room.dto.MyRoomInfo;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,6 +77,10 @@ public class RoomService {
         Room room = getRoomById(id);
         validUser(user, room);
         roomRepository.delete(room);
+    }
+
+    public List<MyRoomInfo> getMyRoom(Long placeId) {
+        return roomRepository.findMyRoomByPlaceId(placeId);
     }
 
     private Booking registerBook(Room room, RoomRegister roomRegister) {
