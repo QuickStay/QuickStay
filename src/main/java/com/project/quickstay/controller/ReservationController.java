@@ -18,7 +18,7 @@ public class ReservationController {
 
     private final DayReservationService dayReservationService;
 
-    @PostMapping("/reserve/day/{roomId}")
+    @PostMapping("/reservation/day/{roomId}")
     public String reserveDay(@PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
         log.info("startDate={}, endDate={}", dayReservationRegister.getStartDate(), dayReservationRegister.getEndDate());
         model.addAttribute("dayReservationRegister", dayReservationRegister);
@@ -26,7 +26,7 @@ public class ReservationController {
         return "reservation/reservationForm";
     }
 
-    @PostMapping("/reserve/day/{roomId}/confirm")
+    @PostMapping("/reservation/day/{roomId}/confirm")
     public String reserveDay(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
         dayReservationService.registerDayReservation(user, roomId, dayReservationRegister);
 

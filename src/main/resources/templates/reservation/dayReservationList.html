@@ -12,7 +12,7 @@
 <div class="reservation-container">
     <h2>장소 예약</h2>
 
-    <form th:action="@{/reserve/day/{roomId}(roomId=${roomId})}" method="post">
+    <form th:action="@{/reservation/day/{roomId}(roomId=${roomId})}" method="post">
         <div class="calendar-container">
             <!-- 달력 위치 -->
             <input type="text" id="dateRange" placeholder="날짜 범위 선택">

@@ -18,7 +18,7 @@
     <h3>예약하시겠습니까?</h3>
 
     <!-- Hidden form to pass startDate, endDate, and roomId -->
-    <form id="reservationForm" th:action="@{/reserve/day/{roomId}/confirm(roomId=${roomId})}" method="POST">
+    <form id="reservationForm" th:action="@{/reservation/day/{roomId}/confirm(roomId=${roomId})}" method="POST">
         <!-- Hidden input fields -->
         <input type="hidden" id="startDate" name="startDate" th:value="${dayReservationRegister.startDate}">
         <input type="hidden" id="endDate" name="endDate" th:value="${dayReservationRegister.endDate}">
