@@ -1,6 +1,7 @@
 package com.project.quickstay.service;
 
 import com.project.quickstay.common.BookType;
+import com.project.quickstay.exception.ServiceException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class BookingServiceSelector {
     public BookingService getService(BookType bookType) {
         BookingService service = maps.get(bookType);
         if (service == null) {
-            throw new IllegalStateException();
+            throw new ServiceException("처리할 수 있는 BookingService가 없습니다.");
         }
         return service;
     }

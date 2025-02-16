@@ -7,6 +7,7 @@ import com.project.quickstay.domain.booking.entity.TimeBooking;
 import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
+import com.project.quickstay.exception.ServiceException;
 import com.project.quickstay.repository.BookingRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +37,13 @@ public class DayBookingService implements BookingService {
     public void update(Long roomId, RoomUpdate update) {
         Optional<Booking> getBook = bookingRepository.findById(roomId);
         if (getBook.isEmpty()) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("예약 정보가 없습니다.");
         }
         Booking book = getBook.get();
         if (book instanceof TimeBooking) {
             Optional<Room> getRoom = roomRepository.findById(roomId);
             if (getRoom.isEmpty()) {
-                throw new IllegalStateException(); //FIXME
+                throw new ServiceException("방이 없습니다.");
             }
 
             bookingRepository.delete(book);
@@ -67,7 +68,7 @@ public class DayBookingService implements BookingService {
     private DayBooking getBooking(Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isEmpty()) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("예약 정보가 없습니다.");
         }
         return (DayBooking) booking.get();
     }

@@ -4,6 +4,7 @@ import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.exception.ServiceException;
 import com.project.quickstay.repository.ReservationRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class DayReservationService {
     public Reservation registerDayReservation(User user, Long roomId, DayReservationRegister dayReservationRegister) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
-            throw new IllegalStateException("Room not found");
+            throw new ServiceException("방이 없습니다.");
         }
         Reservation newReservation = Reservation.dayRegister(user, room.get(), dayReservationRegister);
         return reservationRepository.save(newReservation);

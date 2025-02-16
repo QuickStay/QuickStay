@@ -10,6 +10,7 @@ import com.project.quickstay.domain.room.dto.RoomRegister;
 import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.exception.ServiceException;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class RoomService {
     public Room register(User user, Long placeId, RoomRegister roomRegister) {
         Place place = getPlaceById(placeId);
         if (!place.getUser().getId().equals(user.getId())) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("유저 검증에 실패하였습니다.");
         }
         Room room = Room.register(place, roomRegister);
         Booking booking = registerBook(room, roomRegister);
@@ -60,7 +61,7 @@ public class RoomService {
             roomUpdate.setStartTime(timeBooking.getStartTime());
             roomUpdate.setEndTime(timeBooking.getEndTime());
         } else {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("예약 타입이 올바르지 않습니다.");
         }
         return roomUpdate;
     }
@@ -95,7 +96,7 @@ public class RoomService {
     private Room getRoomById(Long id) {
         Optional<Room> room = roomRepository.findById(id);
         if (room.isEmpty()) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("방이 없습니다.");
         }
         return room.get();
     }
@@ -103,14 +104,14 @@ public class RoomService {
     private Place getPlaceById(Long id) {
         Optional<Place> place = placeRepository.findById(id);
         if (place.isEmpty()) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("장소가 없습니다.");
         }
         return place.get();
     }
 
     private void validUser(User user, Room room) {
         if (!room.getPlace().getUser().getId().equals(user.getId())) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("유저 검증에 실패하였습니다.");
         }
     }
 }

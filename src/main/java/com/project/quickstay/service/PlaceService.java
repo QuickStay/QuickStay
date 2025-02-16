@@ -8,6 +8,7 @@ import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomInfo;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.exception.ServiceException;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class PlaceService {
         validUser(place.getUser(), user);
         int count = roomRepository.getRoomCountByPlaceId(placeId);
         if (count != 0) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("방을 먼저 삭제해야 합니다.");
         }
         placeRepository.delete(place);
     }
@@ -77,14 +78,14 @@ public class PlaceService {
 
     private void validUser(User user1, User user2) {
         if (!user1.equals(user2)) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("유저 검증에 실패하였습니다.");
         }
     }
 
     private Place getById(Long id) {
         Optional<Place> place = placeRepository.findById(id);
         if (place.isEmpty()) {
-            throw new IllegalStateException(); //FIXME
+            throw new ServiceException("장소가 없습니다.");
         }
         return place.get();
     }
