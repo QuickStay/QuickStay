@@ -1,6 +1,7 @@
 package com.project.quickstay.service;
 
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
+import com.project.quickstay.domain.reservation.dto.MyDayReservation;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
@@ -50,7 +51,19 @@ public class DayReservationService {
         return dates;
     }
 
-    public List<Reservation> getUserReservations(Long userId) {
-        return reservationRepository.findAllByUserId(userId);
+    public List<MyDayReservation> getUserReservations(Long userId) {
+        List<Reservation> allReservations = reservationRepository.findAllByUserId(userId);
+        List<MyDayReservation> myDayReservations = new ArrayList<>();
+
+        for (Reservation reservation : allReservations) {
+            MyDayReservation myReservation = new MyDayReservation();
+            myReservation.setRoom(reservation.getRoom());
+            myReservation.setStartDate(reservation.getStartDate());
+            myReservation.setEndDate(reservation.getEndDate());
+            myReservation.setState(reservation.getState());
+            myDayReservations.add(myReservation);
+        }
+
+        return myDayReservations;
     }
 }

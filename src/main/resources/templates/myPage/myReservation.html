@@ -62,15 +62,13 @@
          class="reservation-card"
          th:onclick="|window.location.href='/room/detail/${reservation.getRoom().getId()}'|">
 
-      <div class="reservation-title" th:text="${reservation.getRoom().getName()}"></div>
-      <div class="reservation-info">예약자: <span th:text="${reservation.getUser().getNickname()}"></span></div>
-      <div class="reservation-info">기간: <span th:text="${reservation.getStartDate() + ' ~ ' + reservation.getEndDate()}"></span></div>
-      <div class="reservation-info">입실 시간: <span th:text="${reservation.getStartTime() != null ? reservation.getStartTime() : '-'}"></span></div>
-      <div class="reservation-info">퇴실 시간: <span th:text="${reservation.getEndTime() != null ? reservation.getEndTime() : '-'}"></span></div>
-      <div class="reservation-info">위치: <span th:text="${reservation.getRoom().getPlace().getAddress()}"></span></div>
-      <div class="reservation-info">연락처: <span th:text="${reservation.getRoom().getPlace().getContact()}"></span></div>
+      <div class="reservation-title" th:text="${reservation.room.name}"></div>
+      <div class="reservation-info">기간: <span th:text="${reservation.startDate+ ' ~ ' + reservation.endDate}"></span></div>
+      <div class="reservation-info">위치: <span th:text="${reservation.room.place.address}"></span></div>
+      <div class="reservation-info">연락처: <span th:text="${reservation.room.place.contact}"></span></div>
+      <div class="reservation-info"><span th:text="${reservation.state.getState()}"></span></div>
 
-      <a th:href="@{/room/detail/{id}(id=${reservation.getRoom().getId()})}" class="detail-link">상세 보기</a>
+      <a th:href="@{/room/detail/{id}(id=${reservation.room.id})}" class="detail-link">상세 보기</a>
     </div>
   </div>
 </main>
