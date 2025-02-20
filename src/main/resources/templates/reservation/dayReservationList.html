@@ -34,7 +34,6 @@
 
     </form>
 </div>
-
 <script th:inline="javascript">
     let today = new Date();
     let maxDate = new Date();
@@ -56,6 +55,11 @@
                 let startDate = selectedDates[0];
                 let endDate = selectedDates[1];
 
+                // 만약 시작 날짜와 종료 날짜가 같다면, 종료 날짜를 하루 뒤로 변경
+                if (startDate.getTime() === endDate.getTime()) {
+                    endDate.setDate(endDate.getDate() + 1);
+                }
+
                 // 선택된 날짜를 숨겨진 input에 저장
                 document.getElementById("startDate").value = startDate.toLocaleString('en-CA').split(",")[0];
                 document.getElementById("endDate").value = endDate.toLocaleString('en-CA').split(",")[0];
@@ -67,6 +71,7 @@
         }
     });
 </script>
+
 
 </body>
 </html>
