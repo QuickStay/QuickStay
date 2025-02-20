@@ -13,4 +13,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT R FROM Reservation R WHERE R.room.id=:roomId AND R.startDate >:now AND R.state = com.project.quickstay.common.State.RESERVED")
     List<Reservation> findReserved(@Param("roomId") Long roomId, @Param("now") LocalDate localDate);
 
+    List<Reservation> findAllByUserId(Long userId);
 }

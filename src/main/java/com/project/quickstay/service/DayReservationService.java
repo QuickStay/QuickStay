@@ -49,4 +49,8 @@ public class DayReservationService {
         }
         return dates;
     }
+
+    public List<Reservation> getUserReservations(Long userId) {
+        return reservationRepository.findAllByUserId(userId);
+    }
 }

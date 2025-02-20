@@ -2,6 +2,7 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
+import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.DayReservationService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,8 +38,17 @@ public class ReservationController {
     }
 
     @GetMapping("/reservation/list")
-    public String reservationList() {
-
+    public String reservationList(@Login User user, Model model) {
+        // model - reservation list 보내기
+        List<Reservation> myReservations = dayReservationService.getUserReservations(user.getId());
+        log.info("myReservations={}", myReservations);
+        model.addAttribute("myReservations", myReservations);
         return "myPage/myReservation";
     }
+
+//    @GetMapping("/reservation/list/{roomId}")
+//    public String findReservations(User user) {
+//        // 방 정보 & 예약 날짜 or 시간 정보
+//        return "/myPage/myReservationInfo";
+//    }
 }
