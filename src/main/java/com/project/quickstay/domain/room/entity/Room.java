@@ -25,8 +25,9 @@ public class Room {
     private Integer capacity;
 
     //Room 삭제 시 Booking 같이 삭제
+    //optional을 false로 주어 Room 객체 조회 시 Booking을 가져오는 쿼리 방지
     @Setter
-    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
     private Booking booking;
 
     public Room() {
