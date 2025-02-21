@@ -62,7 +62,7 @@ public class PlaceService {
 
     public PlaceInfo info(Long placeId) { //장소 상세
         Place place = getById(placeId);
-        List<Room> rooms = roomRepository.findRoomsByPlaceId(placeId);
+        List<Room> rooms = roomRepository.findRoomsByPlaceId(placeId); //fetch join하여 프록시 객체말고 실제 객체로 들고오도록 설정
         List<RoomInfo> roomInfos = RoomInfo.roomList(rooms);
         return new PlaceInfo(place, roomInfos);
     }

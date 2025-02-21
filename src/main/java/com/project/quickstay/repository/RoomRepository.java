@@ -13,7 +13,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("select count(*) from Room r where r.place.id=:placeId")
     int getRoomCountByPlaceId(Long placeId);
 
-    @Query("select r from Room r where r.place.id=:placeId")
+    @Query("select r from Room r join fetch r.booking where r.place.id=:placeId")
     List<Room> findRoomsByPlaceId(Long placeId);
 
     @Query("select new com.project.quickstay.domain.room.dto.MyRoomInfo(r) from Room r where r.place.id=:placeId")
