@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 정보</title>
+    <link th:href="@{/css/myReservationInfo.css}" rel="stylesheet">
 </head>
 <body>
+<!-- 헤더 포함 -->
+<div th:replace="~{fragment/header :: header}"></div>
+
+<!-- 예약 정보 컨테이너 -->
+<div class="container">
+    <h2>예약 정보</h2>
+
+    <!-- 예약 정보 목록 -->
+    <div class="reservation-info">
+        <!-- 예약 날짜 -->
+        <div class="reservation-date">
+            <strong>날짜</strong>
+            <span th:text="${reservation.startDate}">시작 날짜</span> ~
+            <span th:text="${reservation.endDate}">끝 날짜</span>
+        </div>
+
+        <!-- 장소 -->
+        <div class="reservation-item">
+            <strong>장소</strong>
+            <span th:text="${reservation.room.place.name}">장소 이름</span>
+        </div>
+        <!-- 설명 -->
+        <div class="reservation-item">
+            <strong>설명</strong>
+            <span th:text="${reservation.room.place.description}">장소 설명</span>
+        </div>
+        <!-- 인원 -->
+        <div class="reservation-item">
+            <strong>인원</strong>
+            <span th:text="${reservation.room.capacity}">인원</span>
+        </div>
+        <!-- 예약 상태 -->
+        <div class="reservation-item">
+            <strong>상태</strong>
+            <span class="reservation-state" th:text="${reservation.state.getState()}">예약 상태</span>
+        </div>
+
+        <!-- 방 이름 -->
+        <div class="reservation-item">
+            <strong>방 이름</strong>
+            <span th:text="${reservation.room.name}">방 이름</span>
+        </div>
+
+        <!-- 방 설명 -->
+        <div class="reservation-item">
+            <strong>방 설명</strong>
+            <span th:text="${reservation.room.description}">방 설명</span>
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>

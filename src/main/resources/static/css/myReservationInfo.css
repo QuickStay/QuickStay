@@ -1,0 +1,99 @@
+/* 전체 컨테이너 스타일 */
+.container {
+    width: 80%;
+    margin: 40px auto;
+    font-family: 'Arial', sans-serif;
+    text-align: center; /* 전체 컨테이너 안의 내용 중앙 정렬 */
+}
+
+/* 제목 스타일 */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 예약 정보 목록 */
+.reservation-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* 예약 정보 항목 중앙 정렬 */
+}
+
+/* 각 항목 스타일 */
+.reservation-item {
+    display: flex;
+    justify-content: center;  /* 항목들을 가로로 중앙 정렬 */
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* 항목 제목 스타일 */
+.reservation-item strong {
+    width: 100px; /* 항목 제목을 더 여유 있게 */
+    font-weight: bold;
+    color: #007bff;
+    text-align: center; /* 항목 제목도 가운데 정렬 */
+}
+
+/* 항목 내용 스타일 */
+.reservation-item span {
+    margin-left: 10px;
+    flex: 1;
+    text-align: center; /* 항목 내용도 가운데 정렬 */
+}
+
+/* 날짜 스타일 */
+.reservation-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* 날짜 간격 */
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 날짜 span 스타일 */
+.reservation-date span {
+    padding: 0 5px;
+    background-color: #f0f8ff;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* 구분자 스타일 */
+.reservation-date .date-separator {
+    font-weight: bold;
+    color: #007bff;  /* 구분자에 색상 추가 */
+}
+
+/* 예약 상태 강조 */
+.reservation-state {
+    font-weight: bold;
+    color: #28a745; /* 상태에 맞는 색상 (예: 예약 완료) */
+}
+
+/* 예약 상태가 '취소'라면 색상 변경 */
+.reservation-state[data-state="canceled"] {
+    color: #dc3545; /* 취소 상태 색상 */
+}
+
+/* 작은 화면에서 스타일 조정 */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .reservation-info {
+        padding: 15px;
+    }
+
+    .reservation-item {
+        font-size: 14px;
+    }
+}

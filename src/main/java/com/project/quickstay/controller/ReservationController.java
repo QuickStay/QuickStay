@@ -46,9 +46,12 @@ public class ReservationController {
         return "myPage/myReservation";
     }
 
-//    @GetMapping("/reservation/list/{roomId}")
-//    public String findReservations(User user) {
-//        // 방 정보 & 예약 날짜 or 시간 정보
-//        return "/myPage/myReservationInfo";
-//    }
+    @GetMapping("/reservation/list/{reservationId}")
+    public String findReservations(User user, @PathVariable Long reservationId, Model model) {
+
+        MyDayReservation reservation = new MyDayReservation();
+        reservation = dayReservationService.getSpecificReservation(reservationId);
+        model.addAttribute("reservation", reservation);
+        return "/myPage/myReservationInfo";
+    }
 }

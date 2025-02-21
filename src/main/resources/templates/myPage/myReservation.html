@@ -68,7 +68,7 @@
       <div class="reservation-info">연락처: <span th:text="${reservation.room.place.contact}"></span></div>
       <div class="reservation-info"><span th:text="${reservation.state.getState()}"></span></div>
 
-      <a th:href="@{/room/detail/{id}(id=${reservation.room.id})}" class="detail-link">상세 보기</a>
+      <a th:href="@{/reservation/list/{reservationId}(reservationId=${reservation.id})}" class="detail-link">상세 보기</a>
     </div>
   </div>
 </main>

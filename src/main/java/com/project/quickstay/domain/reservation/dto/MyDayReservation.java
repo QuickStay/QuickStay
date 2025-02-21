@@ -15,6 +15,7 @@ public class MyDayReservation {
     // 장소 위치
     // 연락처
     // 상태
+    private Long id;
     private Room room;
     private LocalDate startDate;
     private LocalDate endDate;

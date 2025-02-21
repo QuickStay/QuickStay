@@ -57,6 +57,7 @@ public class DayReservationService {
 
         for (Reservation reservation : allReservations) {
             MyDayReservation myReservation = new MyDayReservation();
+            myReservation.setId(reservation.getId());
             myReservation.setRoom(reservation.getRoom());
             myReservation.setStartDate(reservation.getStartDate());
             myReservation.setEndDate(reservation.getEndDate());
@@ -65,5 +66,16 @@ public class DayReservationService {
         }
 
         return myDayReservations;
+    }
+
+    public MyDayReservation getSpecificReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        MyDayReservation myReservation = new MyDayReservation();
+        myReservation.setId(reservationId);
+        myReservation.setRoom(reservation.get().getRoom());
+        myReservation.setStartDate(reservation.get().getStartDate());
+        myReservation.setEndDate(reservation.get().getEndDate());
+        myReservation.setState(reservation.get().getState());
+        return myReservation;
     }
 }
