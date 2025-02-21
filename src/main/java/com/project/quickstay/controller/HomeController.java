@@ -24,9 +24,7 @@ public class HomeController {
     private final RoomService roomService;
 
     @GetMapping("/home")
-    public String home(@Login User user) {
-        log.info("user id = {}, nickname = {}, email = {}"
-                , user.getId(), user.getNickname(), user.getEmail());
+    public String home() {
         return "main";
     }
 

@@ -70,6 +70,6 @@ public class LoginController {
             session.invalidate(); // session 속 모든 속성값 삭제
         }
 
-        return "redirect:/login";
+        return "redirect:/home";
     }
 }
