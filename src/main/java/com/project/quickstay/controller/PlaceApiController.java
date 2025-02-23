@@ -20,7 +20,6 @@ public class PlaceApiController {
     @GetMapping("/api/place/search")
     public ResponseEntity<Page<PlaceSearch>> placeSearch(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam String keyword) {
         Page<PlaceSearch> search = placeService.search(keyword, page);
-        log.info("로그");
         return ResponseEntity.ok(search);
     }
 }
