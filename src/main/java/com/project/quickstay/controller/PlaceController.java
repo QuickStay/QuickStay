@@ -5,8 +5,7 @@ import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.dto.PlaceSearch;
-import com.project.quickstay.domain.room.dto.RoomRegister;
-import com.project.quickstay.domain.room.dto.RoomUpdate;
+import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.PlaceService;
 import com.project.quickstay.service.RoomService;
@@ -87,27 +86,27 @@ public class PlaceController {
      */
     @GetMapping("/place/{placeId}/register")
     public String roomRegisterForm(@PathVariable Long placeId, Model model) {
-        model.addAttribute("roomRegister", new RoomRegister());
+        model.addAttribute("roomData", new RoomData());
         model.addAttribute("placeId", placeId);
         return "place/room/roomRegister";
     }
 
     @PostMapping("/place/{placeId}/register")
-    public String roomRegister(@PathVariable Long placeId, @Valid RoomRegister roomRegister, BindingResult bindingResult, @Login User user) {
+    public String roomRegister(@PathVariable Long placeId, @Valid RoomData roomData, BindingResult bindingResult, @Login User user) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult = {}", bindingResult);
             return "place/room/roomRegister";
         }
 
-        if (roomRegister.getBookType() == BookType.TIME) {
-            LocalTime startTime = roomRegister.getStartTime();
-            LocalTime endTime = roomRegister.getEndTime();
+        if (roomData.getBookType() == BookType.TIME) {
+            LocalTime startTime = roomData.getStartTime();
+            LocalTime endTime = roomData.getEndTime();
             if (validTime(startTime, endTime)) {
                 bindingResult.rejectValue("endTime", "Error.time");
                 return "place/room/roomRegister";
             }
         }
-        roomService.register(user, placeId, roomRegister);
+        roomService.register(user, placeId, roomData);
         return "main";
 
     }
@@ -115,13 +114,13 @@ public class PlaceController {
     @GetMapping("/room/{roomId}/update")
     public String roomUpdateForm(@PathVariable Long roomId, Model model) {
         model.addAttribute("roomId", roomId);
-        RoomUpdate updateData = roomService.getUpdateData(roomId);
+        RoomData updateData = roomService.getUpdateData(roomId);
         model.addAttribute("updateData", updateData);
         return "place/room/roomUpdate";
     }
 
     @PostMapping("/room/{roomId}/update")
-    public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomUpdate update, BindingResult bindingResult, @Login User user) {
+    public String roomUpdate(@PathVariable Long roomId, @ModelAttribute("updateData") RoomData update, BindingResult bindingResult, @Login User user) {
         if (update.getBookType() == BookType.TIME) {
             if (validTime(update.getStartTime(), update.getEndTime())) {
                 bindingResult.rejectValue("endTime", "Error.time");

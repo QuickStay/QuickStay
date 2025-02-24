@@ -77,7 +77,7 @@
 
 <h2>방 등록</h2>
 
-<form th:action="@{'/place/' + ${placeId} + '/register'}" method="post" th:object="${roomRegister}" onsubmit="validateForm(event)">
+<form th:action="@{'/place/' + ${placeId} + '/register'}" method="post" th:object="${roomData}" onsubmit="validateForm(event)">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" th:field="*{name}" required>
     <br>
@@ -96,8 +96,8 @@
     <label for="bookType">Book Type:</label>
     <select id="bookType" name="bookType" th:field="*{bookType}" required onchange="toggleBookingFields()">
         <option value="">Select Booking Type</option>
-        <option value="DAY" th:selected="${roomRegister.bookType == 'DAY'}">Date Booking</option>
-        <option value="TIME" th:selected="${roomRegister.bookType == 'TIME'}">Time Booking</option>
+        <option value="DAY" th:selected="${roomData.bookType == 'DAY'}">Date Booking</option>
+        <option value="TIME" th:selected="${roomData.bookType == 'TIME'}">Time Booking</option>
     </select>
     <br>
     <span th:if="${#fields.hasErrors('bookType')}" th:each="err : ${#fields.errors('bookType')}" style="color: red; display: block;">[[${err}]]</span>

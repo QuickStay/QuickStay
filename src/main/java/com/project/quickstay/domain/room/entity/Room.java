@@ -1,16 +1,14 @@
 package com.project.quickstay.domain.room.entity;
 
-import com.project.quickstay.domain.booking.entity.Booking;
 import com.project.quickstay.domain.place.entity.Place;
-import com.project.quickstay.domain.room.dto.RoomRegister;
-import com.project.quickstay.domain.room.dto.RoomUpdate;
+import com.project.quickstay.domain.room.dto.RoomData;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,29 +22,42 @@ public class Room {
 
     private Integer capacity;
 
-    //Room 삭제 시 Booking 같이 삭제
-    //optional을 false로 주어 Room 객체 조회 시 Booking을 가져오는 쿼리 방지
-    @Setter
-    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Booking booking;
 
     public Room() {
 
     }
 
-    public static Room register(Place place, RoomRegister roomRegister) {
+    public static Room register(Place place, RoomData roomData) {
         Room room = new Room();
         room.place = place;
-        room.name = roomRegister.getName();
-        room.description = roomRegister.getDescription();
-        room.capacity = roomRegister.getCapacity();
+        room.name = roomData.getName();
+        room.description = roomData.getDescription();
+        room.capacity = roomData.getCapacity();
+        room.booking = Booking.register(roomData);
         return room;
     }
 
-    public void update(RoomUpdate roomUpdate) {
-        this.name = roomUpdate.getName();
-        this.description = roomUpdate.getDescription();
-        this.capacity = roomUpdate.getCapacity();
+
+    public void updateRoom(RoomData roomData) {
+        this.name = roomData.getName();
+        this.description = roomData.getDescription();
+        this.capacity = roomData.getCapacity();
+        if (roomData.getBookType() == booking.getBookType()) {
+            booking.updateBooking(roomData);
+        }
+        else {
+            this.booking = Booking.register(roomData);
+        }
+    }
+
+    public RoomData getUpdateData() {
+        RoomData roomData = new RoomData();
+        roomData.setName(name);
+        roomData.setDescription(description);
+        roomData.setCapacity(capacity);
+        return booking.getUpdateData(roomData);
     }
 
 }

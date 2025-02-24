@@ -7,7 +7,7 @@ import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
-import com.project.quickstay.domain.room.dto.RoomRegister;
+import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
@@ -62,15 +62,15 @@ class DayReservationServiceTest {
 
         place1 = placeService.register(user1, placeRegister);
 
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.DAY);
-        roomRegister.setCheckIn(LocalTime.of(15, 0));
-        roomRegister.setCheckOut(LocalTime.of(11, 0));
-        room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.DAY);
+        roomData.setCheckIn(LocalTime.of(15, 0));
+        roomData.setCheckOut(LocalTime.of(11, 0));
+        room = roomService.register(user1, place1.getId(), roomData);
     }
 
     @Test

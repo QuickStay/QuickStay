@@ -1,13 +1,8 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.common.BookType;
-import com.project.quickstay.domain.booking.entity.Booking;
-import com.project.quickstay.domain.booking.entity.DayBooking;
-import com.project.quickstay.domain.booking.entity.TimeBooking;
+import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.MyRoomInfo;
-import com.project.quickstay.domain.room.dto.RoomRegister;
-import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.exception.ServiceException;
@@ -27,51 +22,25 @@ public class RoomService {
 
     private final PlaceRepository placeRepository;
     private final RoomRepository roomRepository;
-    private final BookingServiceSelector selector;
 
-    public Room register(User user, Long placeId, RoomRegister roomRegister) {
+    public Room register(User user, Long placeId, RoomData roomData) {
         Place place = getPlaceById(placeId);
         if (!place.getUser().getId().equals(user.getId())) {
             throw new ServiceException("유저 검증에 실패하였습니다.");
         }
-        Room room = Room.register(place, roomRegister);
-        Booking booking = registerBook(room, roomRegister);
-        room.setBooking(booking);
+        Room room = Room.register(place, roomData);
         return roomRepository.save(room);
     }
 
-    public RoomUpdate getUpdateData(Long roomId) {
+    public RoomData getUpdateData(Long roomId) {
         Room room = getRoomById(roomId);
-        BookType bookType = room.getBooking().getBookType();
-
-        Booking booking = room.getBooking();
-        RoomUpdate roomUpdate = new RoomUpdate();
-        roomUpdate.setName(room.getName());
-        roomUpdate.setDescription(room.getDescription());
-        roomUpdate.setCapacity(room.getCapacity());
-
-        if (bookType == BookType.DAY) {
-            DayBooking dayBooking = (DayBooking) booking;
-            roomUpdate.setBookType(BookType.DAY);
-            roomUpdate.setCheckIn(dayBooking.getCheckIn());
-            roomUpdate.setCheckOut(dayBooking.getCheckOut());
-        } else if (bookType == BookType.TIME) {
-            TimeBooking timeBooking = (TimeBooking) booking;
-            roomUpdate.setBookType(BookType.TIME);
-            roomUpdate.setStartTime(timeBooking.getStartTime());
-            roomUpdate.setEndTime(timeBooking.getEndTime());
-        } else {
-            throw new ServiceException("예약 타입이 올바르지 않습니다.");
-        }
-        return roomUpdate;
+        return room.getUpdateData();
     }
 
-    public void update(User user, Long id, RoomUpdate roomUpdate) { //룸 정보 변경
+    public void update(User user, Long id, RoomData roomData) { //룸 정보 변경
         Room room = getRoomById(id);
         validUser(user, room);
-        room.update(roomUpdate);
-        BookingService service = selectBookingService(roomUpdate.getBookType());
-        service.update(id, roomUpdate);
+        room.updateRoom(roomData);
     }
 
     public void delete(User user, Long id) {
@@ -82,15 +51,6 @@ public class RoomService {
 
     public List<MyRoomInfo> getMyRoom(Long placeId) {
         return roomRepository.findMyRoomByPlaceId(placeId);
-    }
-
-    private Booking registerBook(Room room, RoomRegister roomRegister) {
-        BookingService service = selectBookingService(roomRegister.getBookType());
-        return service.register(room, roomRegister);
-    }
-
-    private BookingService selectBookingService(BookType bookType) {
-        return selector.getService(bookType);
     }
 
     private Room getRoomById(Long id) {

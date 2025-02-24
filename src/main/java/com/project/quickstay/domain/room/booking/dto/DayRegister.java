@@ -1,4 +1,4 @@
-package com.project.quickstay.domain.booking.dto;
+package com.project.quickstay.domain.room.booking.dto;
 
 import lombok.Getter;
 import lombok.Setter;

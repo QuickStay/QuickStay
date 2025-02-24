@@ -11,7 +11,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class RoomRegister {
+public class RoomData {
 
     @NotEmpty
     private String name;

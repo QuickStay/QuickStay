@@ -2,13 +2,12 @@ package com.project.quickstay.service;
 
 import com.project.quickstay.common.BookType;
 import com.project.quickstay.common.Social;
-import com.project.quickstay.domain.booking.entity.Booking;
-import com.project.quickstay.domain.booking.entity.DayBooking;
-import com.project.quickstay.domain.booking.entity.TimeBooking;
+import com.project.quickstay.domain.room.dto.RoomData;
+import com.project.quickstay.domain.room.entity.Booking;
+import com.project.quickstay.domain.room.entity.DayBooking;
+import com.project.quickstay.domain.room.entity.TimeBooking;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
-import com.project.quickstay.domain.room.dto.RoomRegister;
-import com.project.quickstay.domain.room.dto.RoomUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
@@ -72,15 +71,15 @@ class RoomServiceTest {
     @Test
     @DisplayName("사용자는 장소에 방을 등록할 수 있다 (DAY)")
     void test1() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.DAY);
-        roomRegister.setCheckIn(LocalTime.of(15, 0));
-        roomRegister.setCheckOut(LocalTime.of(11, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.DAY);
+        roomData.setCheckIn(LocalTime.of(15, 0));
+        roomData.setCheckOut(LocalTime.of(11, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -93,15 +92,15 @@ class RoomServiceTest {
     @Test
     @DisplayName("사용자는 장소에 방을 등록할 수 있다 (TIME)")
     void test2() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(12, 0));
-        roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.TIME);
+        roomData.setStartTime(LocalTime.of(12, 0));
+        roomData.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
         assertThat(room.getId()).isNotNull();
         assertThat(room.getPlace()).isEqualTo(place1);
@@ -165,17 +164,17 @@ class RoomServiceTest {
     @Test
     @DisplayName("등록한 방을 수정할 수 있다")
     void test6() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(12, 0));
-        roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.TIME);
+        roomData.setStartTime(LocalTime.of(12, 0));
+        roomData.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
-        RoomUpdate roomUpdate = new RoomUpdate();
+        RoomData roomUpdate = new RoomData();
         roomUpdate.setName("방2");
         roomUpdate.setDescription("작은 방");
         roomUpdate.setCapacity(2);
@@ -195,17 +194,17 @@ class RoomServiceTest {
     @Test
     @DisplayName("등록한 방을 수정할 때 예약방식을 변경 가능하다 TIME -> DAY")
     void test6_1() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(12, 0));
-        roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.TIME);
+        roomData.setStartTime(LocalTime.of(12, 0));
+        roomData.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
-        RoomUpdate roomUpdate = new RoomUpdate();
+        RoomData roomUpdate = new RoomData();
         roomUpdate.setName("방2");
         roomUpdate.setDescription("작은 방");
         roomUpdate.setCapacity(2);
@@ -226,17 +225,17 @@ class RoomServiceTest {
     @Test
     @DisplayName("등록한 방을 수정할 때 예약방식을 변경 가능하다 DAY -> TIME")
     void test6_2() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.DAY);
-        roomRegister.setCheckIn(LocalTime.of(12, 0));
-        roomRegister.setCheckOut(LocalTime.of(23, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.DAY);
+        roomData.setCheckIn(LocalTime.of(12, 0));
+        roomData.setCheckOut(LocalTime.of(23, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
-        RoomUpdate roomUpdate = new RoomUpdate();
+        RoomData roomUpdate = new RoomData();
         roomUpdate.setName("방2");
         roomUpdate.setDescription("작은 방");
         roomUpdate.setCapacity(2);
@@ -257,15 +256,15 @@ class RoomServiceTest {
     @Test
     @DisplayName("등록한 방을 삭제할 수 있다, 삭제 시 Booking 정보도 함께 삭제된다")
     void test7() {
-        RoomRegister roomRegister = new RoomRegister();
-        roomRegister.setName("방1");
-        roomRegister.setDescription("넓은 방");
-        roomRegister.setCapacity(4);
+        RoomData roomData = new RoomData();
+        roomData.setName("방1");
+        roomData.setDescription("넓은 방");
+        roomData.setCapacity(4);
 
-        roomRegister.setBookType(BookType.TIME);
-        roomRegister.setStartTime(LocalTime.of(12, 0));
-        roomRegister.setEndTime(LocalTime.of(23, 0));
-        Room room = roomService.register(user1, place1.getId(), roomRegister);
+        roomData.setBookType(BookType.TIME);
+        roomData.setStartTime(LocalTime.of(12, 0));
+        roomData.setEndTime(LocalTime.of(23, 0));
+        Room room = roomService.register(user1, place1.getId(), roomData);
 
         roomService.delete(user1, room.getId());
 

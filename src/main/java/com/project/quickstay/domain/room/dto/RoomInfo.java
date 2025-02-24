@@ -1,8 +1,8 @@
 package com.project.quickstay.domain.room.dto;
 
 import com.project.quickstay.common.BookType;
-import com.project.quickstay.domain.booking.entity.DayBooking;
-import com.project.quickstay.domain.booking.entity.TimeBooking;
+import com.project.quickstay.domain.room.entity.DayBooking;
+import com.project.quickstay.domain.room.entity.TimeBooking;
 import com.project.quickstay.domain.room.entity.Room;
 import lombok.Getter;
 import lombok.Setter;
