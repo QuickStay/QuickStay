@@ -29,7 +29,7 @@ public class DayBooking extends Booking {
         this.checkOut = register.getCheckOut();
     }
 
-    public DayBooking() {
+    protected DayBooking() {
     }
 
     protected DayBooking(LocalTime checkIn, LocalTime checkOut) {
@@ -37,7 +37,7 @@ public class DayBooking extends Booking {
         this.checkOut = checkOut;
     }
 
-    public void setTime(LocalTime checkIn, LocalTime checkOut) {
+    protected void setTime(LocalTime checkIn, LocalTime checkOut) {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
     }
