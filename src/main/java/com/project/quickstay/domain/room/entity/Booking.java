@@ -20,7 +20,7 @@ public abstract class Booking {
     protected Booking() {
     }
 
-    protected abstract void update(RoomData roomData);
+    protected abstract Booking update(RoomData roomData);
 
     protected abstract RoomData getUpdateData(RoomData roomData);
 
@@ -40,8 +40,13 @@ public abstract class Booking {
 //        }
     }
 
-    protected void updateBooking(RoomData roomUpdate) {
-        update(roomUpdate);
+    protected Booking updateBooking(RoomData roomUpdate) {
+        if (roomUpdate.getBookType() == bookType) {
+            return update(roomUpdate);
+        }
+        else {
+            return register(roomUpdate);
+        }
     }
 
 }

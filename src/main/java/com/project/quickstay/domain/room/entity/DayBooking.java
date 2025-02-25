@@ -24,9 +24,10 @@ public class DayBooking extends Booking {
     }
 
     @Override
-    protected void update(RoomData register) {
+    protected Booking update(RoomData register) {
         this.checkIn = register.getCheckIn();
         this.checkOut = register.getCheckOut();
+        return this;
     }
 
     protected DayBooking() {

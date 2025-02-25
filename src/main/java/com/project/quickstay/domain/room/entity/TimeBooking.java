@@ -24,9 +24,10 @@ public class TimeBooking extends Booking {
     }
 
     @Override
-    protected void update(RoomData register) {
+    protected Booking update(RoomData register) {
         this.startTime = register.getStartTime();
         this.endTime = register.getEndTime();
+        return this;
     }
 
     protected TimeBooking() {

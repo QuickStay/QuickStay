@@ -44,12 +44,7 @@ public class Room {
         this.name = roomData.getName();
         this.description = roomData.getDescription();
         this.capacity = roomData.getCapacity();
-        if (roomData.getBookType() == booking.getBookType()) {
-            booking.updateBooking(roomData);
-        }
-        else {
-            this.booking = Booking.register(roomData);
-        }
+        this.booking = booking.updateBooking(roomData);
     }
 
     public RoomData getUpdateData() {
