@@ -25,9 +25,7 @@ public class RoomService {
 
     public Room register(User user, Long placeId, RoomData roomData) {
         Place place = getPlaceById(placeId);
-        if (!place.getUser().getId().equals(user.getId())) {
-            throw new ServiceException("유저 검증에 실패하였습니다.");
-        }
+        validUser(user, place.getUser());
         Room room = Room.register(place, roomData);
         return roomRepository.save(room);
     }
@@ -37,15 +35,15 @@ public class RoomService {
         return room.getUpdateData();
     }
 
-    public void update(User user, Long id, RoomData roomData) { //룸 정보 변경
-        Room room = getRoomById(id);
-        validUser(user, room);
+    public void update(User user, Long roomId, RoomData roomData) { //룸 정보 변경
+        Room room = getRoomById(roomId);
+        validUser(user, room.getPlace().getUser());
         room.updateRoom(roomData);
     }
 
-    public void delete(User user, Long id) {
-        Room room = getRoomById(id);
-        validUser(user, room);
+    public void delete(User user, Long roomId) {
+        Room room = getRoomById(roomId);
+        validUser(user, room.getPlace().getUser());
         roomRepository.delete(room);
     }
 
@@ -69,8 +67,8 @@ public class RoomService {
         return place.get();
     }
 
-    private void validUser(User user, Room room) {
-        if (!room.getPlace().getUser().getId().equals(user.getId())) {
+    private void validUser(User user1, User user2) {
+        if (!user1.equals(user2)) {
             throw new ServiceException("유저 검증에 실패하였습니다.");
         }
     }
