@@ -1,6 +1,6 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.common.BookType;
+import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.room.entity.Booking;
@@ -25,7 +25,6 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 @SpringBootTest

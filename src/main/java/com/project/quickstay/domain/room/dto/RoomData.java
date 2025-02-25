@@ -1,6 +1,6 @@
 package com.project.quickstay.domain.room.dto;
 
-import com.project.quickstay.common.BookType;
+import com.project.quickstay.domain.room.entity.BookType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

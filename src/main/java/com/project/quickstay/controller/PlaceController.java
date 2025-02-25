@@ -1,6 +1,6 @@
 package com.project.quickstay.controller;
 
-import com.project.quickstay.common.BookType;
+import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;

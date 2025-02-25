@@ -1,6 +1,6 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.common.BookType;
+import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
