@@ -5,9 +5,6 @@ import com.project.quickstay.domain.place.dto.QPlaceSearch;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,23 +17,14 @@ public class PlaceSearchRepositoryImpl implements PlaceSearchRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Page<PlaceSearch> search(String keyword, Pageable pageable) {
-        List<PlaceSearch> data = jpaQueryFactory.select(new QPlaceSearch(place.id, place.user.nickname, place.name, place.description, place.address))
+    public List<PlaceSearch> search(Long placeId, String keyword, int pageSize) {
+         return jpaQueryFactory.select(new QPlaceSearch(place.id, place.user.nickname, place.name, place.description, place.address))
                 .from(place)
+                .where(ltPlaceId(placeId))
                 .where(keywordEq(keyword))
                 .orderBy(place.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageSize)
                 .fetch();
-
-        Long total = jpaQueryFactory.select(place.count())
-                .from(place)
-                .where(keywordEq(keyword))
-                .fetchOne();
-
-        total = (total != null) ? total : 0L;
-
-        return new PageImpl<>(data, pageable, total);
     }
 
     private BooleanExpression keywordEq(String keyword) {
@@ -46,4 +34,11 @@ public class PlaceSearchRepositoryImpl implements PlaceSearchRepository {
         return null;
     }
 
+    private BooleanExpression ltPlaceId(Long placeId) {
+        if (placeId == null) {
+            return null;
+        }
+
+        return place.id.lt(placeId);
+    }
 }

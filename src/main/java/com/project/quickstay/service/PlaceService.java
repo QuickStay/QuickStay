@@ -71,9 +71,8 @@ public class PlaceService {
         return placeRepository.getMyPlace(user.getId());
     }
 
-    public Page<PlaceSearch> search(String keyword, int page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        return placeRepository.search(keyword, pageable);
+    public List<PlaceSearch> search(String keyword, Long placeId) {
+        return placeRepository.search(placeId, keyword, 10);
     }
 
     private void validUser(User user1, User user2) {

@@ -1,10 +1,10 @@
 package com.project.quickstay.repository;
 
 import com.project.quickstay.domain.place.dto.PlaceSearch;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface PlaceSearchRepository {
 
-    Page<PlaceSearch> search(String keyword, Pageable pageable);
+    List<PlaceSearch> search(Long placeId, String keyword, int pageSize);
 }

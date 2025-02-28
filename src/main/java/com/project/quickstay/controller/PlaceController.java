@@ -12,13 +12,13 @@ import com.project.quickstay.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -75,8 +75,8 @@ public class PlaceController {
     }
 
     @GetMapping("/place/search")
-    public String placeSearch(@RequestParam(defaultValue = "1", required = false) int page, @RequestParam String keyword, Model model) {
-        Page<PlaceSearch> search = placeService.search(keyword, page);
+    public String placeSearch(@RequestParam(required = false) Long last, @RequestParam String keyword, Model model) {
+        List<PlaceSearch> search = placeService.search(keyword, last);
         model.addAttribute("search", search);
         return "place/placeSearch";
     }
