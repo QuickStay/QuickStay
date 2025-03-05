@@ -16,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Getter
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class LoginService {
     private final KakaoProvider kakaoProvider;
     private final UserRepository userRepository;
@@ -29,14 +27,12 @@ public class LoginService {
         String accessToken = kakaoProvider.getAccessToken(code);
         // 사용자 정보 받기
         String userInfo = kakaoProvider.getKakaoInfo(accessToken);
-        log.info("accessToken: {}, userInfo: {}", accessToken, userInfo);
 
         // 1. email, nickname : 스트링
         JsonObject info = JsonParser.parseString(userInfo).getAsJsonObject();
 
         String nickname = info.getAsJsonObject("properties").get("nickname").getAsString();
         String email = info.getAsJsonObject("kakao_account").get("email").getAsString();
-        log.info("email: {}, nickname: {}", email, nickname);
 
         // 2. userEntity에 social, email
         Optional<User> getUser = userRepository.findBySocialAndEmail(Social.KAKAO, email);
@@ -48,10 +44,8 @@ public class LoginService {
             userRegister.setSocial(Social.KAKAO);
 
             User newUser = User.register(userRegister);
-            log.info("user: {}", newUser);
             return userRepository.save(newUser);
         }
-        log.info("user: {}", getUser.get());
         return getUser.get();
     }
 }
