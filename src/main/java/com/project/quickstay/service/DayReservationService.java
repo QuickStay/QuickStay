@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.common.State;
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
 import com.project.quickstay.domain.reservation.dto.MyDayReservation;
 import com.project.quickstay.domain.reservation.entity.Reservation;
@@ -77,5 +78,10 @@ public class DayReservationService {
         myReservation.setEndDate(reservation.get().getEndDate());
         myReservation.setState(reservation.get().getState());
         return myReservation;
+    }
+
+    public void cancelReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        reservation.get().updateState(State.CANCELLED);
     }
 }

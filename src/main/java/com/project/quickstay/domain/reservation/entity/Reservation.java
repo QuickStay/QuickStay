@@ -59,4 +59,8 @@ public class Reservation {
         reservation.state = State.RESERVED;
         return reservation;
     }
+
+    public void updateState(State state) {
+        this.state = state;
+    }
 }

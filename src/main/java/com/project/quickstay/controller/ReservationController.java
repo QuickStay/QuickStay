@@ -54,4 +54,10 @@ public class ReservationController {
         model.addAttribute("reservation", reservation);
         return "/myPage/myReservationInfo";
     }
+
+    @GetMapping("/reservation/cancel/{reservationId}")
+    public String cancelReservation(@PathVariable Long reservationId) {
+        dayReservationService.cancelReservation(reservationId);
+        return "redirect:/reservation/list";
+    }
 }

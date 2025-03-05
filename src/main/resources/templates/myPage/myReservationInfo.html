@@ -57,7 +57,46 @@
         </div>
 
     </div>
+
+    <!-- 예약 취소 버튼 (하단에 위치) -->
+    <button class="cancel-button" onclick="showPopup()"
+            th:if="${reservation.state.name() == 'RESERVED'}">
+        예약 취소
+    </button>
+
 </div>
+
+<!-- 예약 취소 확인 팝업 -->
+<div id="confirmationPopup" class="confirmation-popup">
+    <div class="popup-content">
+        <h2>정말 예약을 취소하시겠습니까?</h2>
+        <div class="popup-buttons">
+            <button class="confirm-btn" onclick="cancelReservation()">예</button>
+            <button class="cancel-btn" onclick="closePopup()">아니오</button>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var reservationId = [[${reservation.id}]];
+
+    // 팝업 표시
+    function showPopup() {
+        document.getElementById("confirmationPopup").style.display = "flex";
+    }
+
+    // 팝업 닫기
+    function closePopup() {
+        document.getElementById("confirmationPopup").style.display = "none";
+    }
+
+    // 예약 취소 처리
+    function cancelReservation() {
+        const reservationIdLong = Number(reservationId); // long 타입으로 변환
+        window.location.href = '/reservation/cancel/' + reservationIdLong;
+        closePopup(); // 팝업 닫기
+    }
+</script>
 
 </body>
 </html>
