@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class TimeReservationRegister {
+public class TimeReservationRegister extends ReservationDTO {
     private LocalDate date;
 
     private LocalTime startTime;

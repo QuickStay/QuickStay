@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DayReservationRegister {
+public class DayReservationRegister extends ReservationDTO {
 
     private LocalDate startDate;
 

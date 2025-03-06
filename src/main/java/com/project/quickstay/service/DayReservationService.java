@@ -3,6 +3,7 @@ package com.project.quickstay.service;
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
 import com.project.quickstay.domain.reservation.dto.MyDayReservation;
+import com.project.quickstay.domain.reservation.dto.ReservationDTO;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
@@ -22,16 +23,14 @@ import java.util.*;
 public class DayReservationService {
 
     private final RoomRepository roomRepository;
-    // 1. 어느 Place-room의 모든 Reservation table 가져오기
-    // 2. 전처리
     private final ReservationRepository reservationRepository;
 
-    public Reservation registerDayReservation(User user, Long roomId, DayReservationRegister dayReservationRegister) {
+    public Reservation registerReservation(User user, Long roomId, ReservationDTO reservationDTO) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
             throw new ServiceException("방이 없습니다.");
         }
-        Reservation newReservation = Reservation.dayRegister(user, room.get(), dayReservationRegister);
+        Reservation newReservation = Reservation.register(user, room.get(), reservationDTO);
         return reservationRepository.save(newReservation);
     }
 

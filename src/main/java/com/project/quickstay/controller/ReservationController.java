@@ -33,7 +33,7 @@ public class ReservationController {
 
     @PostMapping("/reservation/day/{roomId}/confirm")
     public String reserveDay(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
-        dayReservationService.registerDayReservation(user, roomId, dayReservationRegister);
+        dayReservationService.registerReservation(user, roomId, dayReservationRegister);
 
         return "redirect:/home";
     }

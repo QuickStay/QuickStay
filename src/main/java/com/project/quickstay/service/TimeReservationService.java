@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.domain.reservation.dto.ReservationDTO;
 import com.project.quickstay.domain.reservation.dto.TimeReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.Room;
@@ -23,14 +24,13 @@ import java.util.Optional;
 public class TimeReservationService {
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
-    // 1. 어느 Place-room의 모든 Reservation table 가져오기
-    // 2. 전처리
-    public Reservation registerTimeReservation(User user, Long roomId, TimeReservationRegister timeReservationRegister) {
+
+    public Reservation registerTimeReservation(User user, Long roomId, ReservationDTO reservationDTO) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
             throw new ServiceException("방이 없습니다.");
         }
-        Reservation newReservation = Reservation.timeRegister(user, room.get(), timeReservationRegister);
+        Reservation newReservation = Reservation.register(user, room.get(), reservationDTO);
         return reservationRepository.save(newReservation);
     }
 
