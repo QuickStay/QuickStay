@@ -43,6 +43,15 @@ public class ReservationController {
         return "redirect:/home";
     }
 
+
+    /**
+     * TODO Time 예약
+     * 1. 예약 가능 날짜 고르기 /calendar/time/{roomId}
+     * 2. 해당 날짜에 대한 시간 고르기 /calendar/time/{roomId}/{date}
+     * 3. 예약 진행 /reservation/time/{roomId}
+     * 4. 예약 확정 /reservation/time/{roomId}/confirm
+     */
+
     @GetMapping("/reservation/list")
     public String reservationList(@Login User user, Model model) {
         List<MyDayReservation> myReservations = dayReservationService.getUserReservations(user.getId());
