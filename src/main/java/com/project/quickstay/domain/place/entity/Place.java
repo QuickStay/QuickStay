@@ -1,6 +1,7 @@
 package com.project.quickstay.domain.place.entity;
 
 import com.project.quickstay.domain.place.dto.PlaceRegister;
+import com.project.quickstay.domain.place.dto.PlaceUpdate;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -43,10 +44,10 @@ public class Place {
         return place;
     }
 
-    public void update(PlaceRegister placeRegister) {
-        this.name = placeRegister.getName();
-        this.description = placeRegister.getDescription();
-        this.address = placeRegister.getAddress();
-        this.contact = placeRegister.getContact();
+    public void update(PlaceUpdate placeUpdate) {
+        this.name = placeUpdate.getName();
+        this.description = placeUpdate.getDescription();
+        this.address = placeUpdate.getAddress();
+        this.contact = placeUpdate.getContact();
     }
 }

@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.domain.place.dto.PlaceUpdate;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
@@ -88,13 +88,13 @@ public class PlaceServiceTest {
 
         Place place = placeService.register(user1, placeRegister1);
 
-        PlaceRegister placeRegister2 = new PlaceRegister();
-        placeRegister2.setName("호텔");
-        placeRegister2.setDescription("신축 호텔");
-        placeRegister2.setAddress("강원도 춘천시");
-        placeRegister2.setContact("01087654321");
+        PlaceUpdate placeUpdate = new PlaceUpdate();
+        placeUpdate.setName("호텔");
+        placeUpdate.setDescription("신축 호텔");
+        placeUpdate.setAddress("강원도 춘천시");
+        placeUpdate.setContact("01087654321");
 
-        placeService.update(user1, place.getId(), placeRegister2);
+        placeService.update(user1, place.getId(), placeUpdate);
 
         assertThat(place.getId()).isNotNull();
         assertThat(place.getName()).isEqualTo("호텔");

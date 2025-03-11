@@ -1,5 +1,6 @@
 package com.project.quickstay.controller;
 
+import com.project.quickstay.domain.place.dto.PlaceUpdate;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
@@ -46,18 +47,18 @@ public class PlaceController {
 
     @GetMapping("/place/{placeId}/update")
     public String placeUpdateForm(@PathVariable Long placeId, Model model) {
-        PlaceRegister updateData = placeService.getUpdateData(placeId);
+        PlaceUpdate updateData = placeService.getUpdateData(placeId);
         model.addAttribute("updateData", updateData);
         return "place/placeUpdate";
     }
 
     @PostMapping("/place/{placeId}/update")
-    public String placeUpdate(@PathVariable Long placeId, @Login User user, @ModelAttribute("updateData") @Valid PlaceRegister placeRegister, BindingResult bindingResult) {
+    public String placeUpdate(@PathVariable Long placeId, @Login User user, @ModelAttribute("updateData") @Valid PlaceUpdate placeUpdate, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "place/placeUpdate";
         }
 
-        placeService.update(user, placeId, placeRegister);
+        placeService.update(user, placeId, placeUpdate);
         return "redirect:/place/" + placeId + "/info";
     }
 

@@ -1,9 +1,6 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.domain.place.dto.MyPlaceInfo;
-import com.project.quickstay.domain.place.dto.PlaceInfo;
-import com.project.quickstay.domain.place.dto.PlaceRegister;
-import com.project.quickstay.domain.place.dto.PlaceSearch;
+import com.project.quickstay.domain.place.dto.*;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomInfo;
 import com.project.quickstay.domain.room.entity.Room;
@@ -12,9 +9,6 @@ import com.project.quickstay.exception.ServiceException;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,20 +28,15 @@ public class PlaceService {
         return placeRepository.save(place);
     }
 
-    public PlaceRegister getUpdateData(Long placeId) {
+    public PlaceUpdate getUpdateData(Long placeId) {
         Place place = getById(placeId);
-        PlaceRegister placeRegister = new PlaceRegister();
-        placeRegister.setName(place.getName());
-        placeRegister.setDescription(place.getDescription());
-        placeRegister.setAddress(place.getAddress());
-        placeRegister.setContact(place.getContact());
-        return placeRegister;
+        return PlaceUpdate.getUpdateData(place);
     }
 
-    public void update(User user, Long placeId, PlaceRegister placeRegister) { //장소정보 수정
+    public void update(User user, Long placeId, PlaceUpdate placeUpdate) { //장소정보 수정
         Place place = getById(placeId);
         validUser(place.getUser(), user);
-        place.update(placeRegister);
+        place.update(placeUpdate);
     }
 
     public void delete(User user, Long placeId) {
