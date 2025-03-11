@@ -5,7 +5,7 @@ import com.project.quickstay.common.Social;
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
-import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
+import com.project.quickstay.domain.reservation.entity.DayReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.room.entity.Room;
@@ -76,11 +76,11 @@ class DayReservationServiceTest {
     @Test
     @DisplayName("사용자는 방을 예약할 수 있다 - DAY")
     void test1() {
-        DayReservationRegister dayReservationRegister = new DayReservationRegister();
+        DayReservationRegister dayReservationRegister = new DayReservationRegister(user1, room);
         dayReservationRegister.setStartDate(LocalDate.of(2025, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2025, 2, 13));
 
-        Reservation reservation = dayReservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
+        Reservation reservation = dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
 
         assertThat(reservation.getId()).isNotNull();
         assertThat(reservation.getRoom()).isEqualTo(room);
@@ -118,11 +118,11 @@ class DayReservationServiceTest {
     @Test
     @DisplayName("예약 불가능한 날짜 가져오기 - 1. 현재 날짜보다 넘는 예약 불가능한 날짜를 가져올 수 있다")
     void test3() {
-        DayReservationRegister dayReservationRegister = new DayReservationRegister();
+        DayReservationRegister dayReservationRegister = new DayReservationRegister(user1, room);
         dayReservationRegister.setStartDate(LocalDate.of(2026, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2026, 2, 13));
 
-        dayReservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
+        dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
 
         List<LocalDate> reservedDate = dayReservationService.getReservedDate(room.getId());
         assertThat(reservedDate.size()).isEqualTo(3);
@@ -137,11 +137,11 @@ class DayReservationServiceTest {
     @Test
     @DisplayName("예약 불가능한 날짜 가져오기 - 2. 현재 날짜보다 지난 예약 불가능한 날짜는 가져오지 않는다")
     void test4() {
-        DayReservationRegister dayReservationRegister = new DayReservationRegister();
+        DayReservationRegister dayReservationRegister = new DayReservationRegister(user1, room);
         dayReservationRegister.setStartDate(LocalDate.of(2024, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2024, 2, 13));
 
-        dayReservationService.registerDayReservation(user1, room.getId(), dayReservationRegister);
+        dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
 
         List<LocalDate> reservedDate = dayReservationService.getReservedDate(room.getId());
 
