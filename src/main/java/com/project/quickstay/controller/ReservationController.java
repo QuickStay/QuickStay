@@ -1,9 +1,8 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
-import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
+import com.project.quickstay.domain.reservation.entity.DayReservationRegister;
 import com.project.quickstay.domain.reservation.dto.MyDayReservation;
-import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.DayReservationService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -23,16 +23,21 @@ public class ReservationController {
 
     private final DayReservationService dayReservationService;
 
+    @GetMapping("/calendar/day/{roomId}")
+    public String getDisabledDates(@PathVariable Long roomId, Model model) {
+        List<LocalDate> reservedDates = dayReservationService.getReservedDate(roomId);
+        model.addAttribute("disabledDates", reservedDates);
+        return "reservation/dayReservationList";
+    }
+
     @PostMapping("/reservation/day/{roomId}")
     public String reserveDay(@PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
-        log.info("startDate={}, endDate={}", dayReservationRegister.getStartDate(), dayReservationRegister.getEndDate());
         model.addAttribute("dayReservationRegister", dayReservationRegister);
-
         return "reservation/reservationForm";
     }
 
     @PostMapping("/reservation/day/{roomId}/confirm")
-    public String reserveDay(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
+    public String reserveDayConfirm(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
         dayReservationService.registerReservation(user, roomId, dayReservationRegister);
 
         return "redirect:/home";

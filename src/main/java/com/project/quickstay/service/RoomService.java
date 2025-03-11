@@ -53,6 +53,10 @@ public class RoomService {
         return roomRepository.findMyRoomByPlaceId(placeId);
     }
 
+    public Room findById(Long roomId) {
+        return getRoomById(roomId);
+    }
+
     private Room getRoomById(Long id) {
         Optional<Room> room = roomRepository.findById(id);
         if (room.isEmpty()) {

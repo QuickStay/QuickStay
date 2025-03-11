@@ -1,9 +1,8 @@
 package com.project.quickstay.service;
 
 import com.project.quickstay.common.State;
-import com.project.quickstay.domain.reservation.dto.DayReservationRegister;
 import com.project.quickstay.domain.reservation.dto.MyDayReservation;
-import com.project.quickstay.domain.reservation.dto.ReservationDTO;
+import com.project.quickstay.domain.reservation.entity.ReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
@@ -25,13 +24,15 @@ public class DayReservationService {
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
 
-    public Reservation registerReservation(User user, Long roomId, ReservationDTO reservationDTO) {
+    public Reservation registerReservation(User user, Long roomId, ReservationRegister reservationRegister) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
             throw new ServiceException("방이 없습니다.");
         }
-        Reservation newReservation = Reservation.register(user, room.get(), reservationDTO);
-        return reservationRepository.save(newReservation);
+        reservationRegister.placeRoom(room.get());
+        reservationRegister.placeUser(user);
+        Reservation reservation = reservationRegister.createReservation();
+        return reservationRepository.save(reservation);
     }
 
     private List<Reservation> getReserved(Long roomId) {

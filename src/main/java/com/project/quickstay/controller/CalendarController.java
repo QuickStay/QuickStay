@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -17,15 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CalendarController {
-    private final DayReservationService dayReservationService;
-    private final TimeReservationService timeReservationService;
 
-    @GetMapping("/calendar/day/{roomId}")
-    public String getDisabledDates(@PathVariable Long roomId, Model model) {
-        List<LocalDate> reservedDates = dayReservationService.getReservedDate(roomId);
-        model.addAttribute("disabledDates", reservedDates);
-        return "reservation/dayReservationList";
-    }
+    private final TimeReservationService timeReservationService;
 
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
