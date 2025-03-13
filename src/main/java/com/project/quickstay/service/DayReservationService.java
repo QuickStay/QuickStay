@@ -4,6 +4,7 @@ import com.project.quickstay.common.State;
 import com.project.quickstay.domain.reservation.dto.MyDayReservation;
 import com.project.quickstay.domain.reservation.entity.ReservationRegister;
 import com.project.quickstay.domain.reservation.entity.Reservation;
+import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.exception.ServiceException;
@@ -19,12 +20,13 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class DayReservationService {
+public class DayReservationService implements ReservationService{
 
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
 
-    public Reservation registerReservation(User user, Long roomId, ReservationRegister reservationRegister) {
+    @Override
+    public Reservation reservationRegister(User user, Long roomId, ReservationRegister reservationRegister) {
         Optional<Room> room = roomRepository.findById(roomId);
         if(room.isEmpty()) {
             throw new ServiceException("방이 없습니다.");
@@ -35,12 +37,9 @@ public class DayReservationService {
         return reservationRepository.save(reservation);
     }
 
-    private List<Reservation> getReserved(Long roomId) {
-        return reservationRepository.findReserved(roomId, LocalDate.now());
-    }
-
-    public List<LocalDate> getReservedDate(Long roomId) {
-        List<Reservation> reservations = getReserved(roomId);
+    @Override
+    public List<LocalDate> getReserved(Long roomId) {
+        List<Reservation> reservations = getReservedReservation(roomId);
         List<LocalDate> dates = new ArrayList<>();
         for (Reservation reservation : reservations) {
             LocalDate date = reservation.getStartDate();
@@ -50,6 +49,11 @@ public class DayReservationService {
             }
         }
         return dates;
+    }
+
+    @Override
+    public boolean supports(BookType bookType) {
+        return bookType == BookType.DAY;
     }
 
     public List<MyDayReservation> getUserReservations(Long userId) {
@@ -83,5 +87,9 @@ public class DayReservationService {
     public void cancelReservation(Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         reservation.get().updateState(State.CANCELLED);
+    }
+
+    private List<Reservation> getReservedReservation(Long roomId) {
+        return reservationRepository.findReserved(roomId, LocalDate.now());
     }
 }
