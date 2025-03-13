@@ -80,7 +80,7 @@ class DayReservationServiceTest {
         dayReservationRegister.setStartDate(LocalDate.of(2025, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2025, 2, 13));
 
-        Reservation reservation = dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
+        Reservation reservation = dayReservationService.reservationRegister(user1, room.getId(), dayReservationRegister);
 
         assertThat(reservation.getId()).isNotNull();
         assertThat(reservation.getRoom()).isEqualTo(room);
@@ -122,9 +122,9 @@ class DayReservationServiceTest {
         dayReservationRegister.setStartDate(LocalDate.of(2026, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2026, 2, 13));
 
-        dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
+        dayReservationService.reservationRegister(user1, room.getId(), dayReservationRegister);
 
-        List<LocalDate> reservedDate = dayReservationService.getReservedDate(room.getId());
+        List<LocalDate> reservedDate = dayReservationService.getReserved(room.getId());
         assertThat(reservedDate.size()).isEqualTo(3);
         Collections.sort(reservedDate);
         int startDay = 10;
@@ -141,9 +141,9 @@ class DayReservationServiceTest {
         dayReservationRegister.setStartDate(LocalDate.of(2024, 2, 10));
         dayReservationRegister.setEndDate(LocalDate.of(2024, 2, 13));
 
-        dayReservationService.registerReservation(user1, room.getId(), dayReservationRegister);
+        dayReservationService.reservationRegister(user1, room.getId(), dayReservationRegister);
 
-        List<LocalDate> reservedDate = dayReservationService.getReservedDate(room.getId());
+        List<LocalDate> reservedDate = dayReservationService.getReserved(room.getId());
 
         assertThat(reservedDate.size()).isEqualTo(0);
     }
