@@ -26,6 +26,10 @@ public class ReservationServiceSelector {
                 .orElseThrow(() -> new ServiceException("예약 서비스를 찾는데 실패하였습니다."));
     }
 
+    public ReservationService getService() {
+        return reservationServices.stream().findFirst().orElseThrow(() -> new ServiceException("default 서비스를 찾는데 실패하였습니다"));
+    }
+
     private BookType getBookTypeByRoomId(Long roomId) {
         Optional<Room> getRoom = roomRepository.findById(roomId);
         if (getRoom.isEmpty()) {
