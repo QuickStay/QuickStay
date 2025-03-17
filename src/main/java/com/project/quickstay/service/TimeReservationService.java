@@ -3,7 +3,7 @@ package com.project.quickstay.service;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.repository.ReservationRepository;
-import com.project.quickstay.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +14,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TimeReservationService extends ReservationService {
+@RequiredArgsConstructor
+public class TimeReservationService implements ReservationService {
 
     private final ReservationRepository reservationRepository;
-
-    public TimeReservationService(RoomRepository roomRepository, ReservationRepository reservationRepository) {
-        super(roomRepository, reservationRepository);
-        this.reservationRepository = reservationRepository;
-    }
-
 
     @Override
     public List<LocalTime> getReserved(Long roomId) {

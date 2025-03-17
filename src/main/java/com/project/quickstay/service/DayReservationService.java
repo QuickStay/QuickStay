@@ -5,7 +5,7 @@ import com.project.quickstay.domain.reservation.dto.MyDayReservation;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.repository.ReservationRepository;
-import com.project.quickstay.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +14,10 @@ import java.util.*;
 
 @Service
 @Transactional
-public class DayReservationService extends ReservationService{
+@RequiredArgsConstructor
+public class DayReservationService implements ReservationService{
 
     private final ReservationRepository reservationRepository;
-
-    public DayReservationService(RoomRepository roomRepository, ReservationRepository reservationRepository) {
-        super(roomRepository, reservationRepository);
-        this.reservationRepository = reservationRepository;
-    }
 
     @Override
     public List<LocalDate> getReserved(Long roomId) {

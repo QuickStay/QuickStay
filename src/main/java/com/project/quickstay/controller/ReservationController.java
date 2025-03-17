@@ -3,8 +3,7 @@ package com.project.quickstay.controller;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.reservation.entity.DayReservationRegister;
 import com.project.quickstay.domain.user.entity.User;
-import com.project.quickstay.service.ReservationService;
-import com.project.quickstay.service.ReservationServiceSelector;
+import com.project.quickstay.service.ReservationHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,12 +19,11 @@ import java.util.List;
 @Slf4j
 public class ReservationController {
 
-    private final ReservationServiceSelector serviceSelector;
+    private final ReservationHandler reservationHandler;
 
     @GetMapping("/calendar/day/{roomId}")
     public String getDisabledDates(@PathVariable Long roomId, Model model) {
-        ReservationService service = getService(roomId);
-        List<?> reservedDates = service.getReserved(roomId);
+        List<?> reservedDates = reservationHandler.getReserved(roomId);
         model.addAttribute("disabledDates", reservedDates);
         return "reservation/dayReservationList";
     }
@@ -38,8 +36,7 @@ public class ReservationController {
 
     @PostMapping("/reservation/day/{roomId}/confirm")
     public String reserveDayConfirm(@PathVariable Long roomId, @Login User user, DayReservationRegister dayReservationRegister) {
-        ReservationService service = getDefaultService();
-        service.reservationRegister(user, roomId, dayReservationRegister);
+        reservationHandler.reservationRegister(user, roomId, dayReservationRegister);
         return "redirect:/home";
     }
 
@@ -53,8 +50,7 @@ public class ReservationController {
      */
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
-        ReservationService service = getService(roomId);
-        List<?> reservedTimes = service.getReserved(roomId);
+        List<?> reservedTimes = reservationHandler.getReserved(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
         return "reservation/timeReservationList";
     }
@@ -81,11 +77,5 @@ public class ReservationController {
 //        dayReservationService.cancelReservation(reservationId);
 //        return "redirect:/reservation/list";
 //    }
-    private ReservationService getService(Long roomId) {
-        return serviceSelector.getService(roomId);
-    }
 
-    private ReservationService getDefaultService() {
-        return serviceSelector.getService();
-    }
 }
