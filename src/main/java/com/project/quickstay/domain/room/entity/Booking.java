@@ -13,11 +13,11 @@ public abstract class Booking {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(updatable = false, insertable = false)
-    private BookType bookType;
-
     protected Booking() {
+    }
+
+    public BookType getBookType() {
+        return BookType.valueOf(this.getClass().getAnnotation(DiscriminatorValue.class).value());
     }
 
     protected abstract Booking update(RoomData roomData);
@@ -41,7 +41,7 @@ public abstract class Booking {
     }
 
     protected Booking updateBooking(RoomData roomUpdate) {
-        if (roomUpdate.getBookType() == bookType) {
+        if (roomUpdate.getBookType() == getBookType()) {
             return update(roomUpdate);
         }
         else {

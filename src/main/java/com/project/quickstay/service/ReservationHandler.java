@@ -2,6 +2,9 @@ package com.project.quickstay.service;
 
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.reservation.entity.ReservationRegister;
+import com.project.quickstay.domain.room.entity.BookType;
+import com.project.quickstay.domain.room.entity.Booking;
+import com.project.quickstay.domain.room.entity.DayBooking;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.exception.ServiceException;
