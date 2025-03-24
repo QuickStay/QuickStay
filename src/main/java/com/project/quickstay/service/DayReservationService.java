@@ -1,7 +1,6 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.common.State;
-import com.project.quickstay.domain.reservation.dto.MyDayReservation;
+import com.project.quickstay.domain.reservation.dto.MyReservation;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.repository.ReservationRepository;
@@ -36,39 +35,6 @@ public class DayReservationService implements ReservationService{
     @Override
     public boolean supports(BookType bookType) {
         return bookType == BookType.DAY;
-    }
-
-    public List<MyDayReservation> getUserReservations(Long userId) {
-        List<Reservation> allReservations = reservationRepository.findAllByUserId(userId);
-        List<MyDayReservation> myDayReservations = new ArrayList<>();
-
-        for (Reservation reservation : allReservations) {
-            MyDayReservation myReservation = new MyDayReservation();
-            myReservation.setId(reservation.getId());
-            myReservation.setRoom(reservation.getRoom());
-            myReservation.setStartDate(reservation.getStartDate());
-            myReservation.setEndDate(reservation.getEndDate());
-            myReservation.setState(reservation.getState());
-            myDayReservations.add(myReservation);
-        }
-
-        return myDayReservations;
-    }
-
-    public MyDayReservation getSpecificReservation(Long reservationId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-        MyDayReservation myReservation = new MyDayReservation();
-        myReservation.setId(reservationId);
-        myReservation.setRoom(reservation.get().getRoom());
-        myReservation.setStartDate(reservation.get().getStartDate());
-        myReservation.setEndDate(reservation.get().getEndDate());
-        myReservation.setState(reservation.get().getState());
-        return myReservation;
-    }
-
-    public void cancelReservation(Long reservationId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-        reservation.get().updateState(State.CANCELLED);
     }
 
     private List<Reservation> getReservedReservation(Long roomId) {

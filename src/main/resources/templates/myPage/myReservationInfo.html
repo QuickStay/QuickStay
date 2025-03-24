@@ -26,34 +26,34 @@
         <!-- 장소 -->
         <div class="reservation-item">
             <strong>장소</strong>
-            <span th:text="${reservation.room.place.name}">장소 이름</span>
+            <span th:text="${reservation.placeName}">장소 이름</span>
         </div>
         <!-- 설명 -->
         <div class="reservation-item">
             <strong>설명</strong>
-            <span th:text="${reservation.room.place.description}">장소 설명</span>
+            <span th:text="${reservation.placeDescription}">장소 설명</span>
         </div>
         <!-- 인원 -->
         <div class="reservation-item">
             <strong>인원</strong>
-            <span th:text="${reservation.room.capacity}">인원</span>
+            <span th:text="${reservation.capacity}">인원</span>
         </div>
         <!-- 예약 상태 -->
         <div class="reservation-item">
             <strong>상태</strong>
-            <span class="reservation-state" th:text="${reservation.state.getState()}">예약 상태</span>
+            <span class="reservation-state" th:text="${reservation.state}">예약 상태</span>
         </div>
 
         <!-- 방 이름 -->
         <div class="reservation-item">
             <strong>방 이름</strong>
-            <span th:text="${reservation.room.name}">방 이름</span>
+            <span th:text="${reservation.roomName}">방 이름</span>
         </div>
 
         <!-- 방 설명 -->
         <div class="reservation-item">
             <strong>방 설명</strong>
-            <span th:text="${reservation.room.description}">방 설명</span>
+            <span th:text="${reservation.roomDescription}">방 설명</span>
         </div>
 
     </div>

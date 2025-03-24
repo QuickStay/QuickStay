@@ -1,10 +1,10 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.common.State;
+import com.project.quickstay.domain.reservation.dto.MyReservation;
+import com.project.quickstay.domain.reservation.dto.ReservationInfo;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.reservation.entity.ReservationRegister;
-import com.project.quickstay.domain.room.entity.BookType;
-import com.project.quickstay.domain.room.entity.Booking;
-import com.project.quickstay.domain.room.entity.DayBooking;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.exception.ServiceException;
@@ -42,11 +42,34 @@ public class ReservationHandler {
         return reservationRepository.save(reservation);
     }
 
+    public void cancelReservation(Long reservationId) {
+        Reservation reservation = getReservationById(reservationId);
+        reservation.updateState(State.CANCELLED);
+    }
+
+    public List<MyReservation> getUserReservations(Long userId) {
+        List<Reservation> allReservations = reservationRepository.findAllByUserId(userId);
+        return MyReservation.of(allReservations);
+    }
+
+    public ReservationInfo getSpecificReservation(Long reservationId, User user) {
+        Reservation reservation = getReservationById(reservationId);
+        return ReservationInfo.of(reservation);
+    }
+
     private Room getRoomById(Long roomId) {
         Optional<Room> getRoom = roomRepository.findById(roomId);
         if (getRoom.isEmpty()) {
             throw new ServiceException("방이 없습니다.");
         }
         return getRoom.get();
+    }
+
+    private Reservation getReservationById(Long reservationId) {
+        Optional<Reservation> getReservation = reservationRepository.findById(reservationId);
+        if (getReservation.isEmpty()) {
+            throw new ServiceException("예약이 없습니다.");
+        }
+        return getReservation.get();
     }
 }

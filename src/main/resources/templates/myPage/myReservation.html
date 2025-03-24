@@ -60,15 +60,15 @@
   <div class="reservation-container">
     <div th:each="reservation : ${myReservations}"
          class="reservation-card"
-         th:onclick="|window.location.href='/room/detail/${reservation.getRoom().getId()}'|">
+         th:onclick="|window.location.href='/room/detail/${reservation.roomId}'|">
 
-      <div class="reservation-title" th:text="${reservation.room.name}"></div>
+      <div class="reservation-title" th:text="${reservation.roomName}"></div>
       <div class="reservation-info">기간: <span th:text="${reservation.startDate+ ' ~ ' + reservation.endDate}"></span></div>
-      <div class="reservation-info">위치: <span th:text="${reservation.room.place.address}"></span></div>
-      <div class="reservation-info">연락처: <span th:text="${reservation.room.place.contact}"></span></div>
-      <div class="reservation-info"><span th:text="${reservation.state.getState()}"></span></div>
+      <div class="reservation-info">위치: <span th:text="${reservation.address}"></span></div>
+      <div class="reservation-info">연락처: <span th:text="${reservation.contact}"></span></div>
+      <div class="reservation-info"><span th:text="${reservation.getState()}"></span></div>
 
-      <a th:href="@{/reservation/list/{reservationId}(reservationId=${reservation.id})}" class="detail-link">상세 보기</a>
+      <a th:href="@{/reservation/{reservationId}(reservationId=${reservation.id})}" class="detail-link">상세 보기</a>
     </div>
   </div>
 </main>

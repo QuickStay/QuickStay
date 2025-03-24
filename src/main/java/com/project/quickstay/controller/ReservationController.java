@@ -1,6 +1,8 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
+import com.project.quickstay.domain.reservation.dto.MyReservation;
+import com.project.quickstay.domain.reservation.dto.ReservationInfo;
 import com.project.quickstay.domain.reservation.entity.DayReservationRegister;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.ReservationHandler;
@@ -48,6 +50,7 @@ public class ReservationController {
      * 3. 예약 진행 /reservation/time/{roomId}
      * 4. 예약 확정 /reservation/time/{roomId}/confirm
      */
+
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
         List<?> reservedTimes = reservationHandler.getReserved(roomId);
@@ -55,27 +58,25 @@ public class ReservationController {
         return "reservation/timeReservationList";
     }
 
-    //    @GetMapping("/reservation/list")
-//    public String reservationList(@Login User user, Model model) {
-//        List<MyDayReservation> myReservations = dayReservationService.getUserReservations(user.getId());
-//        log.info("myReservations={}", myReservations);
-//        model.addAttribute("myReservations", myReservations);
-//        return "myPage/myReservation";
-//    }
-//
-//    @GetMapping("/reservation/list/{reservationId}")
-//    public String findReservations(User user, @PathVariable Long reservationId, Model model) {
-//
-//        MyDayReservation reservation = new MyDayReservation();
-//        reservation = dayReservationService.getSpecificReservation(reservationId);
-//        model.addAttribute("reservation", reservation);
-//        return "/myPage/myReservationInfo";
-//    }
-//
-//    @GetMapping("/reservation/cancel/{reservationId}")
-//    public String cancelReservation(@PathVariable Long reservationId) {
-//        dayReservationService.cancelReservation(reservationId);
-//        return "redirect:/reservation/list";
-//    }
+    @GetMapping("/reservation/list")
+    public String reservationList(@Login User user, Model model) {
+        List<MyReservation> myReservations = reservationHandler.getUserReservations(user.getId());
+        model.addAttribute("myReservations", myReservations);
+        return "myPage/myReservation";
+    }
+
+    @GetMapping("/reservation/{reservationId}")
+    public String findReservations(@Login User user, @PathVariable Long reservationId, Model model) {
+        ReservationInfo reservation = reservationHandler.getSpecificReservation(reservationId, user);
+        model.addAttribute("reservation", reservation);
+        return "/myPage/myReservationInfo";
+    }
+
+    //예약 취소 - 공통 처리
+    @GetMapping("/reservation/cancel/{reservationId}")
+    public String cancelReservation(@PathVariable Long reservationId) {
+        reservationHandler.cancelReservation(reservationId);
+        return "redirect:/reservation/list";
+    }
 
 }
