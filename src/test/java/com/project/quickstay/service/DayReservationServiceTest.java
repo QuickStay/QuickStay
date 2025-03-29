@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.domain.reservation.entity.TimeReservationRegister;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.common.State;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class ReservationServiceTest {
+class DayReservationServiceTest {
     @Autowired
     UserRepository userRepository;
 

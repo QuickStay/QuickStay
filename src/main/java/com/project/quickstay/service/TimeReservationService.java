@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,14 @@ public class TimeReservationService implements ReservationService {
     private final ReservationRepository reservationRepository;
 
     @Override
-    public List<LocalTime> getReserved(Long roomId) {
+    public List<LocalDateTime> getReserved(Long roomId) {
         List<Reservation> reservations = getReservedReservation(roomId);
-        List<LocalTime> times = new ArrayList<>();
+        List<LocalDateTime> times = new ArrayList<>();
         for (Reservation reservation : reservations) {
             LocalTime time = reservation.getStartTime();
+            LocalDate date = reservation.getStartDate();
             while (!time.equals(reservation.getEndTime())) {
-                times.add(time);
+                times.add(LocalDateTime.of(date, time));
                 time = time.plusMinutes(30);
             }
         }

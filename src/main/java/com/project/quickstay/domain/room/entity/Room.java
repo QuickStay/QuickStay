@@ -1,6 +1,7 @@
 package com.project.quickstay.domain.room.entity;
 
 import com.project.quickstay.domain.place.entity.Place;
+import com.project.quickstay.domain.reservation.dto.OperatingHours;
 import com.project.quickstay.domain.room.dto.RoomData;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -53,6 +54,10 @@ public class Room {
         roomData.setDescription(description);
         roomData.setCapacity(capacity);
         return booking.getUpdateData(roomData);
+    }
+
+    public OperatingHours getOperatingHours() {
+        return booking.operatingHours();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.project.quickstay.domain.room.entity;
 
+import com.project.quickstay.domain.reservation.dto.OperatingHours;
 import com.project.quickstay.domain.room.dto.RoomData;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -21,6 +22,11 @@ public class TimeBooking extends Booking {
         roomData.setStartTime(startTime);
         roomData.setEndTime(endTime);
         return roomData;
+    }
+
+    @Override
+    public OperatingHours operatingHours() {
+        return new OperatingHours(startTime, endTime);
     }
 
     @Override

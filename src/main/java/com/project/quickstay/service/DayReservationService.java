@@ -1,6 +1,5 @@
 package com.project.quickstay.service;
 
-import com.project.quickstay.domain.reservation.dto.MyReservation;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.repository.ReservationRepository;

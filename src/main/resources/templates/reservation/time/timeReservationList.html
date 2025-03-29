@@ -25,7 +25,7 @@
       background: #ddd;
       color: #777;
       cursor: not-allowed;
-      opacity: 0.5; /* 비활성화된 버튼을 옅게 표시 */
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -33,7 +33,7 @@
 
 <h2>예약 시스템</h2>
 
-<form id="reservationForm" action="/reserve" method="post" onsubmit="return handleSubmit();">
+<form id="reservationForm" th:action="@{/reservation/time/{roomId}(roomId=${roomId})}" method="post" onsubmit="return handleSubmit();">
   <label>날짜 선택:</label>
   <div id="datePickerContainer"></div>
 
@@ -51,39 +51,61 @@
 
 <p id="responseMessage" style="color: green;"></p>
 
-<script>
+<script th:inline="javascript">
   let today = new Date();
   let maxDate = new Date();
   maxDate.setDate(today.getDate() + 60);
+  let maxTimeReservationDate = new Date();
+  maxTimeReservationDate.setDate(today.getDate() + 21);
 
-  let disabledDates = ["2025-02-12", "2025-02-13"];
-  let disabledTimes = ["12:00", "12:30", "18:00", "18:30"];
-
+  let disabledDateTimes = [[${disabledTimes}]] || [];
   let selectedDate = null;
   let selectedStartTime = null;
   let selectedEndTime = null;
+  let startTime = /*[[${operatingHours.startTime}]]*/ "";
+  let endTime = /*[[${operatingHours.endTime}]]*/ "";
 
   function updateReserveButtonState() {
     document.getElementById("reserveButton").disabled = !(selectedDate && selectedStartTime && selectedEndTime);
   }
 
-  function renderTimeButtons() {
+  function renderTimeButtons(selectedDate) {
     const timeContainer = document.getElementById("timeButtons");
     timeContainer.innerHTML = "";
 
+    let startHour = parseInt(startTime.split(":")[0]);
+    let startMinute = parseInt(startTime.split(":")[1]);
+    let endHour = parseInt(endTime.split(":")[0]);
+    let endMinute = parseInt(endTime.split(":")[1]);
+
     let times = [];
-    for (let hour = 9; hour <= 21; hour++) {
-      times.push(`${hour.toString().padStart(2, '0')}:00`);
-      times.push(`${hour.toString().padStart(2, '0')}:30`);
+
+// 시작 시간부터 종료 시간까지 30분 단위로 반복
+    let currentHour = startHour;
+    let currentMinute = startMinute;
+
+    while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
+      let timeStr = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+      times.push(timeStr);
+
+      // 30분씩 증가
+      currentMinute += 30;
+      if (currentMinute === 60) {
+        currentMinute = 0;
+        currentHour++;
+      }
     }
 
+
     times.forEach(time => {
+      let dateTime = `${selectedDate}T${time}:00`;
+      console.log(dateTime)
       let btn = document.createElement("button");
       btn.textContent = time;
 
-      if (disabledTimes.includes(time)) {
+      if (disabledDateTimes.includes(dateTime)) {
         btn.classList.add("disabled");
-        btn.disabled = true; // 버튼을 비활성화
+        btn.disabled = true;
       }
 
       btn.onclick = function() {
@@ -106,34 +128,13 @@
       selectedEndTime = null;
     } else if (!selectedEndTime) {
       if (timeIndex < timeList.indexOf(selectedStartTime)) {
-        selectedEndTime = selectedStartTime; // 종료 시간을 시작 시간으로 설정
-        selectedStartTime = time; // 새로운 시작 시간 설정
+        selectedEndTime = selectedStartTime;
+        selectedStartTime = time;
       } else {
         selectedEndTime = time;
       }
     } else {
-      let startIndex = timeList.indexOf(selectedStartTime);
-      let endIndex = timeList.indexOf(selectedEndTime);
-
-      if (timeIndex < startIndex) {
-        if (!isTimeBlocked(time, selectedEndTime)) {
-          selectedEndTime = selectedStartTime;
-          selectedStartTime = time;
-        }
-      } else if (timeIndex > endIndex) {
-        if (!isTimeBlocked(selectedStartTime, time)) {
-          selectedEndTime = time;
-        }
-      } else {
-        selectedStartTime = time;
-        selectedEndTime = null;
-      }
-    }
-
-    // 비활성화된 시간을 포함하고 있는지 확인
-    if (isTimeBlocked(selectedStartTime, selectedEndTime)) {
-      alert("불가능한 시간이 포함되어 있습니다. 다른 시간을 선택하세요.");
-      selectedStartTime = null;
+      selectedStartTime = time;
       selectedEndTime = null;
     }
 
@@ -142,34 +143,8 @@
     updateHiddenInputs();
   }
 
-  function isTimeBlocked(start, end) {
-    let buttons = Array.from(document.querySelectorAll("#timeButtons button"));
-    let startIndex = buttons.findIndex(b => b.textContent === start);
-    let endIndex = buttons.findIndex(b => b.textContent === end);
-
-    for (let i = startIndex; i <= endIndex; i++) {
-      if (buttons[i].classList.contains("disabled")) return true;
-    }
-    return false;
-  }
-
   function updateSelectedTimeRange() {
-    let buttons = document.querySelectorAll("#timeButtons button");
-    buttons.forEach(b => b.classList.remove("selected"));
-
-    if (selectedStartTime && selectedEndTime) {
-      let selecting = false;
-      buttons.forEach(b => {
-        if (b.textContent === selectedStartTime) selecting = true;
-        if (selecting) b.classList.add("selected");
-        if (b.textContent === selectedEndTime) selecting = false;
-      });
-      document.getElementById("selectedTimeText").textContent = `${selectedStartTime} ~ ${selectedEndTime}`;
-    } else if (selectedStartTime) {
-      document.getElementById("selectedTimeText").textContent = `${selectedStartTime} ~ ?`;
-    } else {
-      document.getElementById("selectedTimeText").textContent = "없음";
-    }
+    document.getElementById("selectedTimeText").textContent = selectedStartTime && selectedEndTime ? `${selectedStartTime} ~ ${selectedEndTime}` : "없음";
   }
 
   function updateHiddenInputs() {
@@ -183,30 +158,31 @@
     dateFormat: "Y-m-d",
     minDate: "today",
     maxDate: maxDate,
-    disable: disabledDates.map(date => new Date(date)),
     onChange: function(selectedDates) {
       if (selectedDates.length === 1) {
-        selectedDate = selectedDates[0].toISOString().split("T")[0];
+        let formattedDate = selectedDates[0].toISOString().split("T")[0];
+        if (selectedDates[0] > maxTimeReservationDate) {
+          alert("시간 예약은 21일 이내로만 가능합니다.");
+          return;
+        }
+        selectedDate = formattedDate;
         selectedStartTime = null;
         selectedEndTime = null;
-        renderTimeButtons();
+        renderTimeButtons(formattedDate);
         updateSelectedTimeRange();
         updateReserveButtonState();
-        document.getElementById("responseMessage").textContent = ""; // 응답 메시지 초기화
+        document.getElementById("responseMessage").textContent = "";
       }
     }
   });
 
   function handleSubmit() {
-    // 예약하기 버튼 클릭 시에만 폼이 제출되도록 설정
-    if (!selectedStartTime || !selectedEndTime) {
-      alert("시작 시간과 종료 시간을 선택하세요.");
+    if (!selectedDate || !selectedStartTime || !selectedEndTime) {
+      alert("날짜와 시간을 선택하세요.");
       return false;
     }
-    else {
-      updateHiddenInputs(); // 숨겨진 입력 필드 업데이트
-      return true;
-    }
+    updateHiddenInputs();
+    return true;
   }
 </script>
 

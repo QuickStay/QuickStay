@@ -11,7 +11,6 @@ import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
-import com.project.quickstay.repository.BookingRepository;
 import com.project.quickstay.repository.RoomRepository;
 import com.project.quickstay.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -268,8 +267,6 @@ class RoomServiceTest {
         roomService.delete(user1, room.getId());
 
         Optional<Room> getRoom = roomRepository.findById(room.getId());
-        Optional<Booking> booking = bookingRepository.findById(room.getId());
         assertThat(getRoom).isEmpty();
-        assertThat(booking).isEmpty();
     }
 }

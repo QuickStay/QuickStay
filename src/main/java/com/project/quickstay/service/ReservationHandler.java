@@ -2,6 +2,7 @@ package com.project.quickstay.service;
 
 import com.project.quickstay.common.State;
 import com.project.quickstay.domain.reservation.dto.MyReservation;
+import com.project.quickstay.domain.reservation.dto.OperatingHours;
 import com.project.quickstay.domain.reservation.dto.ReservationInfo;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.reservation.entity.ReservationRegister;
@@ -34,6 +35,11 @@ public class ReservationHandler {
     }
 
     //공통 로직은 handler에서 처리
+    public OperatingHours getOperatingHours(Long roomId) {
+        Room room = getRoomById(roomId);
+        return room.getOperatingHours();
+    }
+
     public Reservation reservationRegister(User user, Long roomId, ReservationRegister register) {
         Room room = getRoomById(roomId);
         register.placeRoom(room);

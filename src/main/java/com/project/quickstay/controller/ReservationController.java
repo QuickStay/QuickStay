@@ -2,8 +2,10 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.reservation.dto.MyReservation;
+import com.project.quickstay.domain.reservation.dto.OperatingHours;
 import com.project.quickstay.domain.reservation.dto.ReservationInfo;
 import com.project.quickstay.domain.reservation.entity.DayReservationRegister;
+import com.project.quickstay.domain.reservation.entity.TimeReservationRegister;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.ReservationHandler;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +25,18 @@ public class ReservationController {
 
     private final ReservationHandler reservationHandler;
 
+    //날짜 예약
     @GetMapping("/calendar/day/{roomId}")
     public String getDisabledDates(@PathVariable Long roomId, Model model) {
         List<?> reservedDates = reservationHandler.getReserved(roomId);
         model.addAttribute("disabledDates", reservedDates);
-        return "reservation/dayReservationList";
+        return "reservation/day/dayReservationList";
     }
 
     @PostMapping("/reservation/day/{roomId}")
     public String reserveDay(@PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
         model.addAttribute("dayReservationRegister", dayReservationRegister);
-        return "reservation/reservationForm";
+        return "reservation/day/dayReservationForm";
     }
 
     @PostMapping("/reservation/day/{roomId}/confirm")
@@ -42,22 +45,29 @@ public class ReservationController {
         return "redirect:/home";
     }
 
-
-    /**
-     * TODO Time 예약
-     * 1. 예약 가능 날짜 고르기 /calendar/time/{roomId}
-     * 2. 해당 날짜에 대한 시간 고르기 /calendar/time/{roomId}/{date}
-     * 3. 예약 진행 /reservation/time/{roomId}
-     * 4. 예약 확정 /reservation/time/{roomId}/confirm
-     */
-
+    //시간 예약
     @GetMapping("/calendar/time/{roomId}")
     public String getDisabledTimes(@PathVariable Long roomId, Model model) {
         List<?> reservedTimes = reservationHandler.getReserved(roomId);
+        OperatingHours operatingHours = reservationHandler.getOperatingHours(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
-        return "reservation/timeReservationList";
+        model.addAttribute("operatingHours", operatingHours);
+        return "reservation/time/timeReservationList";
     }
 
+    @PostMapping("/reservation/time/{roomId}")
+    public String reserveTime(@PathVariable Long roomId, TimeReservationRegister timeReservationRegister, Model model) {
+        model.addAttribute("timeReservationRegister", timeReservationRegister);
+        return "reservation/time/timeReservationForm";
+    }
+
+    @PostMapping("/reservation/time/{roomId}/confirm")
+    public String reserveTimeConfirm(@PathVariable Long roomId, @Login User user, TimeReservationRegister timeReservationRegister) {
+        reservationHandler.reservationRegister(user, roomId, timeReservationRegister);
+        return "redirect:/home";
+    }
+
+    //공통 로직
     @GetMapping("/reservation/list")
     public String reservationList(@Login User user, Model model) {
         List<MyReservation> myReservations = reservationHandler.getUserReservations(user.getId());
