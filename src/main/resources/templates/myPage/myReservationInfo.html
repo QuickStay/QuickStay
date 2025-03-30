@@ -21,6 +21,7 @@
             <strong>날짜</strong>
             <span th:text="${reservation.startDate}">시작 날짜</span> ~
             <span th:text="${reservation.endDate}">끝 날짜</span>
+            <span th:if="${reservation.startTime != null}" th:text="'예약 시간 ' + ${reservation.startTime+ ' ~ ' + reservation.endTime} + '~'">예약 시간</span>
         </div>
 
         <!-- 장소 -->
@@ -58,17 +59,19 @@
 
     </div>
 
-    <!-- 예약 취소 버튼 (하단에 위치) -->
-    <button class="cancel-button" onclick="showPopup()"
-            th:if="${reservation.state.name() == 'RESERVED'}">
-        예약 취소
-    </button>
+    <!-- 예약 버튼 컨테이너 -->
+    <div class="reservation-buttons">
+        <button class="cancel-button" onclick="showPopup()"
+                th:if="${reservation.state.name() == 'RESERVED'}">
+            예약 취소
+        </button>
 
-    <!-- 리뷰 작성 버튼 (예약이 완료된 상태일 때만 보여짐) -->
-    <button class="review-button" th:onclick="|window.location.href='/review/${reservationId}/write'|"
-            th:if="${reservation.state.name() == 'RESERVED'}">
-        리뷰 작성
-    </button>
+        <button class="review-button" th:onclick="|window.location.href='/review/${reservationId}/write'|"
+                th:if="${reservation.state.name() == 'RESERVED'}">
+            리뷰 작성
+        </button>
+    </div>
+
 
 </div>
 

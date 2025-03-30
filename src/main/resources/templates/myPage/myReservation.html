@@ -59,8 +59,7 @@
 
   <div class="reservation-container">
     <div th:each="reservation : ${myReservations}"
-         class="reservation-card"
-         th:onclick="|window.location.href='/room/detail/${reservation.roomId}'|">
+         class="reservation-card">
 
       <div class="reservation-title" th:text="${reservation.roomName}"></div>
       <div class="reservation-info">기간: <span th:text="${reservation.startDate+ ' ~ ' + reservation.endDate}"></span></div>

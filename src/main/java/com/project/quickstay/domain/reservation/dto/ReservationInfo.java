@@ -42,7 +42,7 @@ public class ReservationInfo {
         reservationInfo.roomDescription = reservation.getRoom().getDescription();
 
         reservationInfo.startDate = reservation.getStartDate();
-        reservationInfo.endDate = reservation.getStartDate();
+        reservationInfo.endDate = reservation.getEndDate();
         reservationInfo.startTime = reservation.getStartTime();
         reservationInfo.endTime = reservation.getEndTime();
         return reservationInfo;
