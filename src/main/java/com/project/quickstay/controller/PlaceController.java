@@ -93,7 +93,8 @@ public class PlaceController {
      * Room
      */
     @GetMapping("/place/{placeId}/register")
-    public String roomRegisterForm(@PathVariable Long placeId, Model model) {
+    public String roomRegisterForm(@Login User user, @PathVariable Long placeId, Model model) {
+        placeService.validUser(placeId, user);
         model.addAttribute("roomData", new RoomData());
         model.addAttribute("placeId", placeId);
         return "place/room/roomRegister";
@@ -120,7 +121,8 @@ public class PlaceController {
     }
 
     @GetMapping("/room/{roomId}/update")
-    public String roomUpdateForm(@PathVariable Long roomId, Model model) {
+    public String roomUpdateForm(@Login User user, @PathVariable Long roomId, Model model) {
+        roomService.validUser(user, roomId);
         model.addAttribute("roomId", roomId);
         RoomData updateData = roomService.getUpdateData(roomId);
         model.addAttribute("updateData", updateData);

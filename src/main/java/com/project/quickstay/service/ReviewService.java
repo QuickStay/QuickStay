@@ -26,7 +26,8 @@ public class ReviewService {
     private final PlaceRepository placeRepository;
     private final ReviewRepository reviewRepository;
 
-    public ReviewWrite getWriteForm(Long reservationId) {
+    public ReviewWrite getWriteForm(Long reservationId, User user) {
+        validUser(reservationId, user);
         Reservation reservation = getReservationById(reservationId);
         ReviewWrite reviewWrite = new ReviewWrite();
         reviewWrite.setPlaceId(reservation.getRoom().getPlace().getId());
@@ -57,5 +58,12 @@ public class ReviewService {
             throw new ServiceException("장소가 없습니다.");
         }
         return getPlace.get();
+    }
+
+    private void validUser(Long reservationId, User user) {
+        Reservation reservation = getReservationById(reservationId);
+        if (!user.equals(reservation.getUser())) {
+            throw new ServiceException("권한이 없습니다.");
+        }
     }
 }

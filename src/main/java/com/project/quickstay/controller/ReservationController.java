@@ -27,14 +27,14 @@ public class ReservationController {
 
     //날짜 예약
     @GetMapping("/calendar/day/{roomId}")
-    public String getDisabledDates(@PathVariable Long roomId, Model model) {
+    public String getDisabledDates(@Login User user, @PathVariable Long roomId, Model model) {
         List<?> reservedDates = reservationHandler.getReserved(roomId);
         model.addAttribute("disabledDates", reservedDates);
         return "reservation/day/dayReservationList";
     }
 
     @PostMapping("/reservation/day/{roomId}")
-    public String reserveDay(@PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
+    public String reserveDay(@Login User user, @PathVariable Long roomId, DayReservationRegister dayReservationRegister, Model model) {
         model.addAttribute("dayReservationRegister", dayReservationRegister);
         return "reservation/day/dayReservationForm";
     }
@@ -47,7 +47,7 @@ public class ReservationController {
 
     //시간 예약
     @GetMapping("/calendar/time/{roomId}")
-    public String getDisabledTimes(@PathVariable Long roomId, Model model) {
+    public String getDisabledTimes(@Login User user, @PathVariable Long roomId, Model model) {
         List<?> reservedTimes = reservationHandler.getReserved(roomId);
         OperatingHours operatingHours = reservationHandler.getOperatingHours(roomId);
         model.addAttribute("disabledTimes", reservedTimes);
@@ -56,7 +56,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reservation/time/{roomId}")
-    public String reserveTime(@PathVariable Long roomId, TimeReservationRegister timeReservationRegister, Model model) {
+    public String reserveTime(@Login User user, @PathVariable Long roomId, TimeReservationRegister timeReservationRegister, Model model) {
         model.addAttribute("timeReservationRegister", timeReservationRegister);
         return "reservation/time/timeReservationForm";
     }
@@ -84,8 +84,8 @@ public class ReservationController {
 
     //예약 취소 - 공통 처리
     @GetMapping("/reservation/cancel/{reservationId}")
-    public String cancelReservation(@PathVariable Long reservationId) {
-        reservationHandler.cancelReservation(reservationId);
+    public String cancelReservation(@Login User user, @PathVariable Long reservationId) {
+        reservationHandler.cancelReservation(reservationId, user);
         return "redirect:/reservation/list";
     }
 

@@ -48,7 +48,8 @@ public class ReservationHandler {
         return reservationRepository.save(reservation);
     }
 
-    public void cancelReservation(Long reservationId) {
+    public void cancelReservation(Long reservationId, User user) {
+        validUser(reservationId, user);
         Reservation reservation = getReservationById(reservationId);
         reservation.updateState(State.CANCELLED);
     }
@@ -77,5 +78,12 @@ public class ReservationHandler {
             throw new ServiceException("예약이 없습니다.");
         }
         return getReservation.get();
+    }
+
+    private void validUser(Long reservationId, User user) {
+        Reservation reservation = getReservationById(reservationId);
+        if (!reservation.getUser().equals(user)) {
+            throw new ServiceException("권한이 없습니다.");
+        }
     }
 }

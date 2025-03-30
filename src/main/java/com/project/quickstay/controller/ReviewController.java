@@ -19,8 +19,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/review/{reservationId}/write")
-    public String writeReviewForm(@PathVariable Long reservationId, Model model) {
-        ReviewWrite writeForm = reviewService.getWriteForm(reservationId);
+    public String writeReviewForm(@Login User user, @PathVariable Long reservationId, Model model) {
+        ReviewWrite writeForm = reviewService.getWriteForm(reservationId, user);
         model.addAttribute("reservationId", reservationId);
         model.addAttribute("write", writeForm);
         return "review/reviewWrite";

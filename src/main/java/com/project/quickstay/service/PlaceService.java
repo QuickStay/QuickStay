@@ -34,14 +34,14 @@ public class PlaceService {
     }
 
     public void update(User user, Long placeId, PlaceUpdate placeUpdate) { //장소정보 수정
+        validUser(placeId, user);
         Place place = getById(placeId);
-        validUser(place.getUser(), user);
         place.update(placeUpdate);
     }
 
     public void delete(User user, Long placeId) {
+        validUser(placeId, user);
         Place place = getById(placeId);
-        validUser(place.getUser(), user);
         int count = roomRepository.getRoomCountByPlaceId(placeId);
         if (count != 0) {
             throw new ServiceException("방을 먼저 삭제해야 합니다.");
@@ -64,9 +64,10 @@ public class PlaceService {
         return placeRepository.search(placeId, keyword, 10);
     }
 
-    private void validUser(User user1, User user2) {
-        if (!user1.equals(user2)) {
-            throw new ServiceException("유저 검증에 실패하였습니다.");
+    public void validUser(Long placeId, User user2) {
+        Place place = getById(placeId);
+        if (!place.getUser().equals(user2)) {
+            throw new ServiceException("권한이 없습니다.");
         }
     }
 
