@@ -34,15 +34,28 @@
 }
 
 .place-item {
+    display: flex; /* Flexbox로 설정하여 이미지와 정보가 가로로 나열되도록 함 */
+    align-items: flex-start; /* 이미지와 텍스트가 상단에 맞춰 정렬되도록 설정 */
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.place-item img {
+    width: 100px; /* 이미지 크기 설정 */
+    height: auto; /* 비율에 맞게 자동으로 높이 설정 */
+    margin-right: 20px; /* 이미지와 텍스트 사이에 여백 추가 */
+}
+
+.place-item .info {
+    display: block; /* 정보를 block 요소로 만들어 줄바꿈을 적용 */
+}
+
 .place-item h3 a {
     text-decoration: none;
     color: #007bff;
+    font-size: 18px;
 }
 
 .pagination {

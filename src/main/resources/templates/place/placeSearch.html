@@ -15,10 +15,13 @@
     <!-- 📌 검색 결과 -->
     <div class="place-list">
         <div class="place-item" th:each="place : ${search}">
-            <h3><a th:href="@{/place/{id}/info(id=${place.id})}" th:text="${place.name}">장소 이름</a></h3>
-            <p><strong>소유자:</strong> <span th:text="${place.owner}"></span></p>
-            <p><strong>설명:</strong> <span th:text="${place.description}"></span></p>
-            <p><strong>주소:</strong> <span th:text="${place.address}"></span></p>
+            <img th:src="@{/images/quickstay.png}" alt="로고">
+            <div class="info"> <!-- 각 항목을 감싸는 div -->
+                <h3><a th:href="@{/place/{id}/info(id=${place.id})}" th:text="${place.name}">장소 이름</a></h3>
+                <p><strong>소유자:</strong> <span th:text="${place.owner}"></span></p>
+                <p><strong>설명:</strong> <span th:text="${place.description}"></span></p>
+                <p><strong>주소:</strong> <span th:text="${place.address}"></span></p>
+            </div>
         </div>
     </div>
 
