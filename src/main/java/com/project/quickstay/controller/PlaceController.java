@@ -79,6 +79,7 @@ public class PlaceController {
     public String placeSearch(@RequestParam(required = false) Long last, @RequestParam String keyword, Model model) {
         List<PlaceSearch> search = placeService.search(keyword, last);
         model.addAttribute("search", search);
+        model.addAttribute("last", last);
         return "place/placeSearch";
     }
 
