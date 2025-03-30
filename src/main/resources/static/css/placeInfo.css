@@ -72,3 +72,61 @@ p {
     color: #222;
     font-weight: bold;
 }
+
+/* 리뷰 목록 */
+.review-list {
+    margin-top: 40px;
+}
+
+/* 개별 리뷰 항목 */
+.review-item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+/* 리뷰 작성자 및 점수 */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.review-header strong {
+    color: #333;
+    font-size: 18px;
+}
+
+.review-score {
+    color: #ff9900;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* 리뷰 내용 */
+.review-content {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* 리뷰 작성일 */
+.review-footer {
+    font-size: 14px;
+    color: #888;
+    text-align: right;
+}
+
+/* 방 이름 */
+.review-room {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.review-room strong {
+    font-weight: bold;
+    color: #333;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 작성</title>
+    <style>
+        /* 별점 스타일 */
+        .star-rating {
+            display: flex;
+            direction: row;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        .star {
+            color: #ddd; /* 기본 별 색상 (회색) */
+            margin: 0 5px;
+            transition: color 0.3s ease-in-out; /* 부드럽게 색상 변경 */
+        }
+
+        .star.selected {
+            color: gold; /* 선택된 별 색상 (금색) */
+        }
+
+        /* 클릭된 별 반별 처리 */
+        .star.half {
+            color: gold; /* 반별 색상 */
+            background: linear-gradient(90deg, gold 50%, #ddd 50%);
+        }
+
+        .star-rating input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{fragment/header :: header}"></header>
+
+<div class="container">
+    <h1>리뷰 작성</h1>
+
+    <!-- 리뷰 작성 폼 -->
+    <form th:action="@{/review/{reservationId}/write(reservationId=${reservationId})}" method="post" th:object="${write}">
+
+        <!-- placeId와 roomName은 hidden으로 넘겨줌 -->
+        <input type="hidden" th:field="*{placeId}" />
+        <input type="hidden" th:field="*{roomName}" />
+
+        <!-- 평점 입력 (별점 선택) -->
+        <div>
+            <label for="score">평점</label>
+            <div class="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <input type="hidden" id="score" th:field="*{score}" required />
+        </div>
+
+        <!-- 리뷰 내용 입력 -->
+        <div>
+            <label for="content">리뷰 내용</label>
+            <textarea id="content" th:field="*{content}" rows="5" cols="40" required></textarea>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit">리뷰 작성</button>
+    </form>
+</div>
+
+<script>
+    // 별점 선택
+    const stars = document.querySelectorAll('.star');
+    const scoreInput = document.getElementById('score');
+
+    let currentRating = 0;
+
+    // 별 선택 시 동작
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const rating = parseFloat(star.getAttribute('data-value'));
+            updateStars(rating, 'hover');
+        });
+
+        star.addEventListener('mouseout', () => {
+            updateStars(currentRating, 'default');
+        });
+
+        star.addEventListener('click', () => {
+            currentRating = parseFloat(star.getAttribute('data-value'));
+            scoreInput.value = currentRating;
+            updateStars(currentRating, 'default');
+        });
+    });
+
+    // 별 색상 업데이트 함수
+    function updateStars(rating, state) {
+        stars.forEach(star => {
+            const value = parseFloat(star.getAttribute('data-value'));
+            if (state === 'hover') {
+                if (value <= rating) {
+                    star.classList.add('selected');
+                    star.classList.remove('half');
+                } else {
+                    star.classList.remove('selected', 'half');
+                }
+            } else if (state === 'default') {
+                if (value <= rating) {
+                    star.classList.add('selected');
+                    star.classList.remove('half');
+                } else {
+                    star.classList.remove('selected', 'half');
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

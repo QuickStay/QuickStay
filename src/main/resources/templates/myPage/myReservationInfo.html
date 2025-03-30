@@ -64,6 +64,12 @@
         예약 취소
     </button>
 
+    <!-- 리뷰 작성 버튼 (예약이 완료된 상태일 때만 보여짐) -->
+    <button class="review-button" th:onclick="|window.location.href='/review/${reservationId}/write'|"
+            th:if="${reservation.state.name() == 'RESERVED'}">
+        리뷰 작성
+    </button>
+
 </div>
 
 <!-- 예약 취소 확인 팝업 -->

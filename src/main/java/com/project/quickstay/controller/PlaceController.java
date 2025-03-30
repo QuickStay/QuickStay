@@ -1,6 +1,8 @@
 package com.project.quickstay.controller;
 
 import com.project.quickstay.domain.place.dto.PlaceUpdate;
+import com.project.quickstay.domain.review.dto.ReviewInfo;
+import com.project.quickstay.domain.review.entity.Review;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
@@ -9,6 +11,7 @@ import com.project.quickstay.domain.place.dto.PlaceSearch;
 import com.project.quickstay.domain.room.dto.RoomData;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.PlaceService;
+import com.project.quickstay.service.ReviewService;
 import com.project.quickstay.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class PlaceController {
 
     private final PlaceService placeService;
     private final RoomService roomService;
+    private final ReviewService reviewService;
 
     @GetMapping("/place/register")
     public String placeRegisterForm(Model model) {
@@ -71,7 +75,9 @@ public class PlaceController {
     @GetMapping("/place/{placeId}/info")
     public String placeInfo(@PathVariable Long placeId, Model model) {
         PlaceInfo info = placeService.info(placeId);
+        List<ReviewInfo> reviews = reviewService.getPlaceReview(placeId);
         model.addAttribute("info", info);
+        model.addAttribute("reviews", reviews);
         return "place/placeInfo";
     }
 

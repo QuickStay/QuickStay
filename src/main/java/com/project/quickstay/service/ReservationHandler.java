@@ -58,7 +58,7 @@ public class ReservationHandler {
         return MyReservation.of(allReservations);
     }
 
-    public ReservationInfo getSpecificReservation(Long reservationId, User user) {
+    public ReservationInfo getSpecificReservation(Long reservationId) {
         Reservation reservation = getReservationById(reservationId);
         return ReservationInfo.of(reservation);
     }

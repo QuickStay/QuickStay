@@ -77,7 +77,7 @@ public class ReservationController {
 
     @GetMapping("/reservation/{reservationId}")
     public String findReservations(@Login User user, @PathVariable Long reservationId, Model model) {
-        ReservationInfo reservation = reservationHandler.getSpecificReservation(reservationId, user);
+        ReservationInfo reservation = reservationHandler.getSpecificReservation(reservationId);
         model.addAttribute("reservation", reservation);
         return "/myPage/myReservationInfo";
     }

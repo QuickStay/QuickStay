@@ -53,6 +53,26 @@
         </div>
     </div>
 
+    <!-- 리뷰 목록 -->
+    <h2>리뷰 목록</h2>
+    <div class="review-list">
+        <div class="review-item" th:each="review : ${reviews}">
+            <div class="review-header">
+                <strong th:text="${review.username}">Username</strong>
+                <span class="review-score">점수: <span th:text="${review.score}">점수</span></span>
+            </div>
+            <div class="review-room">
+                <strong>예약한 방: </strong><span th:text="${review.roomName}">예약한 방</span>
+            </div>
+            <div class="review-content">
+                <p th:text="${review.content}">리뷰 내용</p>
+            </div>
+            <div class="review-footer">
+                <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm:ss')}">작성일</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>
