@@ -127,21 +127,55 @@
       selectedStartTime = time;
       selectedEndTime = null;
     } else if (!selectedEndTime) {
-      if (timeIndex < timeList.indexOf(selectedStartTime)) {
-        selectedEndTime = selectedStartTime;
-        selectedStartTime = time;
-      } else {
-        selectedEndTime = time;
+      let startIdx = timeList.indexOf(selectedStartTime);
+      let endIdx = timeIndex;
+      if (endIdx < startIdx) {
+        [startIdx, endIdx] = [endIdx, startIdx];
       }
+
+      let hasDisabled = buttons.slice(startIdx, endIdx + 1).some(btn => btn.classList.contains("disabled"));
+
+      if (hasDisabled || startIdx >= endIdx) {
+        alert("선택한 시간 범위에 예약 불가능한 시간이 포함되어 있거나 시작 시간이 종료 시간보다 늦습니다.");
+        selectedStartTime = null;
+        selectedEndTime = null;
+        updateSelectedTimeRange();
+        updateReserveButtonState();
+        updateHiddenInputs();
+        updateButtonStyles();
+        return;
+      }
+
+      selectedEndTime = time;
     } else {
       selectedStartTime = time;
       selectedEndTime = null;
     }
 
+    updateButtonStyles();
     updateSelectedTimeRange();
     updateReserveButtonState();
     updateHiddenInputs();
   }
+
+  function updateButtonStyles() {
+    let buttons = document.querySelectorAll("#timeButtons button");
+    buttons.forEach(button => {
+      button.classList.remove("selected");
+      let timeText = button.textContent;
+      if (selectedStartTime && selectedEndTime) {
+        let timeList = buttons.map(b => b.textContent);
+        let startIdx = timeList.indexOf(selectedStartTime);
+        let endIdx = timeList.indexOf(selectedEndTime);
+        if (timeList.indexOf(timeText) >= startIdx && timeList.indexOf(timeText) <= endIdx) {
+          button.classList.add("selected");
+        }
+      } else if (timeText === selectedStartTime) {
+        button.classList.add("selected");
+      }
+    });
+  }
+
 
   function updateSelectedTimeRange() {
     document.getElementById("selectedTimeText").textContent = selectedStartTime && selectedEndTime ? `${selectedStartTime} ~ ${selectedEndTime}` : "없음";
