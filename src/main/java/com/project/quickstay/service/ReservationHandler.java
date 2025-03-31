@@ -1,6 +1,8 @@
 package com.project.quickstay.service;
 
 import com.project.quickstay.common.State;
+import com.project.quickstay.common.eventListener.EventHandler;
+import com.project.quickstay.common.eventListener.ReservationEvent;
 import com.project.quickstay.domain.reservation.dto.MyReservation;
 import com.project.quickstay.domain.reservation.dto.OperatingHours;
 import com.project.quickstay.domain.reservation.dto.ReservationInfo;
@@ -27,6 +29,7 @@ public class ReservationHandler {
     private final ReservationServiceSelector selector;
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
+    private final EventHandler eventHandler;
 
     public List<? extends Temporal> getReserved(Long roomId) {
         Room room = getRoomById(roomId);
@@ -45,6 +48,7 @@ public class ReservationHandler {
         register.placeRoom(room);
         register.placeUser(user);
         Reservation reservation = register.createReservation();
+        eventHandler.handleReservationRegister(new ReservationEvent(room));
         return reservationRepository.save(reservation);
     }
 
@@ -52,6 +56,7 @@ public class ReservationHandler {
         validUser(reservationId, user);
         Reservation reservation = getReservationById(reservationId);
         reservation.updateState(State.CANCELLED);
+        eventHandler.handleReservationCancel(new ReservationEvent(reservation.getRoom()));
     }
 
     public List<MyReservation> getUserReservations(Long userId) {

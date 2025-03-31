@@ -1,5 +1,7 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.common.eventListener.EventHandler;
+import com.project.quickstay.common.eventListener.ReviewEvent;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.reservation.entity.Reservation;
 import com.project.quickstay.domain.review.dto.ReviewInfo;
@@ -25,6 +27,7 @@ public class ReviewService {
     private final ReservationRepository reservationRepository;
     private final PlaceRepository placeRepository;
     private final ReviewRepository reviewRepository;
+    private final EventHandler eventHandler;
 
     public ReviewWrite getWriteForm(Long reservationId, User user) {
         validUser(reservationId, user);
@@ -37,6 +40,7 @@ public class ReviewService {
 
     public Review writeReview(ReviewWrite reviewWrite, User user) {
         Review review = Review.writeReview(reviewWrite, user, getPlaceById(reviewWrite.getPlaceId()));
+        eventHandler.handleReviewWrite(new ReviewEvent(review.getPlace(), reviewWrite.getScore()));
         return reviewRepository.save(review);
     }
 
