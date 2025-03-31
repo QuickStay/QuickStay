@@ -31,6 +31,12 @@ public class Place {
 
     private String contact;
 
+    private int reservedCount;
+
+    private int reviewCount;
+
+    private float reviewAverage;
+
     public Place() {
     }
 
@@ -41,6 +47,9 @@ public class Place {
         place.description = placeRegister.getDescription();
         place.address = placeRegister.getAddress();
         place.contact = placeRegister.getContact();
+        place.reservedCount = 0;
+        place.reviewCount = 0;
+        place.reviewAverage = 0;
         return place;
     }
 
@@ -49,5 +58,28 @@ public class Place {
         this.description = placeUpdate.getDescription();
         this.address = placeUpdate.getAddress();
         this.contact = placeUpdate.getContact();
+    }
+
+    public void plusReservedCount() {
+        reservedCount++;
+    }
+
+    public void minusReservedCount() {
+        reservedCount--;
+    }
+
+    public void reviewAdded(int score) {
+        if (this.reviewCount == 0) {
+            this.reviewAverage = score;
+        } else {
+            this.reviewAverage = Math.round(((reviewAverage * reviewCount) + score) / (reviewCount + 1) * 100) / 100.0f;
+        }
+
+        this.reviewCount++;
+    }
+
+    public void reviewDeleted(int score) {
+        this.reviewAverage = Math.round(((reviewAverage * reviewCount) - score) / (reviewCount - 1) * 100) / 100.0f;
+        this.reviewCount -= 1;
     }
 }

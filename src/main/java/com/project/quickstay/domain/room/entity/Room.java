@@ -26,6 +26,8 @@ public class Room {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Booking booking;
 
+    private int reservedCount;
+
     public Room() {
 
     }
@@ -60,4 +62,13 @@ public class Room {
         return booking.operatingHours();
     }
 
+    public void plusReservedCount() {
+        place.plusReservedCount();
+        reservedCount++;
+    }
+
+    public void minusReservedCount() {
+        place.minusReservedCount();
+        reservedCount--;
+    }
 }
