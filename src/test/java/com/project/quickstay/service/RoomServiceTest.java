@@ -42,9 +42,6 @@ class RoomServiceTest {
     @Autowired
     RoomRepository roomRepository;
 
-    @Autowired
-    BookingRepository bookingRepository;
-
     User user1;
     Place place1;
 
