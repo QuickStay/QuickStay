@@ -11,4 +11,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceSearch
 
     @Query("select new com.project.quickstay.domain.place.dto.MyPlaceInfo(p) from Place p where p.user.id=:userId")
     List<MyPlaceInfo> getMyPlace(Long userId);
+
+    int countByUserId(Long userId);
 }

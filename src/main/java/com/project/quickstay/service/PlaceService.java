@@ -24,6 +24,7 @@ public class PlaceService {
     private final RoomRepository roomRepository;
 
     public Place register(User user, PlaceRegister placeRegister) { //장소 등록
+        canAddPlace(user.getId());
         Place place = Place.register(user, placeRegister);
         return placeRepository.save(place);
     }
@@ -77,5 +78,12 @@ public class PlaceService {
             throw new ServiceException("장소가 없습니다.");
         }
         return place.get();
+    }
+
+    private void canAddPlace(Long userId) {
+        int count = placeRepository.countByUserId(userId);
+        if (count >= 10) {
+            throw new ServiceException("최대 장소 소유 개수를 초과하였습니다.");
+        }
     }
 }

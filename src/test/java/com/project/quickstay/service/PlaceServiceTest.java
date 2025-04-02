@@ -78,6 +78,20 @@ public class PlaceServiceTest {
     }
 
     @Test
+    @DisplayName("사용자는 장소를 10개까지만 등록할 수 있다")
+    void test1_1() {
+        PlaceRegister placeRegister = new PlaceRegister();
+
+        //10개 등록
+        for (int i = 0; i < 10; i++) {
+            placeService.register(user1, placeRegister);
+        }
+
+        //11번째 등록
+        assertThatThrownBy(() -> placeService.register(user1, placeRegister)).isInstanceOf(ServiceException.class);
+    }
+
+    @Test
     @DisplayName("사용자는 장소를 수정할 수 있다")
     void test2() {
         PlaceRegister placeRegister1 = new PlaceRegister();
