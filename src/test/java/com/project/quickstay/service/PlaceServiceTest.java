@@ -65,7 +65,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);
@@ -73,7 +75,9 @@ public class PlaceServiceTest {
         assertThat(place.getId()).isNotNull();
         assertThat(place.getName()).isEqualTo("한옥");
         assertThat(place.getDescription()).isEqualTo("우아한 한옥입니다");
-        assertThat(place.getAddress()).isEqualTo("강원도 춘천시");
+        assertThat(place.getProvince()).isEqualTo("강원도");
+        assertThat(place.getCity()).isEqualTo("춘천시");
+        assertThat(place.getDetailAddress()).isEqualTo("강원대학교");
         assertThat(place.getContact()).isEqualTo("01012345678");
     }
 
@@ -97,7 +101,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister1 = new PlaceRegister();
         placeRegister1.setName("한옥");
         placeRegister1.setDescription("우아한 한옥입니다");
-        placeRegister1.setAddress("강원도 춘천시");
+        placeRegister1.setProvince("강원도");
+        placeRegister1.setCity("춘천시");
+        placeRegister1.setDetailAddress("강원대학교");
         placeRegister1.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister1);
@@ -105,7 +111,9 @@ public class PlaceServiceTest {
         PlaceUpdate placeUpdate = new PlaceUpdate();
         placeUpdate.setName("호텔");
         placeUpdate.setDescription("신축 호텔");
-        placeUpdate.setAddress("강원도 춘천시");
+        placeUpdate.setProvince("강원도");
+        placeUpdate.setCity("정선군");
+        placeUpdate.setDetailAddress("강원랜드");
         placeUpdate.setContact("01087654321");
 
         placeService.update(user1, place.getId(), placeUpdate);
@@ -113,7 +121,9 @@ public class PlaceServiceTest {
         assertThat(place.getId()).isNotNull();
         assertThat(place.getName()).isEqualTo("호텔");
         assertThat(place.getDescription()).isEqualTo("신축 호텔");
-        assertThat(place.getAddress()).isEqualTo("강원도 춘천시");
+        assertThat(place.getProvince()).isEqualTo("강원도");
+        assertThat(place.getCity()).isEqualTo("정선군");
+        assertThat(place.getDetailAddress()).isEqualTo("강원랜드");
         assertThat(place.getContact()).isEqualTo("01087654321");
     }
 
@@ -123,7 +133,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);
@@ -140,7 +152,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);
@@ -166,7 +180,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);
@@ -182,7 +198,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);
@@ -198,7 +216,9 @@ public class PlaceServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         Place place = placeService.register(user1, placeRegister);

@@ -57,7 +57,9 @@ class RoomServiceTest {
         PlaceRegister placeRegister = new PlaceRegister();
         placeRegister.setName("한옥");
         placeRegister.setDescription("우아한 한옥입니다");
-        placeRegister.setAddress("강원도 춘천시");
+        placeRegister.setProvince("강원도");
+        placeRegister.setCity("춘천시");
+        placeRegister.setDetailAddress("강원대학교");
         placeRegister.setContact("01012345678");
 
         place1 = placeService.register(user1, placeRegister);
