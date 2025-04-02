@@ -1,7 +1,9 @@
 package com.project.quickstay.domain.reservation.dto;
 
 import com.project.quickstay.common.State;
+import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.reservation.entity.Reservation;
+import com.project.quickstay.domain.room.entity.Room;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,11 +35,13 @@ public class MyReservation {
     }
 
     public MyReservation(Reservation reservation) {
+        Room room = reservation.getRoom();
+        Place place = room.getPlace();
         this.id = reservation.getId();
-        this.roomId = reservation.getRoom().getId();
-        this.roomName = reservation.getRoom().getName();
-        this.address = reservation.getRoom().getPlace().getAddress();
-        this.contact = reservation.getRoom().getPlace().getContact();
+        this.roomId = room.getId();
+        this.roomName = room.getName();
+        this.address = place.getProvince() + " " + place.getCity() + " " + place.getDetailAddress();
+        this.contact = place.getContact();
         this.startDate = reservation.getStartDate();
         this.endDate = reservation.getEndDate();
         this.startTime = reservation.getStartTime();

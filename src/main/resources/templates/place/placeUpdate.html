@@ -1,32 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Place Update</title>
     <link th:href="@{/css/placeUpdate.css}" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/data/regions.json") // JSON 파일 가져오기
+                .then(response => response.json())
+                .then(data => {
+                    let provinceSelect = document.getElementById("province");
+                    let citySelect = document.getElementById("city");
+
+                    let initialProvince = provinceSelect.getAttribute("data-initial");
+                    let initialCity = citySelect.getAttribute("data-initial");
+
+                    console.log("초기 시/도:", initialProvince); // 디버깅
+                    console.log("초기 시/군/구:", initialCity);
+
+                    // 📌 시/도 옵션 추가
+                    Object.keys(data).forEach(province => {
+                        let option = document.createElement("option");
+                        option.value = province;
+                        option.textContent = province;
+                        provinceSelect.appendChild(option);
+                    });
+
+                    // 📌 기존 시/도 값 설정 후 도시 업데이트
+                    if (initialProvince && data[initialProvince]) {
+                        provinceSelect.value = initialProvince;
+                        updateCities(initialProvince, initialCity);
+                    }
+
+                    // 📌 시/도 변경 시 시/군/구 옵션 업데이트
+                    provinceSelect.addEventListener("change", function () {
+                        updateCities(this.value);
+                    });
+
+                    function updateCities(selectedProvince, selectedCity = null) {
+                        citySelect.innerHTML = "<option value=''>시/군/구 선택</option>";
+
+                        if (selectedProvince && data[selectedProvince]) {
+                            data[selectedProvince].forEach(city => {
+                                let option = document.createElement("option");
+                                option.value = city;
+                                option.textContent = city;
+                                citySelect.appendChild(option);
+                            });
+
+                            // 📌 기존 시/군/구 값 유지
+                            if (selectedCity && data[selectedProvince].includes(selectedCity)) {
+                                citySelect.value = selectedCity;
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("JSON 로드 오류:", error);
+                    alert("지역 데이터를 불러오는 중 문제가 발생했습니다.");
+                });
+        });
+    </script>
 </head>
 <body>
-<form th:action="@{'/place/' + ${placeId} + '/update'}" method="post" th:object="${updateData}">
+<form id="updateForm" th:action="@{'/place/' + ${placeId} + '/update'}" method="post" th:object="${updateData}">
     <label>이름:</label>
-    <input type="text" th:field="*{name}" />
+    <input type="text" id="name" th:field="*{name}" required />
     <br>
     <span th:if="${#fields.hasErrors('name')}" th:each="err : ${#fields.errors('name')}" style="color: red; display: block;">[[${err}]]</span>
 
     <label>설명:</label>
-    <textarea th:field="*{description}"></textarea>
+    <textarea id="description" th:field="*{description}" required></textarea>
     <br>
     <span th:if="${#fields.hasErrors('description')}" th:each="err : ${#fields.errors('description')}" style="color: red; display: block;">[[${err}]]</span>
 
-    <label>주소:</label>
-    <input type="text" th:field="*{address}" />
+    <label>시/도 선택:</label>
+    <select id="province" th:field="*{province}" th:attr="data-initial=${updateData.province}" required>
+        <option value="">시/도 선택</option>
+    </select>
+
+    <label>시/군/구 선택:</label>
+    <select id="city" th:field="*{city}" th:attr="data-initial=${updateData.city}" required>
+        <option value="">시/군/구 선택</option>
+    </select>
+
+    <label>상세 주소:</label>
+    <input type="text" id="detailAddress" name="detailAddress" th:field="*{detailAddress}" required />
     <br>
-    <span th:if="${#fields.hasErrors('address')}" th:each="err : ${#fields.errors('address')}" style="color: red; display: block;">[[${err}]]</span>
 
     <label>연락처:</label>
-    <input type="text" th:field="*{contact}" />
+    <input type="text" id="contact" th:field="*{contact}" required />
     <br>
     <span th:if="${#fields.hasErrors('contact')}" th:each="err : ${#fields.errors('contact')}" style="color: red; display: block;">[[${err}]]</span>
-
 
     <button type="submit">수정</button>
 </form>

@@ -27,7 +27,11 @@ public class Place {
 
     private String description;
 
-    private String address;
+    private String province;
+
+    private String city;
+
+    private String detailAddress;
 
     private String contact;
 
@@ -45,7 +49,9 @@ public class Place {
         place.user = user;
         place.name = placeRegister.getName();
         place.description = placeRegister.getDescription();
-        place.address = placeRegister.getAddress();
+        place.province = placeRegister.getProvince();
+        place.city = placeRegister.getCity();
+        place.detailAddress = placeRegister.getDetailAddress();
         place.contact = placeRegister.getContact();
         place.reservedCount = 0;
         place.reviewCount = 0;
@@ -56,7 +62,9 @@ public class Place {
     public void update(PlaceUpdate placeUpdate) {
         this.name = placeUpdate.getName();
         this.description = placeUpdate.getDescription();
-        this.address = placeUpdate.getAddress();
+        this.province = placeUpdate.getProvince();
+        this.city = placeUpdate.getCity();
+        this.detailAddress = placeUpdate.getDetailAddress();
         this.contact = placeUpdate.getContact();
     }
 

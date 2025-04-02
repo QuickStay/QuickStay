@@ -20,7 +20,7 @@ public class MyPlaceInfo {
         this.id = place.getId();
         this.name = place.getName();
         this.description = place.getDescription();
-        this.address = place.getAddress();
+        this.address = place.getProvince() + " " + place.getCity() + " " + place.getDetailAddress();
         this.contact = place.getContact();
         this.roomCount = place.getRooms().size();
     }

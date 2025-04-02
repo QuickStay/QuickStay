@@ -18,7 +18,7 @@ public class PlaceSearchRepositoryImpl implements PlaceSearchRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public List<PlaceSearch> search(Long placeId, String keyword, int pageSize) {
-         return jpaQueryFactory.select(new QPlaceSearch(place.id, place.user.nickname, place.name, place.description, place.address))
+         return jpaQueryFactory.select(new QPlaceSearch(place.id, place.user.nickname, place.name, place.description, place.province, place.city, place.detailAddress))
                 .from(place)
                 .where(ltPlaceId(placeId))
                 .where(keywordEq(keyword))
@@ -29,7 +29,7 @@ public class PlaceSearchRepositoryImpl implements PlaceSearchRepository {
 
     private BooleanExpression keywordEq(String keyword) {
         if (!keyword.isEmpty()) {
-            return place.address.contains(keyword).or(place.name.contains(keyword)).or(place.description.contains(keyword));
+            return place.province.contains(keyword).or(place.name.contains(keyword)).or(place.description.contains(keyword)).or(place.city.contains(keyword)).or(place.detailAddress.contains(keyword));
         }
         return null;
     }

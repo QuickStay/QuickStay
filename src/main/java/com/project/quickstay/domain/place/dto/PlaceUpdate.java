@@ -14,7 +14,11 @@ public class PlaceUpdate {
     @NotEmpty
     private String description;
     @NotEmpty
-    private String address;
+    private String province;
+    @NotEmpty
+    private String city;
+    @NotEmpty
+    private String detailAddress;
     @NotEmpty
     private String contact;
 
@@ -22,7 +26,9 @@ public class PlaceUpdate {
         PlaceUpdate placeUpdate = new PlaceUpdate();
         placeUpdate.name = place.getName();
         placeUpdate.description = place.getDescription();
-        placeUpdate.address = place.getAddress();
+        placeUpdate.province = place.getProvince();
+        placeUpdate.city = place.getCity();
+        placeUpdate.detailAddress = place.getDetailAddress();
         placeUpdate.contact = place.getContact();
         return placeUpdate;
     }

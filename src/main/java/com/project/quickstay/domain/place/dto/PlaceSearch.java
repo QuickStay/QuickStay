@@ -15,11 +15,11 @@ public class PlaceSearch {
     private String address;
 
     @QueryProjection
-    public PlaceSearch(Long id, String owner, String name, String description, String address) {
+    public PlaceSearch(Long id, String owner, String name, String description, String province, String city, String detailAddress) {
         this.id = id;
         this.owner = owner;
         this.name = name;
         this.description = description;
-        this.address = address;
+        this.address = province + " " + city + " " + detailAddress;
     }
 }

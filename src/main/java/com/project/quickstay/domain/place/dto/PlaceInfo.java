@@ -28,7 +28,7 @@ public class PlaceInfo {
         owner = place.getUser().getNickname();
         name = place.getName();
         description = place.getDescription();
-        address = place.getAddress();
+        address = place.getProvince() + " " + place.getCity() + " " + place.getDetailAddress();
         contact = place.getContact();
 
         roomCount = place.getRooms().size();
