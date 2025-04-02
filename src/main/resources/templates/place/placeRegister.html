@@ -1,33 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Place Register</title>
-    <link th:href="@{/css/placeRegister.css}" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Place Register</title>
+  <link th:href="@{/css/placeRegister.css}" rel="stylesheet">
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("/data/regions.json") // JSON 파일 가져오기
+              .then(response => response.json())
+              .then(data => {
+                let provinceSelect = document.getElementById("province");
+                let citySelect = document.getElementById("city");
+                let detailAddressInput = document.getElementById("detailAddress");
+                let addressInput = document.getElementById("address");
+
+                // 시/도 옵션 추가
+                Object.keys(data).forEach(province => {
+                  let option = document.createElement("option");
+                  option.value = province;
+                  option.textContent = province;
+                  provinceSelect.appendChild(option);
+                });
+
+                // 시/도 변경 시 시/군/구 옵션 추가
+                provinceSelect.addEventListener("change", function () {
+                  let selectedProvince = this.value;
+                  citySelect.innerHTML = "<option value=''>시/군/구 선택</option>";
+
+                  if (selectedProvince) {
+                    data[selectedProvince].forEach(city => {
+                      let option = document.createElement("option");
+                      option.value = city;
+                      option.textContent = city;
+                      citySelect.appendChild(option);
+                    });
+                  }
+                  updateAddress(); // 주소 업데이트
+                });
+
+                // 시/군/구 선택 시 주소 필드 업데이트
+                citySelect.addEventListener("change", updateAddress);
+
+                // 상세 주소 입력 시 주소 필드 업데이트
+                detailAddressInput.addEventListener("input", updateAddress);
+
+                function updateAddress() {
+                  let selectedProvince = provinceSelect.value;
+                  let selectedCity = citySelect.value;
+                  let detailAddress = detailAddressInput.value;
+
+                  let fullAddress = selectedProvince + " " + selectedCity;
+                  if (detailAddress.trim() !== "") {
+                    fullAddress += " " + detailAddress;
+                  }
+
+                  addressInput.value = fullAddress; // 최종 주소 입력 필드 업데이트
+                }
+              })
+              .catch(error => console.error("JSON 로드 오류:", error));
+
+      // 🚨 폼 제출 시 유효성 검사 추가
+      document.getElementById("placeForm").addEventListener("submit", function (event) {
+        let province = document.getElementById("province").value;
+        let city = document.getElementById("city").value;
+        let detailAddress = document.getElementById("detailAddress").value.trim();
+
+        if (!province) {
+          alert("시/도를 선택해주세요.");
+          event.preventDefault();
+          return;
+        }
+        if (!city) {
+          alert("시/군/구를 선택해주세요.");
+          event.preventDefault();
+          return;
+        }
+        if (detailAddress === "") {
+          alert("상세 주소를 입력해주세요.");
+          event.preventDefault();
+          return;
+        }
+      });
+
+    });
+  </script>
 </head>
 <body>
-  <form action="/place/register" method="post" th:object="${placeRegister}">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" th:field="*{name}">
-    <br>
-    <span th:if="${#fields.hasErrors('name')}" th:each="err : ${#fields.errors('name')}" style="color: red; display: block;">[[${err}]]</span>
+<form id="placeForm" action="/place/register" method="post" th:object="${placeRegister}">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" th:field="*{name}">
+  <br>
+  <span th:if="${#fields.hasErrors('name')}" th:each="err : ${#fields.errors('name')}" style="color: red; display: block;">[[${err}]]</span>
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" th:field="*{description}"></textarea>
-    <br>
-    <span th:if="${#fields.hasErrors('description')}" th:each="err : ${#fields.errors('description')}" style="color: red; display: block;">[[${err}]]</span>
+  <label for="description">Description:</label>
+  <textarea id="description" name="description" th:field="*{description}"></textarea>
+  <br>
+  <span th:if="${#fields.hasErrors('description')}" th:each="err : ${#fields.errors('description')}" style="color: red; display: block;">[[${err}]]</span>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" th:field="*{address}">
-    <br>
-    <span th:if="${#fields.hasErrors('address')}" th:each="err : ${#fields.errors('address')}" style="color: red; display: block;">[[${err}]]</span>
+  <label for="province">시/도 선택:</label>
+  <select id="province">
+    <option value="">시/도 선택</option>
+  </select>
 
-    <label for="contact">Contact:</label>
-    <input type="text" id="contact" name="contact" th:field="*{contact}">
-    <br>
-    <span th:if="${#fields.hasErrors('contact')}" th:each="err : ${#fields.errors('contact')}" style="color: red; display: block;">[[${err}]]</span>
+  <label for="city">시/군/구 선택:</label>
+  <select id="city">
+    <option value="">시/군/구 선택</option>
+  </select>
 
-    <button type="submit">Register</button>
-  </form>
+  <label for="detailAddress">상세 주소:</label>
+  <input type="text" id="detailAddress" placeholder="예: 123-45번지, OOO 아파트 101동 202호">
+
+  <input type="hidden" id="address" name="address" th:field="*{address}"> <!-- 최종 주소 입력 필드 -->
+
+  <br>
+  <span th:if="${#fields.hasErrors('address')}" th:each="err : ${#fields.errors('address')}" style="color: red; display: block;">[[${err}]]</span>
+
+  <label for="contact">Contact:</label>
+  <input type="text" id="contact" name="contact" th:field="*{contact}">
+  <br>
+  <span th:if="${#fields.hasErrors('contact')}" th:each="err : ${#fields.errors('contact')}" style="color: red; display: block;">[[${err}]]</span>
+
+  <button type="submit">Register</button>
+</form>
 </body>
 </html>
