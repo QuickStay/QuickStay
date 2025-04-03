@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +74,31 @@ public class PlaceService {
         if (!place.getUser().equals(user2)) {
             throw new ServiceException("권한이 없습니다.");
         }
+    }
+
+    //TODO: redis 캐싱 도입, 스케줄러를 사용하여 매 정각마다 redis의 데이터를 갱신 -> DB를 아예 거치지 않고 캐싱된 결과만 보여주도록 변경 필요
+    public List<PlaceMiniInfo> findFiveMostReservedPlace() {
+        return placeRepository.findFiveMostReservedPlace();
+    }
+
+    public List<PlaceMiniInfo> findFiveHighestReviewAveragePlace() {
+        return placeRepository.findFiveHighestReviewAveragePlace();
+    }
+
+    public List<PlaceMiniInfo> findFiveRandomPlace() {
+        List<Place> temp = placeRepository.findFiveRandomPlace();
+        return temp.stream().map(PlaceMiniInfo::new).toList();
+    }
+
+    public List<PlaceMiniInfo> findTenTodayMostReservedPlace() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+
+        return placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay)
+                .stream()
+                .map(PlaceMiniInfo::new)
+                .toList();
     }
 
     private Place getById(Long id) {

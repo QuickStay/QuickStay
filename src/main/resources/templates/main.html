@@ -1,7 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+<!-- 베스트 예약지(reviewAverage) 5가지 -->
+<!-- 예약 많은 곳(reservedCount) 5가지 -->
+<!-- 오늘 가장 핫한 곳 (오늘 예약 많은 곳) 10가지 -->
+<!-- 이런 곳은 어떠세요? 랜덤 예약지 5가지 -->
+<head>
+    <meta charset="UTF-8">
+    <title>QuickStay - 인기 숙소 추천</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css"> <!-- ✅ CSS 파일 추가 -->
+</head>
+
 <body>
 <div th:replace="~{fragment/header :: header}"></div>
-home
+<div class="container mt-4">
+    <h1 class="text-center mb-4">🏡 QuickStay - 인기 숙소 추천</h1>
+
+    <!-- 오늘 가장 많이 예약된 숙소 -->
+    <section class="mb-5">
+        <h2>📅 오늘 가장 인기 있는 숙소</h2>
+        <p th:if="${#lists.isEmpty(todayMostReserved)}">아직 예약된 숙소가 없습니다.</p>
+        <ul class="list-group" th:unless="${#lists.isEmpty(todayMostReserved)}">
+            <li class="list-group-item" th:each="tmr : ${todayMostReserved}">
+                <a th:href="@{/place/{id}/info(id=${tmr.placeId})}" th:text="${tmr.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                <span th:text="${tmr.address}">주소</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 예약이 가장 많은 숙소 -->
+    <section class="mb-5">
+        <h2>🔥 예약이 많은 인기 숙소</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="place : ${mostReserved}">
+                <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                <span th:text="${place.address}">주소</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 이용자가 가장 만족한 숙소 -->
+    <section class="mb-5">
+        <h2>⭐ 이용자가 인정한 최고의 숙소</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="place : ${highestReviewAverage}">
+                <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                <span th:text="${place.address}">주소</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 랜덤 추천 숙소 -->
+    <section class="mb-5">
+        <h2>🎲 이런 숙소는 어떠세요?</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="place : ${random}">
+                <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                <span th:text="${place.address}">주소</span>
+            </li>
+        </ul>
+    </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

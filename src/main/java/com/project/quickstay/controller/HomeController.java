@@ -2,6 +2,7 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.MyPlaceInfo;
+import com.project.quickstay.domain.place.dto.PlaceMiniInfo;
 import com.project.quickstay.domain.room.dto.MyRoomInfo;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.PlaceService;
@@ -24,7 +25,11 @@ public class HomeController {
     private final RoomService roomService;
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("mostReserved" , placeService.findFiveMostReservedPlace());
+        model.addAttribute("highestReviewAverage" , placeService.findFiveHighestReviewAveragePlace());
+        model.addAttribute("random" , placeService.findFiveRandomPlace());
+        model.addAttribute("todayMostReserved" , placeService.findTenTodayMostReservedPlace());
         return "main";
     }
 
