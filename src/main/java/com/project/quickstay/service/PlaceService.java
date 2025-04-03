@@ -1,5 +1,6 @@
 package com.project.quickstay.service;
 
+import com.project.quickstay.common.Constant;
 import com.project.quickstay.domain.place.dto.*;
 import com.project.quickstay.domain.place.entity.Place;
 import com.project.quickstay.domain.room.dto.RoomInfo;
@@ -82,7 +83,7 @@ public class PlaceService {
 
     private void canAddPlace(Long userId) {
         int count = placeRepository.countByUserId(userId);
-        if (count >= 10) {
+        if (count >= Constant.MAX_PLACE_COUNT) {
             throw new ServiceException("최대 장소 소유 개수를 초과하였습니다.");
         }
     }
