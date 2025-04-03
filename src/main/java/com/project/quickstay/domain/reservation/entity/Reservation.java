@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -28,6 +29,8 @@ public class Reservation {
 
     @Enumerated(value = EnumType.STRING)
     private State state;
+
+    private LocalDateTime createdAt;
 
     private LocalDate startDate;
 

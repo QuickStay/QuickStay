@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -29,6 +30,7 @@ public class TimeReservationRegister extends ReservationRegister {
                 .endDate(date)
                 .startTime(startTime)
                 .endTime(endTime)
+                .createdAt(LocalDateTime.now())
                 .state(State.RESERVED)
                 .room(getRoom())
                 .user(getUser())
