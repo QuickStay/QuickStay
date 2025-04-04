@@ -26,6 +26,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final RoomRepository roomRepository;
+    private final RedisService redisService;
 
     public Place register(User user, PlaceRegister placeRegister) { //장소 등록
         canAddPlace(user.getId());
@@ -78,16 +79,22 @@ public class PlaceService {
 
     //TODO: redis 캐싱 도입, 스케줄러를 사용하여 매 정각마다 redis의 데이터를 갱신 -> DB를 아예 거치지 않고 캐싱된 결과만 보여주도록 변경 필요
     public List<PlaceMiniInfo> findFiveMostReservedPlace() {
-        return placeRepository.findFiveMostReservedPlace();
+        List<PlaceMiniInfo> mostReserved = placeRepository.findFiveMostReservedPlace();
+        redisService.saveMainPageData(Constant.MOST_RESERVED, mostReserved);
+        return redisService.getValue(Constant.MOST_RESERVED);
     }
 
     public List<PlaceMiniInfo> findFiveHighestReviewAveragePlace() {
-        return placeRepository.findFiveHighestReviewAveragePlace();
+        List<PlaceMiniInfo> highest = placeRepository.findFiveHighestReviewAveragePlace();
+        redisService.saveMainPageData(Constant.HIGHEST_REVIEW_AVERAGE, highest);
+        return redisService.getValue(Constant.HIGHEST_REVIEW_AVERAGE);
     }
 
     public List<PlaceMiniInfo> findFiveRandomPlace() {
         List<Place> temp = placeRepository.findFiveRandomPlace();
-        return temp.stream().map(PlaceMiniInfo::new).toList();
+        List<PlaceMiniInfo> toList = temp.stream().map(PlaceMiniInfo::new).toList();
+        redisService.saveMainPageData(Constant.RANDOM, toList);
+        return redisService.getValue(Constant.RANDOM);
     }
 
     public List<PlaceMiniInfo> findTenTodayMostReservedPlace() {
@@ -95,10 +102,12 @@ public class PlaceService {
         LocalDateTime startOfDay = today.atStartOfDay();
         LocalDateTime endOfDay = today.atTime(23, 59, 59);
 
-        return placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay)
+        List<PlaceMiniInfo> toList = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay)
                 .stream()
                 .map(PlaceMiniInfo::new)
                 .toList();
+        redisService.saveMainPageData(Constant.TODAY_MOST_RESERVED, toList);
+        return redisService.getValue(Constant.TODAY_MOST_RESERVED);
     }
 
     private Place getById(Long id) {

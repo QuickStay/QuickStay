@@ -17,4 +17,7 @@ public class PlaceMiniInfo {
         this.name = place.getName();
         this.address = place.getProvince() + " " + place.getCity();
     }
+
+    public PlaceMiniInfo() {
+    }
 }
