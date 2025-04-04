@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class RedisService {
     }
 
     public List<PlaceMiniInfo> getValue(String key) {
+        if (!redisTemplate.hasKey(key)) { // null 체크
+            return new ArrayList<>();
+        }
         String s = redisTemplate.opsForValue().get(key);
         List<PlaceMiniInfo> list;
         try {
