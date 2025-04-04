@@ -13,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,36 +74,19 @@ public class PlaceService {
         }
     }
 
-    //TODO: redis 캐싱 도입, 스케줄러를 사용하여 매 정각마다 redis의 데이터를 갱신 -> DB를 아예 거치지 않고 캐싱된 결과만 보여주도록 변경 필요
     public List<PlaceMiniInfo> findFiveMostReservedPlace() {
-        List<PlaceMiniInfo> mostReserved = placeRepository.findFiveMostReservedPlace();
-        redisService.saveMainPageData(Constant.MOST_RESERVED, mostReserved);
         return redisService.getValue(Constant.MOST_RESERVED);
     }
 
     public List<PlaceMiniInfo> findFiveHighestReviewAveragePlace() {
-        List<PlaceMiniInfo> highest = placeRepository.findFiveHighestReviewAveragePlace();
-        redisService.saveMainPageData(Constant.HIGHEST_REVIEW_AVERAGE, highest);
         return redisService.getValue(Constant.HIGHEST_REVIEW_AVERAGE);
     }
 
     public List<PlaceMiniInfo> findFiveRandomPlace() {
-        List<Place> temp = placeRepository.findFiveRandomPlace();
-        List<PlaceMiniInfo> toList = temp.stream().map(PlaceMiniInfo::new).toList();
-        redisService.saveMainPageData(Constant.RANDOM, toList);
         return redisService.getValue(Constant.RANDOM);
     }
 
     public List<PlaceMiniInfo> findTenTodayMostReservedPlace() {
-        LocalDate today = LocalDate.now();
-        LocalDateTime startOfDay = today.atStartOfDay();
-        LocalDateTime endOfDay = today.atTime(23, 59, 59);
-
-        List<PlaceMiniInfo> toList = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay)
-                .stream()
-                .map(PlaceMiniInfo::new)
-                .toList();
-        redisService.saveMainPageData(Constant.TODAY_MOST_RESERVED, toList);
         return redisService.getValue(Constant.TODAY_MOST_RESERVED);
     }
 
