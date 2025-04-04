@@ -1,6 +1,7 @@
-package com.project.quickstay.service;
+package com.project.quickstay.repository;
 
 import com.project.quickstay.common.Social;
+import com.project.quickstay.domain.place.dto.PlaceInfo;
 import com.project.quickstay.domain.place.dto.PlaceMiniInfo;
 import com.project.quickstay.domain.place.dto.PlaceRegister;
 import com.project.quickstay.domain.place.entity.Place;
@@ -12,7 +13,12 @@ import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.domain.room.entity.Room;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.repository.UserRepository;
+import com.project.quickstay.service.PlaceService;
+import com.project.quickstay.service.ReservationHandler;
+import com.project.quickstay.service.ReviewService;
+import com.project.quickstay.service.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -44,6 +51,9 @@ public class MainPageRecommendationTest {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    PlaceRepository placeRepository;
 
     User user1;
     Place place1;
@@ -113,7 +123,12 @@ public class MainPageRecommendationTest {
         reservationHandler.reservationRegister(user1, room1.getId(), dayReservationRegister);
 
         //when
-        List<PlaceMiniInfo> placeInfo = placeService.findTenTodayMostReservedPlace();
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+
+        List<Place> place = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay);
+        List<PlaceMiniInfo> placeInfo = place.stream().map(PlaceMiniInfo::new).toList();
 
         //then
         assertThat(placeInfo).size().isEqualTo(1);
@@ -145,7 +160,7 @@ public class MainPageRecommendationTest {
         reservationHandler.reservationRegister(user1, room2.getId(), r3);
 
         //when
-        List<PlaceMiniInfo> placeInfo = placeService.findFiveMostReservedPlace();
+        List<PlaceMiniInfo> placeInfo = placeRepository.findFiveMostReservedPlace();
 
         //then
         assertThat(placeInfo).size().isEqualTo(2);
@@ -190,7 +205,7 @@ public class MainPageRecommendationTest {
         reviewService.writeReview(review2, user1);
 
         //when
-        List<PlaceMiniInfo> placeInfo = placeService.findFiveHighestReviewAveragePlace();
+        List<PlaceMiniInfo> placeInfo = placeRepository.findFiveHighestReviewAveragePlace();
 
         //then
         assertThat(placeInfo).size().isEqualTo(2);
@@ -209,7 +224,8 @@ public class MainPageRecommendationTest {
     @Test
     @DisplayName("랜덤한 숙소 추천 목록을 가져올 수 있다")
     public void test4() {
-        List<PlaceMiniInfo> placeInfo = placeService.findFiveRandomPlace();
+        List<Place> place = placeRepository.findFiveRandomPlace();
+        List<PlaceMiniInfo> placeInfo = place.stream().map(PlaceMiniInfo::new).toList();
         assertThat(placeInfo).size().isEqualTo(2);
     }
 }
