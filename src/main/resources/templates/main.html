@@ -16,14 +16,28 @@
 <div class="container mt-4">
     <h1 class="text-center mb-4">🏡 QuickStay - 인기 숙소 추천</h1>
 
+    <p class="text-muted small text-center mb-2">※ 숙소 정보는 1시간마다 갱신됩니다. ※</p>
     <!-- 오늘 가장 많이 예약된 숙소 -->
     <section class="mb-5">
         <h2>📅 오늘 가장 인기 있는 숙소</h2>
         <p th:if="${#lists.isEmpty(todayMostReserved)}">아직 예약된 숙소가 없습니다.</p>
         <ul class="list-group" th:unless="${#lists.isEmpty(todayMostReserved)}">
-            <li class="list-group-item" th:each="tmr : ${todayMostReserved}">
-                <a th:href="@{/place/{id}/info(id=${tmr.placeId})}" th:text="${tmr.name}" class="fw-bold text-decoration-none">숙소 이름</a>
-                <span th:text="${tmr.address}">주소</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="tmr : ${todayMostReserved}">
+                <div>
+                    <a th:href="@{/place/{id}/info(id=${tmr.placeId})}" th:text="${tmr.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                    <span th:text="${tmr.address}" class="ms-2">주소</span>
+                </div>
+                <div>
+                    <span th:if="${tmr.rankChanges != null and tmr.rankChanges == 'NEW'}" class="badge bg-primary">NEW</span>
+                    <span th:if="${tmr.rankChanges != null and tmr.rankChanges.startsWith('+')}" class="text-success fw-semibold">
+                    🔼 <span th:text="${tmr.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${tmr.rankChanges != null and tmr.rankChanges.startsWith('-') and tmr.rankChanges != '-'}" class="text-danger fw-semibold">
+                    🔽 <span th:text="${tmr.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${tmr.rankChanges == '-' or tmr.rankChanges == null}" class="text-secondary">-</span>
+                </div>
             </li>
         </ul>
     </section>
@@ -32,9 +46,23 @@
     <section class="mb-5">
         <h2>🔥 예약이 많은 인기 숙소</h2>
         <ul class="list-group">
-            <li class="list-group-item" th:each="place : ${mostReserved}">
-                <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
-                <span th:text="${place.address}">주소</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="place : ${mostReserved}">
+                <div>
+                    <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}"
+                       class="fw-bold text-decoration-none">숙소 이름</a>
+                    <span th:text="${place.address}" class="ms-2">주소</span>
+                </div>
+                <div>
+                    <span th:if="${place.rankChanges != null and place.rankChanges == 'NEW'}" class="badge bg-primary">NEW</span>
+                    <span th:if="${place.rankChanges != null and place.rankChanges.startsWith('+')}" class="text-success fw-semibold">
+                    🔼 <span th:text="${place.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${place.rankChanges != null and place.rankChanges.startsWith('-') and place.rankChanges != '-'}" class="text-danger fw-semibold">
+                    🔽 <span th:text="${place.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${place.rankChanges == '-' or place.rankChanges == null}" class="text-secondary">-</span>
+                </div>
             </li>
         </ul>
     </section>
@@ -43,12 +71,27 @@
     <section class="mb-5">
         <h2>⭐ 이용자가 인정한 최고의 숙소</h2>
         <ul class="list-group">
-            <li class="list-group-item" th:each="place : ${highestReviewAverage}">
-                <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
-                <span th:text="${place.address}">주소</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="place : ${highestReviewAverage}">
+                <div>
+                    <a th:href="@{/place/{id}/info(id=${place.placeId})}" th:text="${place.name}" class="fw-bold text-decoration-none">숙소 이름</a>
+                    <span th:text="${place.address}" class="ms-2">주소</span>
+                </div>
+                <div>
+                    <span th:if="${place.rankChanges != null and place.rankChanges == 'NEW'}" class="badge bg-primary">NEW</span>
+                    <span th:if="${place.rankChanges != null and place.rankChanges.startsWith('+')}" class="text-success fw-semibold">
+                    🔼 <span th:text="${place.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${place.rankChanges != null and place.rankChanges.startsWith('-') and place.rankChanges != '-'}" class="text-danger fw-semibold">
+                    🔽 <span th:text="${place.rankChanges.substring(1)}">1</span>
+                </span>
+                    <span th:if="${place.rankChanges == '-' or place.rankChanges == null}" class="text-secondary">-</span>
+                </div>
             </li>
         </ul>
     </section>
+
+
 
     <!-- 랜덤 추천 숙소 -->
     <section class="mb-5">
