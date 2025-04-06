@@ -62,12 +62,12 @@
     <!-- 예약 버튼 컨테이너 -->
     <div class="reservation-buttons">
         <button class="cancel-button" onclick="showPopup()"
-                th:if="${reservation.state.name() == 'RESERVED'}">
+                th:if="${reservation.getState().name() == 'RESERVED'}">
             예약 취소
         </button>
 
         <button class="review-button" th:onclick="|window.location.href='/review/${reservation.id}/write'|"
-                th:if="${reservation.state.name() == 'RESERVED'}">
+                th:if="${reservation.getState().name() == 'RESERVED'}">
             리뷰 작성
         </button>
     </div>
