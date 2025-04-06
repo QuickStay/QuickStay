@@ -79,7 +79,7 @@ public class ReservationController {
     public String findReservations(@Login User user, @PathVariable Long reservationId, Model model) {
         ReservationInfo reservation = reservationHandler.getSpecificReservation(reservationId);
         model.addAttribute("reservation", reservation);
-        return "/myPage/myReservationInfo";
+        return "myPage/myReservationInfo";
     }
 
     //예약 취소 - 공통 처리
