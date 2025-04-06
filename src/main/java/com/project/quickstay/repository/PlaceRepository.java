@@ -29,15 +29,15 @@ public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceSearch
     @Query(value = "SELECT p.* " +
             "FROM ( " +
             "SELECT ro.place_id AS pid, COUNT(*) AS cnt " +
-            "FROM Reservation r " +
-            "JOIN Room ro ON r.room_id = ro.id " +
+            "FROM reservation r " +
+            "JOIN room ro ON r.room_id = ro.id " +
             "WHERE r.created_at BETWEEN :startOfDay AND :endOfDay " +
             "AND r.state = 'RESERVED' " +
             "GROUP BY ro.place_id " +
             "ORDER BY cnt DESC " +
             "LIMIT 10 " +
             ") AS top_places " +
-            "JOIN Place p ON p.id = top_places.pid", nativeQuery = true)
+            "JOIN place p ON p.id = top_places.pid", nativeQuery = true)
     List<Place> findTenTodayMostReservedPlace(
             @Param("startOfDay") LocalDateTime startOfDay,
             @Param("endOfDay") LocalDateTime endOfDay);
