@@ -2,7 +2,6 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.domain.place.dto.PlaceUpdate;
 import com.project.quickstay.domain.review.dto.ReviewInfo;
-import com.project.quickstay.domain.review.entity.Review;
 import com.project.quickstay.domain.room.entity.BookType;
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.PlaceInfo;
@@ -16,6 +15,7 @@ import com.project.quickstay.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +32,9 @@ public class PlaceController {
     private final PlaceService placeService;
     private final RoomService roomService;
     private final ReviewService reviewService;
+
+    @Value("${spring.kakao.js_client_id}")
+    String kakaoJsKey;
 
     @GetMapping("/place/register")
     public String placeRegisterForm(Model model) {
@@ -78,6 +81,7 @@ public class PlaceController {
         List<ReviewInfo> reviews = reviewService.getPlaceReview(placeId);
         model.addAttribute("info", info);
         model.addAttribute("reviews", reviews);
+        model.addAttribute("jsKey", kakaoJsKey);
         return "place/placeInfo";
     }
 
