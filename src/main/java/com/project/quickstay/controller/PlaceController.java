@@ -81,7 +81,6 @@ public class PlaceController {
         List<ReviewInfo> reviews = reviewService.getPlaceReview(placeId);
         model.addAttribute("info", info);
         model.addAttribute("reviews", reviews);
-        model.addAttribute("jsKey", kakaoJsKey);
         return "place/placeInfo";
     }
 
