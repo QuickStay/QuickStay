@@ -26,19 +26,19 @@ public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceSearch
     @Query(value = "select * from place order by RAND() limit 5", nativeQuery = true)
     List<Place> findFiveRandomPlace();
 
-    @Query(value = "SELECT p.* " +
+    @Query(value = "SELECT new com.project.quickstay.domain.place.dto.PlaceMiniInfo(p) " +
             "FROM ( " +
-            "SELECT ro.place_id AS pid, COUNT(*) AS cnt " +
-            "FROM reservation r " +
-            "JOIN room ro ON r.room_id = ro.id " +
-            "WHERE r.created_at BETWEEN :startOfDay AND :endOfDay " +
+            "SELECT ro.place.id AS pid, COUNT(*) AS cnt " +
+            "FROM Reservation r " +
+            "JOIN Room ro ON r.room.id = ro.id " +
+            "WHERE r.createdAt BETWEEN :startOfDay AND :endOfDay " +
             "AND r.state = 'RESERVED' " +
-            "GROUP BY ro.place_id " +
+            "GROUP BY ro.place.id " +
             "ORDER BY cnt DESC " +
             "LIMIT 10 " +
             ") AS top_places " +
-            "JOIN place p ON p.id = top_places.pid", nativeQuery = true)
-    List<Place> findTenTodayMostReservedPlace(
+            "JOIN Place p ON p.id = top_places.pid")
+    List<PlaceMiniInfo> findTenTodayMostReservedPlace(
             @Param("startOfDay") LocalDateTime startOfDay,
             @Param("endOfDay") LocalDateTime endOfDay);
 }

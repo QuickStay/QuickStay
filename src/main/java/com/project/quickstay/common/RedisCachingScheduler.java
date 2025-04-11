@@ -23,7 +23,7 @@ public class RedisCachingScheduler {
     private final PlaceRepository placeRepository;
     private final RedisService redisService;
 
-    @Scheduled(cron = "0 0 * * * *") //매 정각마다 실행.
+    @Scheduled(cron = "0/10 * * * * *") //매 정각마다 실행.
     @Transactional
     public void caching() {
         log.info("숙소 추천 데이터 캐싱 스케줄러 작동");
@@ -55,10 +55,7 @@ public class RedisCachingScheduler {
         LocalDateTime startOfDay = today.atStartOfDay();
         LocalDateTime endOfDay = today.atTime(23, 59, 59);
 
-        List<PlaceMiniInfo> newVal = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay)
-                .stream()
-                .map(PlaceMiniInfo::new)
-                .toList();
+        List<PlaceMiniInfo> newVal = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay);
         List<PlaceMiniInfo> oldVal = redisService.getValue(Constant.TODAY_MOST_RESERVED);
         List<PlaceMiniInfo> todayMostReserved = setRank(newVal, oldVal);
         redisService.saveMainPageData(Constant.TODAY_MOST_RESERVED, todayMostReserved);
