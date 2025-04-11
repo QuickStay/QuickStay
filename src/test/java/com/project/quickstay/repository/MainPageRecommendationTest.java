@@ -127,12 +127,11 @@ public class MainPageRecommendationTest {
         LocalDateTime startOfDay = today.atStartOfDay();
         LocalDateTime endOfDay = today.atTime(23, 59, 59);
 
-        List<Place> place = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay);
-        List<PlaceMiniInfo> placeInfo = place.stream().map(PlaceMiniInfo::new).toList();
+        List<PlaceMiniInfo> place = placeRepository.findTenTodayMostReservedPlace(startOfDay, endOfDay);
 
         //then
-        assertThat(placeInfo).size().isEqualTo(1);
-        PlaceMiniInfo placeMiniInfo = placeInfo.get(0);
+        assertThat(place).size().isEqualTo(1);
+        PlaceMiniInfo placeMiniInfo = place.get(0);
         assertThat(placeMiniInfo.getPlaceId()).isEqualTo(place1.getId());
         assertThat(placeMiniInfo.getName()).isEqualTo(place1.getName());
         assertThat(placeMiniInfo.getAddress()).isEqualTo(place1.getProvince() + " " + place1.getCity());
