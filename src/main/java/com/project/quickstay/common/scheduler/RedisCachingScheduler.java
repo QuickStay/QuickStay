@@ -1,5 +1,6 @@
-package com.project.quickstay.common;
+package com.project.quickstay.common.scheduler;
 
+import com.project.quickstay.common.Constant;
 import com.project.quickstay.domain.place.dto.PlaceMiniInfo;
 import com.project.quickstay.repository.PlaceRepository;
 import com.project.quickstay.service.RedisService;

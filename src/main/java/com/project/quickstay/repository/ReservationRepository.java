@@ -1,6 +1,8 @@
 package com.project.quickstay.repository;
 
 import com.project.quickstay.domain.reservation.entity.Reservation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findReserved(@Param("roomId") Long roomId, @Param("now") LocalDate localDate);
 
     List<Reservation> findAllByUserId(Long userId);
+
+    @Query("select r from Reservation r where r.state = com.project.quickstay.common.State.RESERVED")
+    Page<Reservation> findAllReserved(Pageable pageable);
 }
