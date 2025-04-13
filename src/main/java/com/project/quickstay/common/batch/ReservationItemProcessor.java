@@ -11,15 +11,16 @@ import java.time.LocalTime;
 @Slf4j
 public class ReservationItemProcessor implements ItemProcessor<Reservation, Reservation> {
 
+    private final LocalDate nowDate = LocalDate.now();
+    private final LocalTime nowTime = LocalTime.now();
+
     @Override
     public Reservation process(Reservation reservation) {
-        LocalDate nowDate = LocalDate.now();
         if (reservation.getEndDate().isBefore(nowDate)) {
             reservation.updateState(State.COMPLETED);
             return reservation;
         }
 
-        LocalTime nowTime = LocalTime.now();
         if (reservation.getEndTime() != null) {
             if (reservation.getEndDate().isEqual(nowDate) && reservation.getEndTime().isBefore(nowTime)) {
                 reservation.updateState(State.COMPLETED);
