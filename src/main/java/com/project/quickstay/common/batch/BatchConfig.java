@@ -33,7 +33,7 @@ public class BatchConfig {
     private final int chunkSize = 50;
 
     @Bean
-    public Job completedReservationJob(JobRepository jobRepository, Step completedReservationJobStep) {
+    public Job completeReservationJob(JobRepository jobRepository, Step completedReservationJobStep) {
         return new JobBuilder("completeReservationJob", jobRepository)
                 .start(completedReservationJobStep)
                 .build();

@@ -118,4 +118,29 @@ public class BatchJobLauncherTest {
         assertThat(getReservation.getState()).isEqualTo(State.COMPLETED);
 
     }
+
+    @Test
+    @DisplayName("process 동작 방식 확인")
+    void test2() throws Exception {
+
+        //총 3개의 Reservation 생성 후 processor에 로그 남기도록하여 확인 - 확인하려면 process() 메서드에 로그 추가 필요
+        DayReservationRegister day1 = new DayReservationRegister(user1, room);
+        day1.setStartDate(LocalDate.of(2025, 2, 10));
+        day1.setEndDate(LocalDate.of(2025, 2, 13));
+
+        reservationHandler.reservationRegister(user1, room.getId(), day1);
+
+        DayReservationRegister day2 = new DayReservationRegister(user1, room);
+        day2.setStartDate(LocalDate.of(2025, 2, 10));
+        day2.setEndDate(LocalDate.of(2025, 2, 13));
+
+        reservationHandler.reservationRegister(user1, room.getId(), day2);
+
+
+        JobParameters params = new JobParametersBuilder()
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+        JobExecution execution = jobLauncher.run(completeReservationJob, params);
+
+    }
 }
