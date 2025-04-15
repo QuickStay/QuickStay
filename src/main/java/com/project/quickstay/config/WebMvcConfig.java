@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login", "/oauth/kakao", "/callback/kakao", "/home", "/place/search", "/place/**/info", "/api/**", "/newUser");
 
         registry.addInterceptor(new NewUserInterceptor())
-                .excludePathPatterns("/login", "/oauth/kakao", "/callback/kakao", "/newUser", "/selectUserType");
+                .excludePathPatterns("/login", "/oauth/kakao", "/callback/kakao", "/newUser", "/selectUserType", "/css/**", "/images/**", "/js/**");
     }
 
     @Override
