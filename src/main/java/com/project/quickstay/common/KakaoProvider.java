@@ -1,6 +1,7 @@
 package com.project.quickstay.common;
 
 import com.project.quickstay.domain.user.dto.SocialTokenResponse;
+import com.project.quickstay.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class KakaoProvider {
         if (tokenResponse.getStatusCode() == HttpStatus.OK && tokenResponse.getBody() != null) {
             return tokenResponse.getBody().getAccessToken();
         } else {
-            return null;
+            throw new ServiceException("로그인 처리 중 오류가 발생하였습니다.");
         }
     }
 
