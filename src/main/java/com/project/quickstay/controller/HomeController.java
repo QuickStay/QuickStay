@@ -2,7 +2,6 @@ package com.project.quickstay.controller;
 
 import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.MyPlaceInfo;
-import com.project.quickstay.domain.place.dto.PlaceMiniInfo;
 import com.project.quickstay.domain.room.dto.MyRoomInfo;
 import com.project.quickstay.domain.user.entity.User;
 import com.project.quickstay.service.PlaceService;

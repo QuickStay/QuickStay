@@ -21,6 +21,9 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Social social;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserType userType;
+
     private String nickname;
 
     public User() {
@@ -28,10 +31,15 @@ public class User {
 
     public static User register(UserRegister userRegister) {
         User user = new User();
+        user.userType = UserType.NEW_USER;
         user.email = userRegister.getEmail();
         user.social = userRegister.getSocial();
         user.nickname = userRegister.getNickname();
         return user;
+    }
+
+    public void changeUserType(UserType userType) {
+        this.userType = userType;
     }
 
     @Override

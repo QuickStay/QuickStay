@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>역할 선택</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f3f4f6, #e0eafc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 380px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .host-warning {
+            font-size: 0.85rem;
+            color: #d9534f;
+            margin-bottom: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 1rem;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .host-reveal {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            margin: 16px 0;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .host-reveal:hover {
+            background-color: #5a6268;
+        }
+
+        .radio-option {
+            display: none;
+            width: 100%;
+        }
+
+        .radio-option.show {
+            display: block;
+        }
+
+        button[type="submit"] {
+            background-color: #4e73df;
+            color: white;
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2e59d9;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h1>처음 오셨군요!<br/>어떤 역할로 시작할까요?</h1>
+    <div class="host-warning">※ 역할은 추후 변경할 수 없습니다.</div>
+
+    <form th:action="@{/selectUserType}" method="post" th:object="${selectUserType}">
+        <label>
+            <input type="radio" th:field="*{userType}" value="GUEST" /> 게스트로 시작
+        </label>
+
+        <button type="button" class="host-reveal" onclick="showHostOptions()">호스트이신가요?</button>
+
+        <div id="hostOptions" class="radio-option">
+            <label>
+                <input type="radio" th:field="*{userType}" value="HOST" /> 호스트로 시작
+            </label>
+        </div>
+
+        <button type="submit">선택 완료</button>
+    </form>
+</div>
+
+<script>
+    function showHostOptions() {
+        const hostOptions = document.getElementById("hostOptions");
+        hostOptions.classList.add("show");
+    }
+</script>
+</body>
+</html>
