@@ -15,10 +15,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login", "/oauth/kakao", "/callback/kakao", "/home", "/place/search", "/place/**/info", "/api/**", "/newUser");
+                .excludePathPatterns("/css/**", "/images/**", "/js/**", "/login", "/oauth/kakao", "/callback/kakao", "/home", "/place/search", "/place/**/info", "/api/**", "/newUser")
+                .order(1);
 
         registry.addInterceptor(new NewUserInterceptor())
-                .excludePathPatterns("/login", "/oauth/kakao", "/callback/kakao", "/newUser", "/selectUserType", "/css/**", "/images/**", "/js/**");
+                .excludePathPatterns("/login", "/oauth/kakao", "/callback/kakao", "/newUser", "/selectUserType", "/css/**", "/images/**", "/js/**")
+                .order(2);
     }
 
     @Override

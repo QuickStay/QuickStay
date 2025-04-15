@@ -11,6 +11,9 @@ public class NewUserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("/login");
+        }
         User user = (User) session.getAttribute("loginUser");
 
         if (user.getUserType() == UserType.NEW_USER) {
