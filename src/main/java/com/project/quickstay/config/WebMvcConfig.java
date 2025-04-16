@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .order(1);
 
         registry.addInterceptor(new NewUserInterceptor())
-                .excludePathPatterns("/login", "/oauth/kakao", "/callback/kakao", "/newUser", "/selectUserType", "/css/**", "/images/**", "/js/**")
+                .addPathPatterns("/place/**", "/calendar/**", "/reservation/**", "/myPage/**")
                 .order(2);
     }
 
