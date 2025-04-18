@@ -4,6 +4,7 @@ import com.project.quickstay.common.Login;
 import com.project.quickstay.domain.place.dto.MyPlaceInfo;
 import com.project.quickstay.domain.room.dto.MyRoomInfo;
 import com.project.quickstay.domain.user.entity.User;
+import com.project.quickstay.domain.user.entity.UserType;
 import com.project.quickstay.service.PlaceService;
 import com.project.quickstay.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,14 @@ public class HomeController {
     }
 
     @GetMapping("/myPage")
-    public String myPage() {
-        return "myPage/myPage";
+    public String myPage(@Login User user) {
+        if (user.getUserType() == UserType.GUEST) {
+            return "myPage/guest";
+        } else if (user.getUserType() == UserType.HOST) {
+            return "myPage/host";
+        } else {
+            return "myPage/admin";
+        }
     }
 
     @GetMapping("/myPage/place")

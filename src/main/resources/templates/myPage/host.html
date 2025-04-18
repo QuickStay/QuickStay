@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/host.css}">
+</head>
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+<div class="profile-slot" th:replace="~{fragment/profile :: profile}"></div>
+
+<!-- 내 장소 관리 버튼 -->
+<div>
+    <a href="/myPage/place">
+        <button>내 장소 관리</button>
+    </a>
+</div>
+
+<!-- 새로운 장소 등록 -->
+<div>
+    <a href="/place/register">
+        <button>새로운 장소 등록</button>
+    </a>
+</div>
+</body>
+</html>

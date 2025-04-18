@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/guest.css}">
+</head>
+<body>
+<div th:replace="~{fragment/header :: header}"></div>
+<div class="profile-slot" th:replace="~{fragment/profile :: profile}"></div>
+
+<!-- 내 예약 버튼 -->
+<div>
+    <a href="/reservation/list">
+        <button>내 예약</button>
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<!-- 사용자 프로필 -->
+<div th:fragment="profile">
+    <div class="profile-slot">
+        <!-- 사용자 정보 -->
+        <div class="profile-info">
+            <h2 th:text="${session.loginUser.nickname} + '님의 정보'"></h2>
+            <p th:text="'이메일: ' + ${session.loginUser.email}"></p>
+            <p th:text="'로그인 정보: ' + ${session.loginUser.social.name()}"></p>
+            <p th:text="'회원 유형: ' + ${session.loginUser.userType.name()}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+:root {
+    --main-blue: #2563eb; /* Tailwind의 blue-600 느낌 */
+    --light-gray: #f4f6f8;
+    --border-gray: #e0e0e0;
+    --text-dark: #333333;
+    --text-medium: #555555;
+    --text-light: #888888;
+}
+
+/* 프로필 슬롯 박스 */
+.profile-slot {
+    display: flex;
+    align-items: center;
+    padding: 24px 32px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    margin: 32px auto;
+    max-width: 880px;
+    border: 1px solid var(--border-gray);
+    gap: 28px;
+}
+
+/* 텍스트 영역 */
+.profile-slot .profile-info {
+    flex: 1;
+}
+
+.profile-slot .profile-info h2 {
+    margin: 0 0 10px 0;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--main-blue);
+}
+
+.profile-slot .profile-info p {
+    margin: 4px 0;
+    font-size: 16px;
+    color: var(--text-medium);
+}
