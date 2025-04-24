@@ -3,6 +3,7 @@ package com.project.quickstay.domain.user.entity;
 import com.project.quickstay.common.Social;
 import com.project.quickstay.domain.user.dto.UserRegister;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -10,10 +11,12 @@ import java.util.Objects;
 @Entity
 @Getter
 @Table(name = "Users")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     private String email;
@@ -52,18 +55,4 @@ public class User {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) {
-            return false;
-        }
-
-        return Objects.equals(id, user.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
 }
