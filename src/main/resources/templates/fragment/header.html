@@ -28,7 +28,6 @@
                 <button type="submit">검색</button>
             </form>
 
-            <!-- 동적으로 뜨는 박스 -->
             <div id="dropdown" style="
         display: none;
         position: absolute;
@@ -53,7 +52,7 @@
         <script>
             let regions = {};
 
-            fetch('/data/regions.json') // ★ 경로 수정
+            fetch('/data/regions.json')
                 .then(response => response.json())
                 .then(data => {
                     regions = data;
@@ -110,10 +109,17 @@
                     document.getElementById('dropdown').style.display = 'none'; // 선택 끝나면 창 닫기
                 }
             });
+
+            document.querySelector('.search-box form').addEventListener('submit', function(event) {
+                const keywordInput = document.querySelector('input[name="keyword"]');
+                const keyword = keywordInput.value.trim(); // 앞뒤 공백 제거
+
+                if (keyword.length < 1) { // 글자가 1개 미만이면
+                    event.preventDefault(); // 제출 막고
+                    alert('검색어를 입력해주세요.'); // 경고창 띄우기
+                }
+            });
         </script>
-
-
-
 
 
         <!-- 로그인/로그아웃 -->
