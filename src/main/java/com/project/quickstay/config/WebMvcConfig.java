@@ -20,6 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new NewUserInterceptor())
                 .addPathPatterns("/place/**", "/calendar/**", "/reservation/**", "/myPage/**")
+                .excludePathPatterns("/place/search")
                 .order(2);
     }
 
