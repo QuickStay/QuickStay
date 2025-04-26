@@ -29,7 +29,7 @@ public class PlaceSearchRepositoryImpl implements PlaceSearchRepository {
 
     private BooleanExpression keywordEq(String keyword) {
         if (!keyword.isEmpty()) {
-            return place.province.contains(keyword).or(place.name.contains(keyword)).or(place.description.contains(keyword)).or(place.city.contains(keyword)).or(place.detailAddress.contains(keyword));
+            return place.name.contains(keyword).or(place.description.contains(keyword)).or(place.province.concat(" ").concat(place.city).eq(keyword));
         }
         return null;
     }

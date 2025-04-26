@@ -17,12 +17,104 @@
         </div>
 
         <!-- 검색 창 -->
-        <div class="search-box">
+        <div class="search-box" style="position: relative;">
             <form th:action="@{/place/search}" method="get">
-                <input type="text" name="keyword" placeholder="검색어를 입력하세요">
+                <input
+                        type="text"
+                        name="keyword"
+                        placeholder="검색어를 입력하세요"
+                        onclick="showDropdown()"
+                >
                 <button type="submit">검색</button>
             </form>
+
+            <!-- 동적으로 뜨는 박스 -->
+            <div id="dropdown" style="
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        padding: 10px;
+        z-index: 1000;
+    ">
+                <select id="region-select" onchange="updateSubregions()" style="width: 100%; margin-bottom: 10px;">
+                    <option value="">시/도 선택</option>
+                </select>
+                <select id="subregion-select" style="width: 100%;">
+                    <option value="">시/구/군 선택</option>
+                </select>
+            </div>
         </div>
+
+        <script>
+            let regions = {};
+
+            fetch('/data/regions.json') // ★ 경로 수정
+                .then(response => response.json())
+                .then(data => {
+                    regions = data;
+                    populateRegions();
+                });
+
+            function populateRegions() {
+                const regionSelect = document.getElementById('region-select');
+                for (let region in regions) {
+                    const option = document.createElement('option');
+                    option.value = region;
+                    option.textContent = region;
+                    regionSelect.appendChild(option);
+                }
+            }
+
+            function updateSubregions() {
+                const regionSelect = document.getElementById('region-select');
+                const subregionSelect = document.getElementById('subregion-select');
+                const selectedRegion = regionSelect.value;
+
+                subregionSelect.innerHTML = '<option value="">시/구/군 선택</option>';
+
+                if (regions[selectedRegion]) {
+                    regions[selectedRegion].forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub;
+                        option.textContent = sub;
+                        subregionSelect.appendChild(option);
+                    });
+                }
+            }
+
+            function showDropdown() {
+                document.getElementById('dropdown').style.display = 'block';
+            }
+
+            document.addEventListener('click', function(event) {
+                const dropdown = document.getElementById('dropdown');
+                const searchBox = document.querySelector('.search-box');
+
+                if (!searchBox.contains(event.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // 🔥 추가! 시/군 선택하면 input에 채워넣기
+            document.getElementById('subregion-select').addEventListener('change', function() {
+                const region = document.getElementById('region-select').value;
+                const subregion = document.getElementById('subregion-select').value;
+
+                if (region && subregion) {
+                    document.querySelector('input[name="keyword"]').value = region + ' ' + subregion;
+                    document.getElementById('dropdown').style.display = 'none'; // 선택 끝나면 창 닫기
+                }
+            });
+        </script>
+
+
+
+
 
         <!-- 로그인/로그아웃 -->
         <div class="auth-links">
