@@ -49,19 +49,11 @@ public class ReviewService {
     }
 
     private Reservation getReservationById(Long reservationId) {
-        Optional<Reservation> getReservation = reservationRepository.findById(reservationId);
-        if (getReservation.isEmpty()) {
-            throw new ServiceException("예약이 없습니다.");
-        }
-        return getReservation.get();
+        return reservationRepository.findById(reservationId).orElseThrow(() -> new ServiceException("예약이 없습니다."));
     }
 
     private Place getPlaceById(Long placeId) {
-        Optional<Place> getPlace = placeRepository.findById(placeId);
-        if (getPlace.isEmpty()) {
-            throw new ServiceException("장소가 없습니다.");
-        }
-        return getPlace.get();
+        return placeRepository.findById(placeId).orElseThrow(() -> new ServiceException("장소가 없습니다."));
     }
 
     private void validUser(Long reservationId, User user) {

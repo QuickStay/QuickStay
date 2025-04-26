@@ -70,19 +70,11 @@ public class ReservationHandler {
     }
 
     private Room getRoomById(Long roomId) {
-        Optional<Room> getRoom = roomRepository.findById(roomId);
-        if (getRoom.isEmpty()) {
-            throw new ServiceException("방이 없습니다.");
-        }
-        return getRoom.get();
+        return roomRepository.findById(roomId).orElseThrow(() -> new ServiceException("방이 없습니다."));
     }
 
     private Reservation getReservationById(Long reservationId) {
-        Optional<Reservation> getReservation = reservationRepository.findById(reservationId);
-        if (getReservation.isEmpty()) {
-            throw new ServiceException("예약이 없습니다.");
-        }
-        return getReservation.get();
+        return reservationRepository.findById(reservationId).orElseThrow(() -> new ServiceException("예약이 없습니다."));
     }
 
     private void validUser(Long reservationId, User user) {

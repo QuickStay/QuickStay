@@ -58,19 +58,11 @@ public class RoomService {
     }
 
     private Room getRoomById(Long id) {
-        Optional<Room> room = roomRepository.findById(id);
-        if (room.isEmpty()) {
-            throw new ServiceException("방이 없습니다.");
-        }
-        return room.get();
+        return roomRepository.findById(id).orElseThrow(() -> new ServiceException("방이 없습니다."));
     }
 
     private Place getPlaceById(Long id) {
-        Optional<Place> place = placeRepository.findById(id);
-        if (place.isEmpty()) {
-            throw new ServiceException("장소가 없습니다.");
-        }
-        return place.get();
+        return placeRepository.findById(id).orElseThrow(() -> new ServiceException("장소가 없습니다."));
     }
 
     public void validUser(User user, Long roomId) {

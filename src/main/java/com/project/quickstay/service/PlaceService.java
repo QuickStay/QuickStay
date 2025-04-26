@@ -91,11 +91,7 @@ public class PlaceService {
     }
 
     private Place getById(Long id) {
-        Optional<Place> place = placeRepository.findById(id);
-        if (place.isEmpty()) {
-            throw new ServiceException("장소가 없습니다.");
-        }
-        return place.get();
+        return placeRepository.findById(id).orElseThrow(() -> new ServiceException("장소가 없습니다."));
     }
 
     private void canAddPlace(Long userId) {
