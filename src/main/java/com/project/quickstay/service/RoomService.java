@@ -57,18 +57,18 @@ public class RoomService {
         return getRoomById(roomId);
     }
 
+    public void validUser(User user, Long roomId) {
+        Room room = getRoomById(roomId);
+        if (!room.getPlace().getUser().equals(user)) {
+            throw new ServiceException("유저 검증에 실패하였습니다.");
+        }
+    }
+
     private Room getRoomById(Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new ServiceException("방이 없습니다."));
     }
 
     private Place getPlaceById(Long id) {
         return placeRepository.findById(id).orElseThrow(() -> new ServiceException("장소가 없습니다."));
-    }
-
-    public void validUser(User user, Long roomId) {
-        Room room = getRoomById(roomId);
-        if (!room.getPlace().getUser().equals(user)) {
-            throw new ServiceException("유저 검증에 실패하였습니다.");
-        }
     }
 }
