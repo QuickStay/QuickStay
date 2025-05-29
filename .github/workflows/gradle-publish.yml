@@ -41,3 +41,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Copy JAR to Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "build/libs/*.jar"
+          target: "/home/github-actions/spring-app"
