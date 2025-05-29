@@ -41,7 +41,9 @@ jobs:
           echo "${{ secrets.YML_SECURITY }}" > src/main/resources/application-security.yml
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
 
       - name: Copy JAR to Server
         uses: appleboy/ssh-action@v1
