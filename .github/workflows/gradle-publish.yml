@@ -53,3 +53,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/libs/*.jar"
           target: "/home/github-actions/spring-app"
+          strip_components: 2
