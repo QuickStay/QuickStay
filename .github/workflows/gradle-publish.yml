@@ -43,7 +43,7 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
-          ./gradlew build
+          ./gradlew bootJar
 
       - name: Copy JAR to Server
         uses: appleboy/ssh-action@v1
