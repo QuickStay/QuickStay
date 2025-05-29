@@ -46,7 +46,7 @@ jobs:
           ./gradlew bootJar
 
       - name: Copy JAR to Server
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
